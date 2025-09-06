@@ -295,6 +295,20 @@
             color: #4c6f59;
         }
 
+        /* Password Strength Meter */
+        .password-strength {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-align: right;
+            transition: all 0.3s ease;
+        }
+
+        .password-strength.weak { color: #ba5549; }
+        .password-strength.fair { color: #f39c12; }
+        .password-strength.good { color: #27ae60; }
+        .password-strength.strong { color: #2d5a3d; font-weight: 600; }
+
         .form-options {
             display: flex;
             justify-content: space-between;
@@ -418,6 +432,7 @@
             margin-bottom: 1rem;
             font-size: 0.9rem;
             border: 1px solid;
+            animation: fadeIn 0.3s ease;
         }
 
         .alert-error {
@@ -496,9 +511,10 @@
                             <label for="password">Password</label>
                             <div class="password-input-wrapper">
                                 <input type="password" id="password" name="password" class="form-input" 
-                                       placeholder="Enter your password" required>
+                                       placeholder="Enter your password" required minlength="6">
                                 <button type="button" class="password-toggle" onclick="togglePassword()">👁️</button>
                             </div>
+                            <div class="password-strength" id="passwordStrength"></div>
                         </div>
 
                         <div class="form-options">
@@ -536,6 +552,24 @@
     </main>
 
     <script>
+        // 🌿 HUMOROUS ERROR MESSAGES
+        const funnyErrors = [
+            "That password wouldn't even fool a houseplant. 🌿 Try again!",
+            "Are you sure you're not a raccoon in disguise? 🦝 Wrong credentials!",
+            "Our eco-sensors detected suspiciously incorrect login attempts.",
+            "Password incorrect. Did you try 'compost123'? (Spoiler: Don't use that.)",
+            "Hmm... our tree-based AI says that’s not the right combo. 🌳",
+            "Access denied. Have you tried turning your brain off and on again?",
+            "Our squirrels hid your account. Try logging in again to lure them out. 🐿️",
+            "🌍 Mother Earth believes in you. Try again!",
+            "Composting your password won’t help. Try the real one!",
+            "Even bamboo grows faster than this login attempt. 🌱"
+        ];
+
+        function getRandomFunnyError() {
+            return funnyErrors[Math.floor(Math.random() * funnyErrors.length)];
+        }
+
         // Create floating elements
         function createFloatingElements() {
             const container = document.getElementById('floatingElements');
@@ -572,12 +606,35 @@
             }
         }
 
+        // Password Strength Meter
+        function getPasswordStrength(password) {
+            let strength = 0;
+            if (password.length >= 6) strength++;
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+            if (strength < 2) return { text: "Weak", class: "weak" };
+            if (strength < 4) return { text: "Fair", class: "fair" };
+            if (strength < 5) return { text: "Good", class: "good" };
+            return { text: "Strong", class: "strong" };
+        }
+
+        document.getElementById('password').addEventListener('input', function() {
+            const strength = getPasswordStrength(this.value);
+            const meter = document.getElementById('passwordStrength');
+            meter.textContent = `Strength: ${strength.text}`;
+            meter.className = `password-strength ${strength.class}`;
+        });
+
         // Form validation and submission
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('remember').checked;
             const alertContainer = document.getElementById('alertContainer');
             
             // Clear previous alerts
@@ -593,6 +650,11 @@
                 showAlert('Please enter a valid email address.', 'error');
                 return;
             }
+
+            if (password.length < 6) {
+                showAlert('Password must be at least 6 characters.', 'error');
+                return;
+            }
             
             // Simulate login process
             const submitBtn = document.querySelector('.login-btn');
@@ -603,14 +665,28 @@
             
             // Simulate API call
             setTimeout(() => {
-                // For demo purposes, accept any email/password combination
+                // ✅ FOR DEMO: Accept any email + 6+ char password
+                // ⚠️ IN REAL APP: This would be a fetch() to backend for credential verification
                 if (email && password.length >= 6) {
                     showAlert('Login successful! Redirecting...', 'success');
+                    
+                    // ✅ Simulate auth
+                    const username = email.split('@')[0];
+                    localStorage.setItem('ecocart_user', username);
+                    
+                    // ✅ Handle "Remember Me"
+                    if (rememberMe) {
+                        localStorage.setItem('ecocart_remember', 'true');
+                    } else {
+                        localStorage.removeItem('ecocart_remember');
+                    }
+                    
+                    // ✅ REDIRECT TO INDEX.HTML AFTER SUCCESS
                     setTimeout(() => {
-                        window.location.href = '/dashboard';
+                        window.location.href = './';
                     }, 1500);
                 } else {
-                    showAlert('Invalid email or password. Please try again.', 'error');
+                    showAlert(getRandomFunnyError(), 'error');
                     submitBtn.disabled = false;
                     submitBtn.textContent = originalText;
                 }
@@ -647,25 +723,30 @@
             }, 5000);
         }
 
-        // Form field enhancements
-        document.querySelectorAll('.form-input').forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentNode.classList.add('focused');
-            });
-            
-            input.addEventListener('blur', function() {
-                if (!this.value) {
-                    this.parentNode.classList.remove('focused');
-                }
-            });
-        });
-
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             createFloatingElements();
             
             // Auto-focus email field
             document.getElementById('email').focus();
+
+            // Enter key submits form
+            document.getElementById('password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+                }
+            });
+
+            // Load "Remember Me" state
+            if (localStorage.getItem('ecocart_remember') === 'true') {
+                document.getElementById('remember').checked = true;
+            }
+
+            // ✅ Show success message if redirected from registration
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('registered') === 'true') {
+                showAlert('Registration successful! Please log in.', 'success');
+            }
         });
     </script>
 </body>

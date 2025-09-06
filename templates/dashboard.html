@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - EcoFlow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #2d3436;
+            background: #f5f3f0;
+            overflow-x: hidden;
+        }
+
+        /* Earth-toned animated background */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #f5f3f0 0%, #e8e4df 25%, #f0ede8 50%, #f7f5f2 75%, #ede7e0 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 25s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(76, 111, 89, 0.08);
+            border-radius: 50%;
+            animation: float 25s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Warm glass morphism header */
+        header {
+            background: rgba(247, 245, 242, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(76, 111, 89, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 32px rgba(76, 111, 89, 0.08);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4c6f59;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a.active {
+            color: #2d5a3d;
+            font-weight: 600;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #4c6f59, #2d5a3d);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #2d5a3d;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* Earth-toned button styles */
+        .btn {
+            padding: 0.75rem 1.75rem;
+            border: none;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(76, 111, 89, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(76, 111, 89, 0.35);
+        }
+
+        .btn-secondary {
+            background: rgba(247, 245, 242, 0.9);
+            color: #4c6f59;
+            border: 1px solid rgba(76, 111, 89, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(247, 245, 242, 1);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(76, 111, 89, 0.15);
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        /* Main content */
+        main {
+            min-height: calc(100vh - 200px);
+            padding: 2rem 0;
+        }
+
+        .card {
+            background: rgba(247, 245, 242, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2rem;
+            margin: 1rem 0;
+            box-shadow: 0 8px 32px rgba(76, 111, 89, 0.08);
+            border: 1px solid rgba(76, 111, 89, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(76, 111, 89, 0.12);
+        }
+
+        /* Dashboard specific styles */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+        }
+
+        .user-greeting {
+            font-size: 1.125rem;
+            color: #81a594;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Grid layouts */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+        .grid-4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+
+        /* Stats section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(247, 245, 242, 0.9);
+            border-radius: 20px;
+            border: 1px solid rgba(76, 111, 89, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #4c6f59, #2d5a3d);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(76, 111, 89, 0.1);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #4c6f59;
+            display: block;
+        }
+
+        .stat-label {
+            color: #81a594;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Product management */
+        .product-list {
+            background: rgba(247, 245, 242, 0.9);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .product-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .product-item:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateX(4px);
+        }
+
+        .product-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .product-thumbnail {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #e8e4df, #f0ede8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+
+        .product-details {
+            flex: 1;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: #2d3436;
+            margin-bottom: 0.25rem;
+        }
+
+        .product-meta {
+            font-size: 0.875rem;
+            color: #81a594;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Activity feed */
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            border-left: 3px solid rgba(76, 111, 89, 0.2);
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 0 12px 12px 0;
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:hover {
+            border-left-color: #4c6f59;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .activity-content h4 {
+            color: #2d3436;
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+
+        .activity-content p {
+            color: #81a594;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-time {
+            color: #a8a8a8;
+            font-size: 0.75rem;
+        }
+
+        /* Sustainability indicators */
+        .eco-badge {
+            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            margin-top: 0.75rem;
+        }
+
+        .eco-badge::before {
+            content: '🌱';
+            font-size: 0.875rem;
+        }
+
+        /* Status badges */
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .status-delivered {
+            background: rgba(76, 111, 89, 0.1);
+            color: #2d5a3d;
+        }
+
+        .status-shipped {
+            background: rgba(0, 123, 255, 0.1);
+            color: #0056b3;
+        }
+
+        .status-pending {
+            background: rgba(255, 193, 7, 0.1);
+            color: #856404;
+        }
+
+        /* Wishlist styles */
+        .wishlist-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .wishlist-item:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateX(4px);
+        }
+
+        .wishlist-item::before {
+            content: '❤️';
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Loading states */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(76, 111, 89, 0.3);
+            border-radius: 50%;
+            border-top-color: #4c6f59;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(76, 111, 89, 0.1);
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4c6f59, #2d5a3d);
+            border-radius: 4px;
+            transition: width 2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Environmental impact cards */
+        .impact-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(76, 111, 89, 0.05);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(76, 111, 89, 0.1);
+        }
+
+        .impact-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(76, 111, 89, 0.08);
+        }
+
+        .impact-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #4c6f59;
+        }
+
+        .impact-label {
+            font-size: 0.875rem;
+            color: #81a594;
+            margin: 0.5rem 0;
+        }
+
+        .impact-change {
+            font-size: 0.75rem;
+            color: #4c6f59;
+            font-weight: 600;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+                flex-wrap: wrap;
+            }
+            
+            .container {
+                padding: 0 16px;
+            }
+            
+            .card {
+                padding: 1.5rem;
+                margin: 0.5rem 0;
+                border-radius: 20px;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .dashboard-title {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 1rem;
+            }
+
+            .stat-card {
+                padding: 1.5rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .product-item,
+            .wishlist-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .product-meta {
+                justify-content: center;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(247, 245, 242, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(76, 111, 89, 0.1);
+            padding: 2rem 0;
+            text-align: center;
+            color: #81a594;
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-container">
+        <div class="floating-elements" id="floatingElements">
+            <!-- Floating elements will be added by JavaScript -->
+        </div>
+    </div>
+    
+    <header>
+        <div class="container">
+            <nav>
+                <a href="/" class="logo">🌱 EcoFlow</a>
+                <ul class="nav-links">
+                    <li><a href="/products">Browse</a></li>
+                    <li><a href="/add_product">Sell</a></li>
+                    <li><a href="/dashboard" class="active">Dashboard</a></li>
+                    <li><a href="/cart">Cart (2)</a></li>
+                    <li><a href="#" class="btn btn-secondary">Profile</a></li>
+                    <li><a href="/logout" class="btn btn-primary">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container fade-in">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <div>
+                    <div class="user-greeting">Welcome back, Sarah! 👋</div>
+                    <h1 class="dashboard-title">Your Eco Journey</h1>
+                </div>
+                <div>
+                    <a href="/products" class="btn btn-primary">Continue Shopping</a>
+                </div>
+            </div>
+
+            <!-- User Stats -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🛒</div>
+                    <span class="stat-number">18</span>
+                    <div class="stat-label">Items Purchased</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <span class="stat-number">₹24,750</span>
+                    <div class="stat-label">Money Saved vs. New</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🌱</div>
+                    <span class="stat-number">45 kg</span>
+                    <div class="stat-label">CO2 Emissions Saved</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">♻️</div>
+                    <span class="stat-number">12</span>
+                    <div class="stat-label">Items Given New Life</div>
+                </div>
+            </section>
+
+            <div class="grid grid-2">
+                <!-- Recent Purchases -->
+                <div class="card">
+                    <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        📦 Recent Purchases
+                        <span class="eco-badge">Last 30 days</span>
+                    </h2>
+                    <div class="product-list">
+                        <div class="product-item">
+                            <div class="product-thumbnail">📱</div>
+                            <div class="product-details">
+                                <div class="product-name">iPhone 12 - Excellent Condition</div>
+                                <div class="product-meta">
+                                    <span>₹35,999</span>
+                                    <span class="status-badge status-delivered">Delivered</span>
+                                    <span>3 days ago</span>
+                                </div>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-small btn-secondary">Rate</button>
+                                <button class="btn btn-small btn-primary">Buy Again</button>
+                            </div>
+                        </div>
+                        
+                        <div class="product-item">
+                            <div class="product-thumbnail">👕</div>
+                            <div class="product-details">
+                                <div class="product-name">Vintage Leather Jacket</div>
+                                <div class="product-meta">
+                                    <span>₹2,499</span>
+                                    <span class="status-badge status-shipped">Shipped</span>
+                                    <span>1 week ago</span>
+                                </div>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-small btn-secondary">Track</button>
+                            </div>
+                        </div>
+                        
+                        <div class="product-item">
+                            <div class="product-thumbnail">📚</div>
+                            <div class="product-details">
+                                <div class="product-name">Programming Books Set</div>
+                                <div class="product-meta">
+                                    <span>₹1,299</span>
+                                    <span class="status-badge status-delivered">Delivered</span>
+                                    <span>2 weeks ago</span>
+                                </div>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-small btn-secondary">Rate</button>
+                                <button class="btn btn-small btn-primary">Review</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 1rem;">
+                        <a href="/purchases" class="btn btn-secondary">View All Purchases</a>
+                    </div>
+                </div>
+
+                <!-- Wishlist & Saved Items -->
+                <div class="card">
+                    <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        ❤️ Wishlist & Saved Items
+                        <span style="background: rgba(255, 193, 7, 0.1); color: #856404; padding: 0.25rem 0.5rem; border-radius: 8px; font-size: 0.75rem;">8 items</span>
+                    </h2>
+                    
+                    <div class="product-list">
+                        <div class="wishlist-item">
+                            <div class="product-thumbnail">💻</div>
+                            <div class="product-details">
+                                <div class="product-name">MacBook Air M1 - Like New</div>
+                                <div class="product-meta">
+                                    <span>₹68,999</span>
+                                    <span style="color: #4c6f59;">Price dropped ₹5,000!</span>
+                                </div>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-small btn-primary">Buy Now</button>
+                                <button class="btn btn-small btn-secondary">Remove</button>
+                            </div>
+                        </div>
+                        
+                        <div class="wishlist-item">
+                            <div class="product-thumbnail">🎮</div>
+                            <div class="product-details">
+                                <div class="product-name">PlayStation 5 Console</div>
+                                <div class="product-meta">
+                                    <span>₹42,000</span>
+                                    <span style="color: #81a594;">Watching for better price</span>
+                                </div>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-small btn-secondary">Notify Me</button>
+                            </div>
+                        </div>
+                        
+                        <div class="wishlist-item">
+                            <div class="product-thumbnail">🎸</div>
+                            <div class="product-details">
+                                <div class="product-name">Acoustic Guitar - Yamaha</div>
+                                <div class="product-meta">
+                                    <span>₹8,500</span>
+                                    <span style="color: #81a594;">Similar items available</span>
+                                </div>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-small btn-primary">View Similar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 1rem;">
+                        <a href="/wishlist" class="btn btn-secondary">View Full Wishlist</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card">
+                <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.5rem;">📈 Recent Activity</h2>
+                <div class="grid grid-2">
+                    <div>
+                        <div class="activity-item">
+                            <div class="activity-icon">🛒</div>
+                            <div class="activity-content">
+                                <h4>Purchase Completed</h4>
+                                <p>You bought "iPhone 12" from Alex M. - Great condition as described!</p>
+                                <div class="activity-time">3 days ago</div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon">❤️</div>
+                            <div class="activity-content">
+                                <h4>Added to Wishlist</h4>
+                                <p>Saved "MacBook Air M1" to your wishlist for later</p>
+                                <div class="activity-time">5 days ago</div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon">💬</div>
+                            <div class="activity-content">
+                                <h4>Message Received</h4>
+                                <p>Seller responded about the guitar condition</p>
+                                <div class="activity-time">1 week ago</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="activity-item">
+                            <div class="activity-icon">🔍</div>
+                            <div class="activity-content">
+                                <h4>Search Saved</h4>
+                                <p>Created alert for "Gaming laptops under ₹50,000"</p>
+                                <div class="activity-time">1 week ago</div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon">⭐</div>
+                            <div class="activity-content">
+                                <h4>Review Left</h4>
+                                <p>Gave 5-star review for "Programming Books Set"</p>
+                                <div class="activity-time">2 weeks ago</div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon">🎯</div>
+                            <div class="activity-content">
+                                <h4>Price Alert</h4>
+                                <p>MacBook price dropped! Check your wishlist</p>
+                                <div class="activity-time">Yesterday</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Environmental Impact -->
+            <div class="card">
+                <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.5rem;">🌍 Your Environmental Impact</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div class="impact-card">
+                        <div class="impact-number">18</div>
+                        <div class="impact-label">Items Saved from Waste</div>
+                        <div class="impact-change">+3 this month</div>
+                    </div>
+                    <div class="impact-card">
+                        <div class="impact-number">2,300L</div>
+                        <div class="impact-label">Water Conserved</div>
+                        <div class="impact-change">+450L this month</div>
+                    </div>
+                    <div class="impact-card">
+                        <div class="impact-number">15</div>
+                        <div class="impact-label">Trees Equivalent Saved</div>
+                        <div class="impact-change">+2 this month</div>
+                    </div>
+                    <div class="impact-card">
+                        <div class="impact-number">89%</div>
+                        <div class="impact-label">Sustainability Score</div>
+                        <div class="impact-change">+5% this month</div>
+                    </div>
+                </div>
+                
+                <!-- Progress towards goals -->
+                <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(76, 111, 89, 0.05); border-radius: 12px;">
+                    <h3 style="color: #2d3436; margin-bottom: 1rem; font-size: 1.25rem;">🎯 Monthly Goals Progress</h3>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="color: #4c6f59; font-weight: 600;">Purchase 5 Pre-owned Items</span>
+                            <span style="color: #81a594; font-size: 0.875rem;">3/5 completed</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 60%"></div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="color: #4c6f59; font-weight: 600;">Save ₹10,000 vs New Prices</span>
+                            <span style="color: #81a594; font-size: 0.875rem;">₹8,249/₹10,000</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 82%"></div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="color: #4c6f59; font-weight: 600;">Reduce Carbon Footprint by 50kg</span>
+                            <span style="color: #81a594; font-size: 0.875rem;">45kg/50kg saved</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 90%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.5rem;">⚡ Quick Actions</h2>
+                <div class="grid grid-4">
+                    <button class="btn btn-primary" onclick="window.location.href='/products'">
+                        🔍 Browse Products
+                    </button>
+                    <button class="btn btn-secondary" onclick="window.location.href='/add_product'">
+                        📱 List an Item
+                    </button>
+                    <button class="btn btn-secondary" onclick="window.location.href='/wishlist'">
+                        ❤️ View Wishlist
+                    </button>
+                    <button class="btn btn-secondary" onclick="window.location.href='/messages'">
+                        💬 Messages
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="card">
+                <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.5rem;">✨ Recommended for You</h2>
+                <div class="grid grid-3">
+                    <div class="product-item" style="flex-direction: column; text-align: center; padding: 1.5rem;">
+                        <div class="product-thumbnail" style="margin: 0 auto 1rem;">📷</div>
+                        <div class="product-name">Canon EOS Camera</div>
+                        <div class="product-meta" style="justify-content: center; margin: 0.5rem 0;">
+                            <span style="font-weight: 600; color: #4c6f59;">₹18,999</span>
+                            <span class="eco-badge">85% condition</span>
+                        </div>
+                        <button class="btn btn-small btn-primary" style="margin-top: 0.5rem;">View Details</button>
+                    </div>
+                    
+                    <div class="product-item" style="flex-direction: column; text-align: center; padding: 1.5rem;">
+                        <div class="product-thumbnail" style="margin: 0 auto 1rem;">🎧</div>
+                        <div class="product-name">Sony WH-1000XM4</div>
+                        <div class="product-meta" style="justify-content: center; margin: 0.5rem 0;">
+                            <span style="font-weight: 600; color: #4c6f59;">₹12,499</span>
+                            <span class="eco-badge">90% condition</span>
+                        </div>
+                        <button class="btn btn-small btn-primary" style="margin-top: 0.5rem;">View Details</button>
+                    </div>
+                    
+                    <div class="product-item" style="flex-direction: column; text-align: center; padding: 1.5rem;">
+                        <div class="product-thumbnail" style="margin: 0 auto 1rem;">⌚</div>
+                        <div class="product-name">Apple Watch Series 7</div>
+                        <div class="product-meta" style="justify-content: center; margin: 0.5rem 0;">
+                            <span style="font-weight: 600; color: #4c6f59;">₹22,999</span>
+                            <span class="eco-badge">95% condition</span>
+                        </div>
+                        <button class="btn btn-small btn-primary" style="margin-top: 0.5rem;">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 EcoFlow. Making sustainable choices accessible to everyone. 🌱</p>
+            <p style="margin-top: 0.5rem; font-size: 0.875rem;">
+                Together, we've saved <strong>2.3M kg CO₂</strong> and <strong>₹45.2Cr</strong> this year!
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Create floating background elements
+        function createFloatingElements() {
+            const container = document.getElementById('floatingElements');
+            const numElements = 15;
+            
+            for (let i = 0; i < numElements; i++) {
+                const element = document.createElement('div');
+                element.className = 'floating-element';
+                
+                // Random size between 20px and 80px
+                const size = Math.random() * 60 + 20;
+                element.style.width = size + 'px';
+                element.style.height = size + 'px';
+                
+                // Random horizontal position
+                element.style.left = Math.random() * 100 + '%';
+                
+                // Random animation delay
+                element.style.animationDelay = Math.random() * 25 + 's';
+                
+                // Random opacity
+                element.style.opacity = Math.random() * 0.1 + 0.02;
+                
+                container.appendChild(element);
+            }
+        }
+
+        // Animate numbers counting up
+        function animateNumbers() {
+            const numbers = document.querySelectorAll('.stat-number');
+            
+            numbers.forEach(number => {
+                const target = number.textContent;
+                let current = 0;
+                const increment = parseInt(target.replace(/[₹,kg\s]/g, '')) / 50;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= parseInt(target.replace(/[₹,kg\s]/g, ''))) {
+                        number.textContent = target;
+                        clearInterval(timer);
+                    } else {
+                        if (target.includes('₹')) {
+                            number.textContent = '₹' + Math.floor(current).toLocaleString();
+                        } else if (target.includes('kg')) {
+                            number.textContent = Math.floor(current) + ' kg';
+                        } else {
+                            number.textContent = Math.floor(current);
+                        }
+                    }
+                }, 50);
+            });
+        }
+
+        // Progress bar animation
+        function animateProgressBars() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            
+            progressBars.forEach((bar, index) => {
+                setTimeout(() => {
+                    const width = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 100);
+                }, index * 200);
+            });
+        }
+
+        // Add click animations to buttons
+        function addButtonAnimations() {
+            const buttons = document.querySelectorAll('.btn');
+            
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, 0.6);
+                        transform: scale(0);
+                        animation: ripple 0.6s linear;
+                        left: ${x}px;
+                        top: ${y}px;
+                        width: ${size}px;
+                        height: ${size}px;
+                    `;
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+        }
+
+        // Add hover effects to cards
+        function addCardHoverEffects() {
+            const cards = document.querySelectorAll('.card, .stat-card, .impact-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-4px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        }
+
+        // Mobile menu toggle (if needed)
+        function setupMobileMenu() {
+            // Add mobile menu functionality if needed
+        }
+
+        // Update time stamps dynamically
+        function updateTimeStamps() {
+            const timeElements = document.querySelectorAll('.activity-time');
+            // This would typically update with real-time data
+            // For demo purposes, keeping static
+        }
+
+        // Initialize all animations and interactions
+        function init() {
+            createFloatingElements();
+            
+            // Delay animations for better UX
+            setTimeout(() => {
+                animateNumbers();
+                animateProgressBars();
+            }, 500);
+            
+            addButtonAnimations();
+            addCardHoverEffects();
+            setupMobileMenu();
+            updateTimeStamps();
+        }
+
+        // Add CSS for ripple effect
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+            
+            .btn {
+                position: relative;
+                overflow: hidden;
+            }
+            
+            /* Additional smooth animations */
+            .product-item, .wishlist-item, .activity-item {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            
+            /* Scroll animations */
+            @keyframes slideInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            .fade-in > * {
+                animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            }
+            
+            .fade-in > *:nth-child(1) { animation-delay: 0.1s; }
+            .fade-in > *:nth-child(2) { animation-delay: 0.2s; }
+            .fade-in > *:nth-child(3) { animation-delay: 0.3s; }
+            .fade-in > *:nth-child(4) { animation-delay: 0.4s; }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize when DOM is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>

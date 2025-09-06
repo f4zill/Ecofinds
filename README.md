@@ -1,4 +1,4 @@
-# EcoFinds 🌱  
+# EcoFields 🌱  
 A sustainable e-commerce web application built with **Flask** and **MySQL**, promoting eco-friendly shopping and sustainable products.
 
 ---

@@ -3,629 +3,1204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EcoFlow - Sustainable Second-Hand Marketplace</title>
+    <title>Your Cart - Sustainable Shop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+        :root {
+            /* Light mode colors */
+            --bg-primary: #f5f3f0;
+            --bg-secondary: #e8e4df;
+            --bg-tertiary: #f0ede8;
+            --bg-quaternary: #f7f5f2;
+            --bg-quinary: #ede7e0;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --card-bg-solid: rgba(255, 255, 255, 0.9);
+            --header-bg: rgba(247, 245, 242, 0.95);
+            --text-primary: #2d3436;
+            --text-secondary: #636e72;
+            --text-accent: #4c6f59;
+            --accent-primary: #4c6f59;
+            --accent-secondary: #2d5a3d;
+            --input-bg: rgba(247, 245, 242, 0.8);
+            --input-focus: rgba(247, 245, 242, 0.95);
+            --border-color: rgba(76, 111, 89, 0.1);
+            --border-color-focus: #4c6f59;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.12);
+            --floating-bg: rgba(76, 111, 89, 0.08);
+            --upload-bg: rgba(76, 111, 89, 0.02);
+            --upload-hover: rgba(76, 111, 89, 0.05);
+            --condition-bg: rgba(247, 245, 242, 0.7);
+            --condition-selected: rgba(76, 111, 89, 0.1);
+            --tag-bg: rgba(247, 245, 242, 0.9);
+            --tips-bg: rgba(76, 111, 89, 0.05);
+        }
 
-    body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        line-height: 1.6;
-        color: #2d3436;
-        background: #f5f3f0;
-        overflow-x: hidden;
-    }
+        [data-theme="dark"] {
+            /* Dark mode colors */
+            --bg-primary: #1a1f1c;
+            --bg-secondary: #232a26;
+            --bg-tertiary: #2a332e;
+            --bg-quaternary: #1e2420;
+            --bg-quinary: #252b28;
+            --card-bg: rgba(42, 51, 46, 0.8);
+            --card-bg-solid: rgba(42, 51, 46, 0.9);
+            --header-bg: rgba(42, 51, 46, 0.95);
+            --text-primary: #e8f1eb;
+            --text-secondary: #b8c5bc;
+            --text-accent: #8fae9a;
+            --accent-primary: #6b8f76;
+            --accent-secondary: #8fae9a;
+            --input-bg: rgba(42, 51, 46, 0.7);
+            --input-focus: rgba(42, 51, 46, 0.9);
+            --border-color: rgba(143, 174, 154, 0.2);
+            --border-color-focus: #6b8f76;
+            --shadow-light: rgba(0, 0, 0, 0.2);
+            --shadow-medium: rgba(0, 0, 0, 0.3);
+            --floating-bg: rgba(143, 174, 154, 0.08);
+            --upload-bg: rgba(143, 174, 154, 0.05);
+            --upload-hover: rgba(143, 174, 154, 0.1);
+            --condition-bg: rgba(42, 51, 46, 0.5);
+            --condition-selected: rgba(107, 143, 118, 0.2);
+            --tag-bg: rgba(42, 51, 46, 0.5);
+            --tips-bg: rgba(107, 143, 118, 0.1);
+        }
 
-    /* Earth-toned animated background */
-    .bg-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        background: linear-gradient(135deg, #f5f3f0 0%, #e8e4df 25%, #f0ede8 50%, #f7f5f2 75%, #ede7e0 100%);
-        background-size: 400% 400%;
-        animation: gradientShift 25s ease infinite;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    @keyframes gradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            overflow-x: hidden;
+            transition: color 0.3s ease, background-color 0.3s ease;
+            -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape on iOS */
+        }
 
-    .floating-elements {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
+        /* Earth-toned animated background */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 25%, var(--bg-tertiary) 50%, var(--bg-quaternary) 75%, var(--bg-quinary) 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 25s ease infinite;
+            transition: background 0.3s ease;
+        }
 
-    .floating-element {
-        position: absolute;
-        background: rgba(76, 111, 89, 0.08);
-        border-radius: 50%;
-        animation: float 25s infinite linear;
-    }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-    @keyframes float {
-        0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-        10% { opacity: 1; }
-        90% { opacity: 1; }
-        100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
-    }
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
 
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 24px;
-        position: relative;
-        z-index: 1;
-    }
+        .floating-element {
+            position: absolute;
+            background: var(--floating-bg);
+            border-radius: 50%;
+            animation: float 25s infinite linear;
+            transition: background-color 0.3s ease;
+        }
 
-    /* Warm glass morphism header */
-    header {
-        background: rgba(247, 245, 242, 0.95);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-bottom: 1px solid rgba(76, 111, 89, 0.1);
-        padding: 1rem 0;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        box-shadow: 0 4px 32px rgba(76, 111, 89, 0.08);
-    }
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
 
-    nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
 
-    .logo {
-        font-size: 1.75rem;
-        font-weight: 800;
-        background: linear-gradient(135deg, #4c6f59, #2d5a3d);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        text-decoration: none;
-        letter-spacing: -0.02em;
-    }
+        /* Warm glass morphism header */
+        header {
+            background: var(--header-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 32px var(--shadow-light);
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
 
-    .nav-links {
-        display: flex;
-        list-style: none;
-        gap: 2rem;
-        align-items: center;
-    }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
 
-    .nav-links a {
-        text-decoration: none;
-        color: #4c6f59;
-        font-weight: 500;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        padding: 0.5rem 0;
-    }
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+            transition: opacity 0.3s ease;
+        }
 
-    .nav-links a::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: linear-gradient(90deg, #4c6f59, #2d5a3d);
-        transition: width 0.3s ease;
-    }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
 
-    .nav-links a:hover {
-        color: #2d5a3d;
-    }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-accent);
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            padding: 0.5rem 0;
+        }
 
-    .nav-links a:hover::after {
-        width: 100%;
-    }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            transition: width 0.3s ease;
+        }
 
-    /* Earth-toned button styles */
-    .btn {
-        padding: 0.75rem 1.75rem;
-        border: none;
-        border-radius: 16px;
-        font-size: 0.95rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        position: relative;
-        overflow: hidden;
-    }
+        .nav-links a:hover {
+            color: var(--accent-secondary);
+        }
 
-    .btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transition: left 0.5s;
-    }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
 
-    .btn:hover::before {
-        left: 100%;
-    }
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+            border: none;
+            background: transparent;
+            z-index: 101;
+            transition: all 0.3s ease;
+            width: 35px;
+            height: 30px;
+            justify-content: space-around;
+        }
 
-    .btn-primary {
-        background: linear-gradient(135deg, #4c6f59, #2d5a3d);
-        color: #ffffff;
-        box-shadow: 0 4px 20px rgba(76, 111, 89, 0.25);
-    }
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background-color: var(--text-primary);
+            transition: 0.3s;
+            border-radius: 2px;
+            position: relative;
+        }
 
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 30px rgba(76, 111, 89, 0.35);
-    }
+        /* Earth-toned button styles */
+        .btn {
+            padding: 0.75rem 1.75rem;
+            border: none;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
 
-    .btn-secondary {
-        background: rgba(247, 245, 242, 0.9);
-        color: #4c6f59;
-        border: 1px solid rgba(76, 111, 89, 0.2);
-        backdrop-filter: blur(10px);
-    }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
 
-    .btn-secondary:hover {
-        background: rgba(247, 245, 242, 1);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 20px rgba(76, 111, 89, 0.15);
-    }
+        .btn:hover::before {
+            left: 100%;
+        }
 
-    /* Main content */
-    main {
-        min-height: calc(100vh - 200px);
-        padding: 2rem 0;
-    }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(76, 111, 89, 0.25);
+        }
 
-    .card {
-        background: rgba(247, 245, 242, 0.9);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-radius: 24px;
-        padding: 2rem;
-        margin: 1rem 0;
-        box-shadow: 0 8px 32px rgba(76, 111, 89, 0.08);
-        border: 1px solid rgba(76, 111, 89, 0.1);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(76, 111, 89, 0.35);
+        }
 
-    .card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 20px 40px rgba(76, 111, 89, 0.12);
-    }
+        .btn-secondary {
+            background: var(--tag-bg);
+            color: var(--text-accent);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
 
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
+        .btn-secondary:hover {
+            background: var(--card-bg-solid);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px var(--shadow-light);
+        }
 
-    .form-group label {
-        display: block;
-        margin-bottom: 0.75rem;
-        font-weight: 600;
-        color: #4c6f59;
-        font-size: 0.95rem;
-    }
+        /* Main content */
+        main {
+            min-height: calc(100vh - 200px);
+            padding: 2rem 0;
+        }
 
-    .form-input {
-        width: 100%;
-        padding: 1rem 1.25rem;
-        border: 2px solid rgba(76, 111, 89, 0.15);
-        border-radius: 16px;
-        font-size: 1rem;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        background: rgba(247, 245, 242, 0.8);
-        backdrop-filter: blur(10px);
-        color: #2d3436;
-    }
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2rem;
+            margin: 1rem 0;
+            box-shadow: 0 8px 32px var(--shadow-light);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    .form-input:focus {
-        outline: none;
-        border-color: #4c6f59;
-        box-shadow: 0 0 0 4px rgba(76, 111, 89, 0.1);
-        background: rgba(247, 245, 242, 0.95);
-    }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px var(--shadow-medium);
+        }
 
-    .form-input::placeholder {
-        color: #81a594;
-    }
+        /* Form styles with earth tones */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
 
-    /* Grid layouts */
-    .grid {
-        display: grid;
-        gap: 1.5rem;
-    }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: var(--text-accent);
+            font-size: 0.95rem;
+        }
 
-    .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-    .grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
-    .grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--input-bg);
+            backdrop-filter: blur(10px);
+            color: var(--text-primary);
+        }
 
-    .product-card {
-        background: #fff;
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-        transition: transform 0.2s ease, box-shadow 0.3s ease;
-    }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--border-color-focus);
+            box-shadow: 0 0 0 4px rgba(76, 111, 89, 0.1);
+            background: var(--input-focus);
+        }
 
-    .product-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    }
+        .form-input::placeholder {
+            color: var(--text-secondary);
+        }
 
-    .product-image img {
-        width: 100%;
-        height: auto;
-        display: block;
-    }
+        /* Grid layouts */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
 
-    .product-content {
-        padding: 1rem;
-    }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+        .grid-4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 
-    .product-content h3 {
-        font-size: 1.2rem;
-        margin-bottom: 0.5rem;
-        color: #2d3436;
-    }
+        /* Sustainable product cards */
+        .product-card {
+            background: var(--card-bg-solid);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
+            position: relative;
+        }
 
-    .product-content p {
-        font-size: 0.95rem;
-        color: #636e72;
-        margin-bottom: 0.5rem;
-    }
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
 
-    .eco-badge {
-        background: #dfe6e0;
-        color: #2d5a3d;
-        font-size: 0.75rem;
-        font-weight: 600;
-        padding: 0.25rem 0.75rem;
-        border-radius: 999px;
-        display: inline-block;
-    }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px var(--shadow-medium);
+        }
 
-    .eco-badge::before {
-        content: '🌱';
-        font-size: 0.875rem;
-    }
+        .product-card:hover::before {
+            opacity: 1;
+        }
 
-    footer {
-        padding: 2rem 0;
-        text-align: center;
-        color: #636e72;
-        font-size: 0.875rem;
-    }
-    /* Hero Section */
-.hero {
-    text-align: center;
-    padding: 4rem 2rem;
-    border-radius: 24px;
-    background: rgba(247, 245, 242, 0.85);
-    box-shadow: 0 8px 32px rgba(76, 111, 89, 0.08);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    margin-bottom: 3rem;
-    transition: background 0.3s ease;
-}
+        .product-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 3rem;
+        }
 
-.hero h1 {
-    font-size: 2.5rem;
-    color: #2d5a3d;
-    margin-bottom: 1rem;
-}
+        .product-info {
+            padding: 1.5rem;
+        }
 
-.hero p {
-    font-size: 1.125rem;
-    max-width: 600px;
-    margin: 0 auto;
-    color: #4c6f59;
-}
+        .product-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
 
-/* Fade-in animation for container */
-.fade-in {
-    animation: fadeInUp 1s ease both;
-}
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-accent);
+            margin-bottom: 0.75rem;
+        }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+        .product-condition {
+            display: inline-block;
+            padding: 0.375rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            background: var(--condition-selected);
+            color: var(--accent-secondary);
+            border: 1px solid var(--border-color);
+        }
 
-/* Stats Section */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-    margin: 3rem 0;
-}
+        /* Sustainable alert messages */
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            margin: 1rem 0;
+            font-weight: 500;
+            border: 1px solid;
+        }
 
-.stat-card {
-    background: rgba(255, 255, 255, 0.85);
-    padding: 2rem;
-    text-align: center;
-    border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(76, 111, 89, 0.1);
-    transition: transform 0.3s ease;
-}
+        .alert-success {
+            background: rgba(76, 111, 89, 0.1);
+            color: var(--accent-secondary);
+            border-color: var(--border-color);
+        }
 
-.stat-number {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #2d5a3d;
-    margin-bottom: 0.5rem;
-    display: block;
-    transition: transform 0.3s ease;
-}
+        .alert-error {
+            background: rgba(186, 85, 73, 0.1);
+            color: #ba5549;
+            border-color: rgba(186, 85, 73, 0.2);
+        }
 
-.stat-label {
-    font-size: 0.95rem;
-    color: #4c6f59;
-}
+        /* Eco-friendly footer */
+        footer {
+            background: var(--header-bg);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+            margin-top: 4rem;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
 
-/* Category Badges */
-.category-badge {
-    display: inline-block;
-    background: #e0e7e2;
-    color: #2d5a3d;
-    padding: 0.5rem 1rem;
-    border-radius: 999px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin: 0.25rem;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-}
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-.category-badge:hover {
-    background: #d2ddd5;
-    transform: translateY(-2px);
-}
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-/* Product Info inside Cards */
-.product-info {
-    padding: 1rem;
-}
+        /* Hero section for homepage */
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(247, 245, 242, 0.9) 0%, rgba(240, 237, 232, 0.9) 100%);
+            border-radius: 24px;
+            margin: 2rem 0;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+        }
 
-.product-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #2d3436;
-    margin-bottom: 0.5rem;
-}
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-.product-price {
-    color: #4c6f59;
-    font-weight: 700;
-    font-size: 1rem;
-    margin-bottom: 0.25rem;
-}
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
-.product-condition {
-    font-size: 0.85rem;
-    color: #636e72;
-    display: block;
-    margin-bottom: 0.5rem;
-}
+        /* Category badges */
+        .category-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin: 0.25rem;
+            background: var(--condition-selected);
+            color: var(--accent-secondary);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
 
-</style>
+        .category-badge:hover {
+            background: rgba(76, 111, 89, 0.15);
+            transform: translateY(-1px);
+        }
 
+        /* Stats section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px var(--shadow-medium);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-accent);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        /* === CART SPECIFIC STYLES === */
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: var(--condition-bg);
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .cart-item:hover {
+            background: var(--card-bg);
+            transform: translateY(-2px);
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 2rem;
+        }
+
+        .cart-item-info h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .cart-item-price {
+            font-weight: 700;
+            color: var(--text-accent);
+            font-size: 1.125rem;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quantity-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            border-radius: 8px;
+            font-weight: 600;
+            color: var(--text-accent);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .quantity-btn:hover {
+            background: var(--condition-selected);
+        }
+
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+            font-weight: 600;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .cart-item-remove {
+            color: #ba5549;
+            background: none;
+            border: none;
+            font-size: 0.875rem;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .cart-item-remove:hover {
+            background: rgba(186, 85, 73, 0.1);
+        }
+
+        .cart-summary {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .cart-summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 1.125rem;
+        }
+
+        .cart-summary-total {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-accent);
+            border-top: 2px solid var(--border-color);
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+
+        .checkout-section {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        /* Floating elements for background */
+        .floating-element:nth-child(1) { width: 300px; height: 300px; left: 10%; animation-delay: 0s; }
+        .floating-element:nth-child(2) { width: 200px; height: 200px; left: 50%; animation-delay: -5s; }
+        .floating-element:nth-child(3) { width: 150px; height: 150px; left: 80%; animation-delay: -10s; }
+        .floating-element:nth-child(4) { width: 250px; height: 250px; left: 30%; animation-delay: -15s; }
+        .floating-element:nth-child(5) { width: 180px; height: 180px; left: 70%; animation-delay: -20s; }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.5rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            color: var(--text-accent);
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-primary);
+            transform: scale(1.05);
+        }
+
+        /* Loading states */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(76, 111, 89, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent-primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Sustainability indicators */
+        .eco-badge {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            margin-top: 0.75rem;
+        }
+
+        .eco-badge::before {
+            content: '🌱';
+            font-size: 0.875rem;
+        }
+
+        /* Responsive design - Mobile First */
+        @media (max-width: 768px) {
+            /* Global adjustments */
+            .container {
+                padding: 0 16px;
+            }
+            
+            body {
+                font-size: 16px; /* Prevent zooming on iOS form elements */
+            }
+            
+            /* Header and Navigation */
+            .hamburger {
+                display: flex;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: var(--header-bg);
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding: 5rem 1rem 2rem;
+                transition: transform 0.3s ease;
+                transform: translateX(100%);
+                z-index: 1000;
+                overflow-y: auto;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-links.active {
+                transform: translateX(0);
+            }
+            
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+                margin: 1rem 0;
+            }
+            
+            .nav-links a {
+                display: block;
+                width: 100%;
+                padding: 0.8rem 0;
+                border-bottom: 1px solid var(--border-color);
+                font-size: 1.1rem;
+            }
+            
+            /* Overlay */
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+            
+            .overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            /* Hamburger animation */
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+            
+            /* Logo adjustment */
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            /* Buttons */
+            .btn {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.95rem;
+                border-radius: 12px;
+            }
+            
+            /* Cards */
+            .card {
+                padding: 1.5rem;
+                margin: 0.75rem 0;
+                border-radius: 20px;
+            }
+            
+            /* Cart Header */
+            .cart-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+            
+            /* Cart Items */
+            .cart-item {
+                grid-template-columns: 70px 1fr auto;
+                padding: 1.25rem;
+                gap: 1rem;
+            }
+            
+            .cart-item-image {
+                width: 70px;
+                height: 70px;
+                font-size: 1.75rem;
+            }
+            
+            /* Cart Summary */
+            .cart-summary {
+                padding: 1.5rem;
+            }
+            
+            .cart-summary-row {
+                font-size: 1rem;
+            }
+            
+            .cart-summary-total {
+                font-size: 1.25rem;
+            }
+            
+            /* Checkout button */
+            .checkout-section .btn {
+                width: 100%;
+                padding: 1rem;
+                font-size: 1.1rem;
+            }
+            
+            /* Theme toggle in mobile menu */
+            .theme-toggle {
+                margin-top: 2rem;
+            }
+            
+            /* Footer */
+            footer {
+                padding: 1.5rem 0;
+                font-size: 0.95rem;
+            }
+        }
+
+        /* Tablet adjustments */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .cart-item {
+                grid-template-columns: 75px 1fr auto;
+            }
+            
+            .cart-item-image {
+                width: 75px;
+                height: 75px;
+            }
+            
+            .btn {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="bg-container">
-        <div class="floating-elements" id="floatingElements">
-            <!-- Floating elements will be added by JavaScript -->
-        </div>
+    <!-- Animated Background -->
+    <div class="bg-container"></div>
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
     </div>
-    
+
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="mobileOverlay"></div>
+
+    <!-- Header -->
     <header>
         <div class="container">
             <nav>
-                <a href="/" class="logo">🌱 EcoFlow</a>
-                <ul class="nav-links">
-                    <li><a href="products.html">Browse</a></li>
-                    <li><a href="add_product.html">Sell</a></li>
-                    <li><a href="dashboard.html">Dashboard</a></li>
-                    <li><a href="cart.html">Cart</a></li>
-                    <li><a href="login.html" class="btn btn-secondary">Login</a></li>
-                    <li><a href="register.html" class="btn btn-primary">Register</a></li>
+                <a href="/" class="logo">EcoCart</a>
+                
+                <!-- Hamburger Menu Button -->
+                <button class="hamburger" id="hamburgerMenu" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="purchases.html">My Orders</a></li>
+                    <li><a href="dashboard.html">My Account</a></li>
+                    <li><a href="login.html">Logout</a></li>
+                    <li>
+                        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                            <span class="theme-icon">🌙</span>
+                        </button>
+                    </li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <main>
-        <div class="container fade-in">
-            <!-- Hero Section -->
-            <section class="hero">
-                <h1>Sustainable Second-Hand Marketplace</h1>
-                <p>Give pre-loved items a new life. Shop sustainably, sell responsibly, and help create a circular economy for a greener future.</p>
-                <div style="margin-top: 2rem;">
-                    <a href="products.html" class="btn btn-primary" style="margin: 0.5rem;">Start Shopping</a>
-                    <a href="add_product.html" class="btn btn-secondary" style="margin: 0.5rem;">Sell Your Items</a>
-                </div>
-            </section>
+    <!-- Main Content -->
+    <main class="container">
+        <div class="cart-header">
+            <h1 class="fade-in" style="font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Your Cart</h1>
+            <a href="products.html" class="btn btn-secondary">Continue Shopping</a>
+        </div>
 
-            <!-- Stats Section -->
-            <section class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-number">12,500+</span>
-                    <div class="stat-label">Items Saved from Landfills</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">8,200+</span>
-                    <div class="stat-label">Happy Eco-Conscious Users</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">95%</span>
-                    <div class="stat-label">Customer Satisfaction</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">2.4M kg</span>
-                    <div class="stat-label">CO2 Emissions Saved</div>
-                </div>
-            </section>
+        <!-- Cart Items -->
+        <div class="card">
+            <!-- Uncomment this section if cart is empty -->
+            <!--
+            <div class="cart-empty">
+                <p>Your cart is empty. <a href="/products" style="color: var(--text-accent); text-decoration: underline;">Start shopping now!</a></p>
+            </div>
+            -->
 
-            <!-- Categories -->
-            <section class="card">
-                <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.75rem;">Popular Categories</h2>
-                <div>
-                    <span class="category-badge">♻️ Electronics</span>
-                    <span class="category-badge">👕 Fashion</span>
-                    <span class="category-badge">🏠 Home & Garden</span>
-                    <span class="category-badge">📚 Books</span>
-                    <span class="category-badge">🎮 Gaming</span>
-                    <span class="category-badge">🎨 Art & Crafts</span>
-                    <span class="category-badge">🏃‍♂️ Sports</span>
-                    <span class="category-badge">👶 Baby & Kids</span>
+            <!-- Cart Item 1 -->
+            <div class="cart-item fade-in">
+                <div class="cart-item-image">♻</div>
+                <div class="cart-item-info">
+                    <h3>Organic Cotton Tote Bag</h3>
+                    <div class="cart-item-price">$24.99</div>
+                    <span class="eco-badge">Sustainable</span>
                 </div>
-            </section>
+                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.75rem;">
+                    <div class="cart-item-quantity">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">−</button>
+                        <input type="text" class="quantity-input" value="2" readonly>
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <button class="cart-item-remove" onclick="removeItem(this)">Remove</button>
+                </div>
+            </div>
 
-            <!-- Featured Products -->
-            <section class="card">
-                <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.75rem;">Featured Sustainable Items</h2>
-                <div class="grid grid-3">
-                    <div class="product-card">
-                        <div class="product-image">📱</div>
-                        <div class="product-info">
-                            <h3 class="product-title">iPhone 12 - Like New</h3>
-                            <div class="product-price">₹35,999</div>
-                            <span class="product-condition">Excellent Condition</span>
-                            <div class="eco-badge">Eco-Friendly</div>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-image">👕</div>
-                        <div class="product-info">
-                            <h3 class="product-title">Vintage Leather Jacket</h3>
-                            <div class="product-price">₹2,499</div>
-                            <span class="product-condition">Good Condition</span>
-                            <div class="eco-badge">Sustainable Fashion</div>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-image">📚</div>
-                        <div class="product-info">
-                            <h3 class="product-title">Programming Books Set</h3>
-                            <div class="product-price">₹1,299</div>
-                            <span class="product-condition">Very Good</span>
-                            <div class="eco-badge">Knowledge Sharing</div>
-                        </div>
-                    </div>
+            <!-- Cart Item 2 -->
+            <div class="cart-item fade-in" style="animation-delay: 0.2s;">
+                <div class="cart-item-image">🪴</div>
+                <div class="cart-item-info">
+                    <h3>Bamboo Toothbrush (Pack of 4)</h3>
+                    <div class="cart-item-price">$12.50</div>
+                    <span class="eco-badge">Biodegradable</span>
                 </div>
-            </section>
+                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.75rem;">
+                    <div class="cart-item-quantity">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">−</button>
+                        <input type="text" class="quantity-input" value="1" readonly>
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <button class="cart-item-remove" onclick="removeItem(this)">Remove</button>
+                </div>
+            </div>
+
+            <!-- Cart Item 3 -->
+            <div class="cart-item fade-in" style="animation-delay: 0.4s;">
+                <div class="cart-item-image">🧴</div>
+                <div class="cart-item-info">
+                    <h3>Refillable Glass Soap Dispenser</h3>
+                    <div class="cart-item-price">$34.99</div>
+                    <span class="eco-badge">Zero Waste</span>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.75rem;">
+                    <div class="cart-item-quantity">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">−</button>
+                        <input type="text" class="quantity-input" value="1" readonly>
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <button class="cart-item-remove" onclick="removeItem(this)">Remove</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Summary -->
+        <div class="cart-summary fade-in">
+            <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--text-primary);">Order Summary</h2>
+            <div class="cart-summary-row">
+                <span>Subtotal (4 items)</span>
+                <span>$72.48</span>
+            </div>
+            <div class="cart-summary-row">
+                <span>Shipping</span>
+                <span>Free</span>
+            </div>
+            <div class="cart-summary-row">
+                <span>Tax</span>
+                <span>$5.79</span>
+            </div>
+            <div class="cart-summary-row cart-summary-total">
+                <span>Total</span>
+                <span>$78.27</span>
+            </div>
+
+            <div class="checkout-section">
+                <button class="btn btn-primary" style="margin-top: 1.5rem; font-size: 1.1rem; padding: 1rem 2rem; width: 100%;">
+                    Proceed to Checkout
+                </button>
+            </div>
         </div>
     </main>
 
+    <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2024 EcoFlow. Building a sustainable future through circular commerce. 🌍♻️</p>
+            <p>🌱 Committed to sustainable shopping. Every purchase plants a tree.</p>
+            <p style="margin-top: 0.5rem;">© 2025 EcoCart. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
-        // Create floating eco-friendly elements
-        function createFloatingElements() {
-            const container = document.getElementById('floatingElements');
-            const colors = ['rgba(76, 111, 89, 0.08)', 'rgba(45, 90, 61, 0.06)', 'rgba(129, 165, 148, 0.05)'];
+        // Dark mode functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.querySelector('.theme-icon');
+        const html = document.documentElement;
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        themeIcon.textContent = savedTheme === 'light' ? '🌙' : '☀';
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             
-            for (let i = 0; i < 15; i++) {
-                const element = document.createElement('div');
-                element.className = 'floating-element';
-                element.style.left = Math.random() * 100 + '%';
-                element.style.width = (Math.random() * 50 + 15) + 'px';
-                element.style.height = element.style.width;
-                element.style.background = colors[Math.floor(Math.random() * colors.length)];
-                element.style.animationDelay = Math.random() * 25 + 's';
-                element.style.animationDuration = (Math.random() * 10 + 20) + 's';
-                container.appendChild(element);
-            }
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeIcon.textContent = newTheme === 'light' ? '🌙' : '☀';
+        });
+
+        // Mobile hamburger menu functionality
+        const hamburger = document.getElementById('hamburgerMenu');
+        const navLinks = document.getElementById('navLinks');
+        const overlay = document.getElementById('mobileOverlay');
+
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            overlay.classList.toggle('active');
+            // Prevent body scrolling when menu is open
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
         }
 
-        // Initialize floating elements
-        createFloatingElements();
+        hamburger.addEventListener('click', toggleMenu);
+        
+        overlay.addEventListener('click', toggleMenu);
 
-        // Smooth page transitions
-        document.addEventListener('DOMContentLoaded', function() {
-            const links = document.querySelectorAll('a[href^="/"]');
-            links.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    // Add loading state to buttons
-                    if (this.classList.contains('btn')) {
-                        const originalText = this.innerHTML;
-                        this.innerHTML = '<span class="loading"></span> Loading...';
-                        setTimeout(() => {
-                            this.innerHTML = originalText;
-                        }, 2000);
-                    }
-                });
+        // Close mobile menu when clicking on a nav link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
             });
         });
 
-        // Add parallax effect to floating elements
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const elements = document.querySelectorAll('.floating-element');
-            elements.forEach((element, index) => {
-                const speed = 0.05 + (index % 3) * 0.03;
-                element.style.transform = `translateY(${scrolled * speed}px) rotate(${scrolled * 0.1}deg)`;
-            });
+        // Handle window resize to close mobile menu
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
         });
 
-        // Add hover effects to product cards
-        document.querySelectorAll('.product-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.background = 'rgba(247, 245, 242, 1)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.background = 'rgba(247, 245, 242, 0.95)';
-            });
+        // Handle keyboard accessibility
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+                toggleMenu();
+            }
         });
 
-        // Add hover effects to category badges
-        document.querySelectorAll('.category-badge').forEach(badge => {
-            badge.addEventListener('click', function() {
-                // Simulate navigation to category page
-                console.log('Navigate to category:', this.textContent);
-            });
-        });
+        // Cart functionality
+        function updateQuantity(button, delta) {
+            const input = button.parentElement.querySelector('.quantity-input');
+            let value = parseInt(input.value);
+            value = Math.max(1, value + delta); // Minimum 1
+            input.value = value;
 
-        // Add smooth hover animations to stat cards
-        document.querySelectorAll('.stat-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                const number = this.querySelector('.stat-number');
-                number.style.transform = 'scale(1.05)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                const number = this.querySelector('.stat-number');
-                number.style.transform = 'scale(1)';
-            });
-        });
+            // Here you would typically update server/cart state via fetch()
+            console.log("Updated quantity to:", value);
+        }
+
+        function removeItem(button) {
+            const item = button.closest('.cart-item');
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                item.remove();
+                // Here you would send deletion to server
+                console.log("Item removed");
+            }, 300);
+        }
+
+        // Initialize floating elements with random positions and sizes for more natural look
+       document.addEventListener('DOMContentLoaded', function() {
+    const floatingElements = document.querySelectorAll('.floating-element');
+    floatingElements.forEach((el, index) => {
+        // Randomize positions and sizes slightly
+        const size = 100 + Math.random() * 200;
+        el.style.width = `${size}px`;
+        el.style.height = `${size}px`;
+        el.style.left = `${Math.random() * 100}%`;
+        el.style.animationDuration = `${20 + Math.random() * 15}s`;
+        el.style.animationDelay = `-${Math.random() * 20}s`;
+    });
+    
+    // Add touch support for mobile devices
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+        document.body.classList.add('touch-device');
+    }
+});
+
+        // Fix for iOS Safari
+        // Prevent overscrolling on mobile
+        document.addEventListener('touchmove', function(e) {
+            if (navLinks.classList.contains('active')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
     </script>
 </body>
 </html>

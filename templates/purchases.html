@@ -14,12 +14,59 @@
             box-sizing: border-box;
         }
 
+        :root {
+            /* Light mode colors */
+            --bg-primary: #f5f3f0;
+            --bg-secondary: #e8e4df;
+            --bg-tertiary: #f0ede8;
+            --card-bg: rgba(247, 245, 242, 0.9);
+            --card-bg-solid: rgba(247, 245, 242, 0.95);
+            --text-primary: #2d3436;
+            --text-secondary: #636e72;
+            --text-accent: #4c6f59;
+            --accent-primary: #4c6f59;
+            --accent-secondary: #2d5a3d;
+            --input-bg: rgba(247, 245, 242, 0.8);
+            --border-color: rgba(76, 111, 89, 0.15);
+            --shadow-light: rgba(76, 111, 89, 0.08);
+            --floating-bg: rgba(76, 111, 89, 0.08);
+            --status-delivered-bg: rgba(76, 111, 89, 0.1);
+            --status-delivered-color: #2d5a3d;
+            --status-pending-bg: rgba(255, 193, 7, 0.1);
+            --status-pending-color: #856006;
+            --footer-text: #81a594;
+        }
+
+        [data-theme="dark"] {
+            /* Dark mode colors */
+            --bg-primary: #1a1f1c;
+            --bg-secondary: #232a26;
+            --bg-tertiary: #2a332e;
+            --card-bg: rgba(42, 51, 46, 0.9);
+            --card-bg-solid: rgba(42, 51, 46, 0.95);
+            --text-primary: #e8f1eb;
+            --text-secondary: #b8c5bc;
+            --text-accent: #8fae9a;
+            --accent-primary: #6b8f76;
+            --accent-secondary: #8fae9a;
+            --input-bg: rgba(42, 51, 46, 0.8);
+            --border-color: rgba(143, 174, 154, 0.2);
+            --shadow-light: rgba(0, 0, 0, 0.2);
+            --floating-bg: rgba(143, 174, 154, 0.1);
+            --status-delivered-bg: rgba(107, 143, 118, 0.2);
+            --status-delivered-color: #8fae9a;
+            --status-pending-bg: rgba(255, 193, 7, 0.2);
+            --status-pending-color: #ffcc80;
+            --footer-text: #b8c5bc;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
-            color: #2d3436;
-            background: #f5f3f0;
+            color: var(--text-primary);
+            background: var(--bg-primary);
             overflow-x: hidden;
+            transition: color 0.3s ease, background-color 0.3s ease;
         }
 
         .bg-container {
@@ -29,9 +76,10 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: linear-gradient(135deg, #f5f3f0 0%, #e8e4df 25%, #f0ede8 50%, #f7f5f2 75%, #ede7e0 100%);
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 25%, var(--bg-tertiary) 50%, var(--bg-secondary) 75%, var(--bg-primary) 100%);
             background-size: 400% 400%;
             animation: gradientShift 25s ease infinite;
+            transition: background 0.3s ease;
         }
 
         @keyframes gradientShift {
@@ -49,9 +97,10 @@
 
         .floating-element {
             position: absolute;
-            background: rgba(76, 111, 89, 0.08);
+            background: var(--floating-bg);
             border-radius: 50%;
             animation: float 25s infinite linear;
+            transition: background-color 0.3s ease;
         }
 
         @keyframes float {
@@ -71,15 +120,16 @@
 
         /* Header & Mobile Menu */
         header {
-            background: rgba(247, 245, 242, 0.95);
+            background: var(--card-bg-solid);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(76, 111, 89, 0.1);
+            border-bottom: 1px solid var(--border-color);
             padding: 1rem 0;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 32px rgba(76, 111, 89, 0.08);
+            box-shadow: 0 4px 32px var(--shadow-light);
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         nav {
@@ -91,12 +141,13 @@
         .logo {
             font-size: 1.75rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-decoration: none;
             letter-spacing: -0.02em;
+            transition: background 0.3s ease;
         }
 
         .nav-links {
@@ -109,7 +160,7 @@
 
         .nav-links a {
             text-decoration: none;
-            color: #4c6f59;
+            color: var(--text-accent);
             font-weight: 500;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
@@ -124,12 +175,12 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
             transition: width 0.3s ease;
         }
 
         .nav-links a:hover {
-            color: #2d5a3d;
+            color: var(--accent-secondary);
         }
 
         .nav-links a:hover::after {
@@ -148,10 +199,22 @@
         .hamburger span {
             width: 25px;
             height: 3px;
-            background: #4c6f59;
+            background: var(--text-accent);
             margin: 3px 0;
             transition: all 0.3s ease;
             border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(6px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-6px) rotate(-45deg);
         }
 
         /* Mobile Menu Overlay */
@@ -162,7 +225,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(247, 245, 242, 0.98);
+            background: var(--card-bg-solid);
             backdrop-filter: blur(10px);
             flex-direction: column;
             align-items: center;
@@ -172,29 +235,40 @@
         }
 
         .mobile-menu.active {
+            display: flex;
             opacity: 1;
             visibility: visible;
         }
 
         .mobile-menu a {
             text-decoration: none;
-            color: #2d3436;
+            color: var(--text-primary);
             font-size: 1.5rem;
             font-weight: 600;
             padding: 0.75rem 1.5rem;
             border-radius: 16px;
             transition: all 0.3s ease;
             text-align: center;
-            display: flex;
+            display: block;
+            transform: translateY(30px);
             opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .mobile-menu.active a {
+            animation: slideIn 0.4s forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .mobile-menu a:hover {
-            background: rgba(76, 111, 89, 0.1);
-            color: #2d5a3d;
-            transform: scale(1.05);
+            background: var(--input-bg);
+            color: var(--accent-secondary);
+            transform: scale(1.05) translateY(0);
         }
 
         .close-menu {
@@ -203,7 +277,34 @@
             right: 2rem;
             font-size: 2rem;
             cursor: pointer;
-            color: #4c6f59;
+            color: var(--text-accent);
+            transition: color 0.3s ease;
+        }
+
+        .close-menu:hover {
+            color: var(--accent-secondary);
+        }
+
+        /* Dark Mode Toggle */
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.5rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            margin-left: 1rem;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-primary);
+            transform: scale(1.05);
         }
 
         /* Buttons */
@@ -240,7 +341,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             color: #ffffff;
             box-shadow: 0 4px 20px rgba(76, 111, 89, 0.25);
         }
@@ -251,16 +352,16 @@
         }
 
         .btn-secondary {
-            background: rgba(247, 245, 242, 0.9);
-            color: #4c6f59;
-            border: 1px solid rgba(76, 111, 89, 0.2);
+            background: var(--card-bg);
+            color: var(--text-accent);
+            border: 1px solid var(--border-color);
             backdrop-filter: blur(10px);
         }
 
         .btn-secondary:hover {
-            background: rgba(247, 245, 242, 1);
+            background: var(--card-bg-solid);
             transform: translateY(-1px);
-            box-shadow: 0 4px 20px rgba(76, 111, 89, 0.15);
+            box-shadow: 0 4px 20px var(--shadow-light);
         }
 
         main {
@@ -272,26 +373,28 @@
             font-size: 2.5rem;
             font-weight: 800;
             margin-bottom: 2rem;
-            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             text-align: center;
+            transition: background 0.3s ease;
         }
 
         .order-card {
-            background: rgba(247, 245, 242, 0.9);
+            background: var(--card-bg);
             backdrop-filter: blur(20px);
             border-radius: 24px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 8px 32px rgba(76, 111, 89, 0.08);
-            border: 1px solid rgba(76, 111, 89, 0.1);
+            box-shadow: 0 8px 32px var(--shadow-light);
+            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
         }
 
         .order-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(76, 111, 89, 0.12);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
         }
 
         .order-header {
@@ -306,11 +409,11 @@
         .order-id {
             font-size: 1.25rem;
             font-weight: 700;
-            color: #2d3436;
+            color: var(--text-primary);
         }
 
         .order-date {
-            color: #81a594;
+            color: var(--text-accent);
             font-size: 0.95rem;
         }
 
@@ -322,15 +425,15 @@
         }
 
         .status-delivered {
-            background: rgba(76, 111, 89, 0.1);
-            color: #2d5a3d;
-            border: 1px solid rgba(76, 111, 89, 0.2);
+            background: var(--status-delivered-bg);
+            color: var(--status-delivered-color);
+            border: 1px solid var(--border-color);
         }
 
         .status-pending {
-            background: rgba(255, 193, 7, 0.1);
-            color: #856006;
-            border: 1px solid rgba(255, 193, 7, 0.2);
+            background: var(--status-pending-bg);
+            color: var(--status-pending-color);
+            border: 1px solid var(--border-color);
         }
 
         .order-items {
@@ -342,7 +445,7 @@
             align-items: center;
             gap: 1rem;
             padding: 1rem 0;
-            border-bottom: 1px solid rgba(76, 111, 89, 0.1);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .order-item:last-child {
@@ -354,12 +457,17 @@
             height: 56px;
             min-width: 56px;
             border-radius: 12px;
-            background: linear-gradient(135deg, #e8e4df, #f0ede8);
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #81a594;
+            color: var(--text-accent);
             font-size: 1.25rem;
+            transition: transform 0.3s ease;
+        }
+
+        .order-item:hover .item-image {
+            transform: scale(1.05);
         }
 
         .item-info {
@@ -370,22 +478,23 @@
             font-weight: 600;
             margin-bottom: 0.25rem;
             font-size: 1rem;
+            color: var(--text-primary);
         }
 
         .item-variant {
             font-size: 0.8rem;
-            color: #81a594;
+            color: var(--text-accent);
         }
 
         .item-qty {
             font-size: 0.8rem;
-            color: #81a594;
+            color: var(--text-accent);
             margin-left: 0.5rem;
         }
 
         .item-price {
             font-weight: 700;
-            color: #4c6f59;
+            color: var(--accent-primary);
             white-space: nowrap;
             font-size: 1.1rem;
         }
@@ -396,24 +505,24 @@
             font-size: 1.125rem;
             margin-top: 1.5rem;
             padding-top: 1.5rem;
-            border-top: 2px solid rgba(76, 111, 89, 0.1);
+            border-top: 2px solid var(--border-color);
         }
 
         .total-label {
             font-weight: 700;
-            color: #2d3436;
+            color: var(--text-primary);
         }
 
         .total-amount {
             font-weight: 700;
-            color: #4c6f59;
+            color: var(--accent-primary);
             font-size: 1.25rem;
         }
 
         .empty-state {
             text-align: center;
             padding: 5rem 2rem;
-            color: #81a594;
+            color: var(--text-accent);
             font-size: 1.25rem;
         }
 
@@ -424,13 +533,14 @@
         }
 
         footer {
-            background: rgba(247, 245, 242, 0.95);
+            background: var(--card-bg-solid);
             backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(76, 111, 89, 0.1);
+            border-top: 1px solid var(--border-color);
             padding: 2rem 0;
             text-align: center;
-            color: #81a594;
+            color: var(--footer-text);
             margin-top: 4rem;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         .fade-in {
@@ -546,17 +656,15 @@
                 font-size: 0.9rem;
             }
         }
-
     </style>
 </head>
 <body>
     <div class="bg-container"></div>
-    <div class="floating-elements">
-        <div class="floating-element" style="width: 250px; height: 250px; left: 15%; animation-delay: -5s;"></div>
-        <div class="floating-element" style="width: 180px; height: 180px; left: 70%; animation-delay: -12s;"></div>
+    <div class="floating-elements" id="floatingElements">
+        <!-- Floating elements will be dynamically generated -->
     </div>
 
-    <!-- Header with Mobile Menu -->
+    <!-- Header with Mobile Menu and Dark Mode Toggle -->
     <header>
         <div class="container">
             <nav>
@@ -565,13 +673,18 @@
                     <li><a href="/">Home</a></li>
                     <li><a href="products.html">Products</a></li>
                     <li><a href="cart.html">Cart</a></li>
-                    <li><a href="purchases.html">My Orders</a></li>
+                    <li><a href="purchases.html" class="active">My Orders</a></li>
                     <li><a href="dashboard.html">My Account</a></li>
                 </ul>
-                <div class="hamburger" id="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <div class="header-actions">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                    <div class="hamburger" id="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -585,6 +698,11 @@
         <a href="cart.html">Cart</a>
         <a href="purchases.html">My Orders</a>
         <a href="dashboard.html">My Account</a>
+        <div style="margin-top: 2rem; width: 80%;">
+            <button class="btn btn-secondary" id="mobileThemeToggle" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
+                <span class="mobile-theme-icon">🌙</span> Toggle Dark Mode
+            </button>
+        </div>
     </div>
 
     <main class="container">
@@ -702,6 +820,32 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // Initialize floating elements
+        const floatingElementsContainer = document.getElementById('floatingElements');
+        for (let i = 0; i < 5; i++) {
+            const element = document.createElement('div');
+            element.className = 'floating-element';
+            
+            // Random size between 50px and 250px
+            const size = 50 + Math.random() * 200;
+            element.style.width = `${size}px`;
+            element.style.height = `${size}px`;
+            
+            // Random position
+            element.style.left = `${Math.random() * 100}%`;
+            element.style.top = `${Math.random() * 100}%`;
+            
+            // Random animation duration and delay
+            element.style.animationDuration = `${20 + Math.random() * 30}s`;
+            element.style.animationDelay = `-${Math.random() * 20}s`;
+            
+            // Random opacity
+            element.style.opacity = `${0.05 + Math.random() * 0.1}`;
+            
+            floatingElementsContainer.appendChild(element);
+        }
+
+        // Hamburger menu functionality
         const hamburger = document.getElementById('hamburger');
         const mobileMenu = document.getElementById('mobileMenu');
         const closeMenu = document.getElementById('closeMenu');
@@ -710,13 +854,17 @@
         const closeMenuHandler = () => {
             mobileMenu.classList.remove('active');
             document.body.style.overflow = '';
+            hamburger.classList.remove('active');
+        };
+
+        const openMenuHandler = () => {
+            mobileMenu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            hamburger.classList.add('active');
         };
 
         // Open menu
-        hamburger.addEventListener('click', () => {
-            mobileMenu.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
+        hamburger.addEventListener('click', openMenuHandler);
 
         // Close via X
         closeMenu.addEventListener('click', closeMenuHandler);
@@ -739,7 +887,50 @@
                 closeMenuHandler();
             }
         });
+
+        // Dark mode functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+        const themeIcon = document.querySelector('.theme-icon');
+        const mobileThemeIcon = document.querySelector('.mobile-theme-icon');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to light mode
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        function updateThemeIcon(theme) {
+            const icon = theme === 'dark' ? '☀️' : '🌙';
+            themeIcon.textContent = icon;
+            mobileThemeIcon.textContent = icon;
+            themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+            mobileThemeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+        }
+
+        function toggleTheme() {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+            
+            // Add a subtle animation to the toggle button
+            themeToggle.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                themeToggle.style.transform = 'scale(1)';
+            }, 150);
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+        mobileThemeToggle.addEventListener('click', toggleTheme);
+
+        // Add animation to order cards
+        const orderCards = document.querySelectorAll('.order-card');
+        orderCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
     });
-</script>
+    </script>
 </body>
 </html>

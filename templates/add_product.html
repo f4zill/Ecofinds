@@ -5,6 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sell Your Item - EcoFlow</title>
     <style>
+        :root {
+            /* Light mode colors */
+            --bg-primary: #f5f3f0;
+            --bg-secondary: #e8e4df;
+            --bg-tertiary: #f0ede8;
+            --bg-quaternary: #f7f5f2;
+            --bg-quinary: #ede7e0;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --card-bg-solid: rgba(255, 255, 255, 0.9);
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --text-primary: #2d3436;
+            --text-secondary: #636e72;
+            --text-accent: #4c6f59;
+            --accent-primary: #4c6f59;
+            --accent-secondary: #2d5a3d;
+            --input-bg: rgba(255, 255, 255, 0.7);
+            --input-focus: rgba(255, 255, 255, 0.9);
+            --border-color: rgba(76, 111, 89, 0.1);
+            --border-color-focus: #4c6f59;
+            --shadow-light: rgba(0, 0, 0, 0.1);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+            --floating-bg: rgba(76, 111, 89, 0.03);
+            --upload-bg: rgba(76, 111, 89, 0.02);
+            --upload-hover: rgba(76, 111, 89, 0.05);
+            --condition-bg: rgba(255, 255, 255, 0.5);
+            --condition-selected: rgba(76, 111, 89, 0.1);
+            --tag-bg: rgba(255, 255, 255, 0.5);
+            --tips-bg: rgba(76, 111, 89, 0.05);
+        }
+
+        [data-theme="dark"] {
+            /* Dark mode colors */
+            --bg-primary: #1a1f1c;
+            --bg-secondary: #232a26;
+            --bg-tertiary: #2a332e;
+            --bg-quaternary: #1e2420;
+            --bg-quinary: #252b28;
+            --card-bg: rgba(42, 51, 46, 0.8);
+            --card-bg-solid: rgba(42, 51, 46, 0.9);
+            --header-bg: rgba(42, 51, 46, 0.95);
+            --text-primary: #e8f1eb;
+            --text-secondary: #b8c5bc;
+            --text-accent: #8fae9a;
+            --accent-primary: #6b8f76;
+            --accent-secondary: #8fae9a;
+            --input-bg: rgba(42, 51, 46, 0.7);
+            --input-focus: rgba(42, 51, 46, 0.9);
+            --border-color: rgba(143, 174, 154, 0.2);
+            --border-color-focus: #6b8f76;
+            --shadow-light: rgba(0, 0, 0, 0.2);
+            --shadow-medium: rgba(0, 0, 0, 0.3);
+            --floating-bg: rgba(143, 174, 154, 0.08);
+            --upload-bg: rgba(143, 174, 154, 0.05);
+            --upload-hover: rgba(143, 174, 154, 0.1);
+            --condition-bg: rgba(42, 51, 46, 0.5);
+            --condition-selected: rgba(107, 143, 118, 0.2);
+            --tag-bg: rgba(42, 51, 46, 0.5);
+            --tips-bg: rgba(107, 143, 118, 0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -14,9 +74,10 @@
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
-            color: #2d3436;
-            background: #f5f3f0;
+            color: var(--text-primary);
+            background: var(--bg-primary);
             overflow-x: hidden;
+            transition: color 0.3s ease, background-color 0.3s ease;
         }
 
         /* Earth-toned animated background */
@@ -27,9 +88,10 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: linear-gradient(135deg, #f5f3f0 0%, #e8e4df 25%, #f0ede8 50%, #f7f5f2 75%, #ede7e0 100%);
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 25%, var(--bg-tertiary) 50%, var(--bg-quaternary) 75%, var(--bg-quinary) 100%);
             background-size: 400% 400%;
             animation: gradientShift 25s ease infinite;
+            transition: background 0.3s ease;
         }
 
         @keyframes gradientShift {
@@ -38,7 +100,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Floating organic elements */
         .floating-elements {
             position: absolute;
             width: 100%;
@@ -51,8 +112,9 @@
             content: '';
             position: absolute;
             border-radius: 50%;
-            background: rgba(76, 111, 89, 0.03);
+            background: var(--floating-bg);
             animation: float 20s infinite ease-in-out;
+            transition: background-color 0.3s ease;
         }
 
         .floating-elements::before {
@@ -82,10 +144,11 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--header-bg);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(76, 111, 89, 0.1);
+            border-bottom: 1px solid var(--border-color);
             padding: 1rem 0;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         .container {
@@ -104,7 +167,8 @@
             font-size: 1.5rem;
             font-weight: 700;
             text-decoration: none;
-            color: #4c6f59;
+            color: var(--text-accent);
+            transition: color 0.3s ease;
         }
 
         .nav-links {
@@ -116,14 +180,35 @@
 
         .nav-links a {
             text-decoration: none;
-            color: #2d3436;
+            color: var(--text-primary);
             font-weight: 500;
             transition: all 0.3s ease;
         }
 
         .nav-links a:hover {
-            color: #4c6f59;
+            color: var(--text-accent);
             transform: translateY(-1px);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.5rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            color: var(--text-accent);
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-primary);
+            transform: scale(1.05);
         }
 
         .btn {
@@ -138,7 +223,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #4c6f59, #81a594);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             color: white;
         }
 
@@ -148,14 +233,34 @@
         }
 
         .btn-secondary {
-            background: rgba(76, 111, 89, 0.1);
-            color: #4c6f59;
-            border: 1px solid rgba(76, 111, 89, 0.2);
+            background: var(--condition-selected);
+            color: var(--text-accent);
+            border: 1px solid var(--border-color);
         }
 
         .btn-secondary:hover {
-            background: rgba(76, 111, 89, 0.15);
+            background: var(--condition-bg);
             transform: translateY(-1px);
+        }
+
+        /* Mobile menu styles */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+            border: none;
+            background: transparent;
+            z-index: 101;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--text-primary);
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
         }
 
         /* Main Content */
@@ -174,22 +279,21 @@
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.8);
+            background: var(--card-bg);
             backdrop-filter: blur(20px);
             border-radius: 20px;
             padding: 2rem;
             margin-bottom: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px var(--shadow-light);
             transition: all 0.3s ease;
         }
 
         .card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 12px 40px var(--shadow-medium);
         }
 
-        /* Form Styles */
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -198,24 +302,30 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
-            color: #2d3436;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
         }
 
         .form-input, .form-select, .form-textarea {
             width: 100%;
             padding: 1rem;
-            border: 2px solid rgba(76, 111, 89, 0.1);
+            border: 2px solid var(--border-color);
             border-radius: 12px;
             font-size: 1rem;
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--input-bg);
             transition: all 0.3s ease;
+            color: var(--text-primary);
         }
 
         .form-input:focus, .form-select:focus, .form-textarea:focus {
             outline: none;
-            border-color: #4c6f59;
-            background: rgba(255, 255, 255, 0.9);
+            border-color: var(--border-color-focus);
+            background: var(--input-focus);
             box-shadow: 0 0 0 3px rgba(76, 111, 89, 0.1);
+        }
+
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: var(--text-secondary);
         }
 
         .form-textarea {
@@ -229,20 +339,19 @@
             gap: 1.5rem;
         }
 
-        /* Image Upload */
         .image-upload-area {
-            border: 2px dashed rgba(76, 111, 89, 0.3);
+            border: 2px dashed var(--border-color);
             border-radius: 16px;
             padding: 3rem;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: rgba(76, 111, 89, 0.02);
+            background: var(--upload-bg);
         }
 
         .image-upload-area:hover {
-            border-color: #4c6f59;
-            background: rgba(76, 111, 89, 0.05);
+            border-color: var(--border-color-focus);
+            background: var(--upload-hover);
         }
 
         .image-upload-area input[type="file"] {
@@ -257,12 +366,12 @@
         .upload-text {
             font-size: 1.1rem;
             font-weight: 600;
-            color: #2d3436;
+            color: var(--text-primary);
             margin-bottom: 0.5rem;
         }
 
         .upload-subtext {
-            color: #81a594;
+            color: var(--text-secondary);
             font-size: 0.9rem;
         }
 
@@ -277,7 +386,7 @@
             position: relative;
             border-radius: 12px;
             overflow: hidden;
-            background: #f8f9fa;
+            background: var(--card-bg);
         }
 
         .preview-item img {
@@ -303,7 +412,6 @@
             font-size: 12px;
         }
 
-        /* Condition Selector */
         .condition-selector {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -313,15 +421,15 @@
         .condition-option {
             display: block;
             padding: 1.5rem;
-            border: 2px solid rgba(76, 111, 89, 0.1);
+            border: 2px solid var(--border-color);
             border-radius: 16px;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.5);
+            background: var(--condition-bg);
         }
 
         .condition-option:hover {
-            border-color: rgba(76, 111, 89, 0.3);
+            border-color: var(--border-color-focus);
             transform: translateY(-2px);
         }
 
@@ -330,30 +438,32 @@
         }
 
         .condition-option input[type="radio"]:checked + .condition-title {
-            color: #4c6f59;
+            color: var(--text-accent);
         }
 
         .condition-option input[type="radio"]:checked ~ * {
-            color: #4c6f59;
+            color: var(--text-accent);
         }
 
         .condition-option:has(input[type="radio"]:checked) {
-            border-color: #4c6f59;
-            background: rgba(76, 111, 89, 0.1);
+            border-color: var(--border-color-focus);
+            background: var(--condition-selected);
         }
 
         .condition-title {
             font-weight: 600;
             margin-bottom: 0.5rem;
             font-size: 1.1rem;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
         }
 
         .condition-desc {
             font-size: 0.9rem;
-            color: #81a594;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
         }
 
-        /* Price Input */
         .price-input-wrapper {
             position: relative;
         }
@@ -363,7 +473,7 @@
             left: 1rem;
             top: 50%;
             transform: translateY(-50%);
-            color: #81a594;
+            color: var(--text-secondary);
             font-weight: 600;
         }
 
@@ -371,7 +481,6 @@
             padding-left: 2.5rem;
         }
 
-        /* Checkbox and Tag Styles */
         .tag-grid {
             display: flex;
             flex-wrap: wrap;
@@ -385,18 +494,19 @@
         .tag-label {
             display: inline-block;
             padding: 0.5rem 1rem;
-            border: 2px solid rgba(76, 111, 89, 0.1);
+            border: 2px solid var(--border-color);
             border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.5);
+            background: var(--tag-bg);
             font-size: 0.9rem;
+            color: var(--text-primary);
         }
 
         .tag-item:checked + .tag-label {
-            background: #4c6f59;
+            background: var(--accent-primary);
             color: white;
-            border-color: #4c6f59;
+            border-color: var(--accent-primary);
         }
 
         .submit-btn {
@@ -406,7 +516,7 @@
             font-weight: 600;
             border: none;
             border-radius: 16px;
-            background: linear-gradient(135deg, #4c6f59, #81a594);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             color: white;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -424,7 +534,34 @@
             transform: none;
         }
 
-        /* Responsive */
+        .pricing-tips {
+            margin-top: 1rem; 
+            padding: 1rem; 
+            background: var(--tips-bg); 
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .pricing-tips .tip-title {
+            font-size: 0.9rem; 
+            color: var(--text-accent); 
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-tips ul {
+            list-style: none; 
+            padding: 0; 
+            font-size: 0.85rem; 
+            color: var(--text-secondary);
+        }
+
+        h1, h2, h3 {
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+
+        /* Mobile Responsive Design */
         @media (max-width: 768px) {
             .container {
                 padding: 0 1rem;
@@ -433,6 +570,12 @@
             .nav-links {
                 gap: 1rem;
                 font-size: 0.9rem;
+            }
+
+            .theme-toggle {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
             }
 
             .two-column {
@@ -447,317 +590,85 @@
             .card {
                 padding: 1.5rem;
             }
+
+            /* Show hamburger menu on mobile */
+            .hamburger {
+                display: flex;
+            }
+
+            /* Hide nav links by default on mobile */
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: var(--header-bg);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 4rem 2rem 2rem;
+                transition: right 0.3s ease;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                z-index: 100;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+                margin: 1rem 0;
+            }
+
+            .nav-links a {
+                display: block;
+                width: 100%;
+                padding: 0.8rem 0;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            /* Overlay for mobile menu */
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 99;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            /* Hamburger animation */
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+
+            /* Adjust header for mobile */
+            nav {
+                padding: 0.5rem 0;
+            }
+
+            .logo {
+                font-size: 1.3rem;
+            }
         }
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        line-height: 1.6;
-        color: #2d3436;
-        background: #f5f3f0;
-        overflow-x: hidden;
-    }
-
-    /* Earth-toned animated background */
-    .bg-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        background: linear-gradient(135deg, #f5f3f0 0%, #e8e4df 25%, #f0ede8 50%, #f7f5f2 75%, #ede7e0 100%);
-        background-size: 400% 400%;
-        animation: gradientShift 25s ease infinite;
-    }
-
-    @keyframes gradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-
-    .floating-elements {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-
-    .floating-element {
-        position: absolute;
-        background: rgba(76, 111, 89, 0.08);
-        border-radius: 50%;
-        animation: float 25s infinite linear;
-    }
-
-    @keyframes float {
-        0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-        10% { opacity: 1; }
-        90% { opacity: 1; }
-        100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
-    }
-
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 24px;
-        position: relative;
-        z-index: 1;
-    }
-
-    /* Warm glass morphism header */
-    header {
-        background: rgba(247, 245, 242, 0.95);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-bottom: 1px solid rgba(76, 111, 89, 0.1);
-        padding: 1rem 0;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        box-shadow: 0 4px 32px rgba(76, 111, 89, 0.08);
-    }
-
-    nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .logo {
-        font-size: 1.75rem;
-        font-weight: 800;
-        background: linear-gradient(135deg, #4c6f59, #2d5a3d);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        text-decoration: none;
-        letter-spacing: -0.02em;
-    }
-
-    .nav-links {
-        display: flex;
-        list-style: none;
-        gap: 2rem;
-        align-items: center;
-    }
-
-    .nav-links a {
-        text-decoration: none;
-        color: #4c6f59;
-        font-weight: 500;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        padding: 0.5rem 0;
-    }
-
-    .nav-links a::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: linear-gradient(90deg, #4c6f59, #2d5a3d);
-        transition: width 0.3s ease;
-    }
-
-    .nav-links a:hover {
-        color: #2d5a3d;
-    }
-
-    .nav-links a:hover::after {
-        width: 100%;
-    }
-
-    /* Earth-toned button styles */
-    .btn {
-        padding: 0.75rem 1.75rem;
-        border: none;
-        border-radius: 16px;
-        font-size: 0.95rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transition: left 0.5s;
-    }
-
-    .btn:hover::before {
-        left: 100%;
-    }
-
-    .btn-primary {
-        background: linear-gradient(135deg, #4c6f59, #2d5a3d);
-        color: #ffffff;
-        box-shadow: 0 4px 20px rgba(76, 111, 89, 0.25);
-    }
-
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 30px rgba(76, 111, 89, 0.35);
-    }
-
-    .btn-secondary {
-        background: rgba(247, 245, 242, 0.9);
-        color: #4c6f59;
-        border: 1px solid rgba(76, 111, 89, 0.2);
-        backdrop-filter: blur(10px);
-    }
-
-    .btn-secondary:hover {
-        background: rgba(247, 245, 242, 1);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 20px rgba(76, 111, 89, 0.15);
-    }
-
-    /* Main content */
-    main {
-        min-height: calc(100vh - 200px);
-        padding: 2rem 0;
-    }
-
-    .card {
-        background: rgba(247, 245, 242, 0.9);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-radius: 24px;
-        padding: 2rem;
-        margin: 1rem 0;
-        box-shadow: 0 8px 32px rgba(76, 111, 89, 0.08);
-        border: 1px solid rgba(76, 111, 89, 0.1);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 20px 40px rgba(76, 111, 89, 0.12);
-    }
-
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 0.75rem;
-        font-weight: 600;
-        color: #4c6f59;
-        font-size: 0.95rem;
-    }
-
-    .form-input {
-        width: 100%;
-        padding: 1rem 1.25rem;
-        border: 2px solid rgba(76, 111, 89, 0.15);
-        border-radius: 16px;
-        font-size: 1rem;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        background: rgba(247, 245, 242, 0.8);
-        backdrop-filter: blur(10px);
-        color: #2d3436;
-    }
-
-    .form-input:focus {
-        outline: none;
-        border-color: #4c6f59;
-        box-shadow: 0 0 0 4px rgba(76, 111, 89, 0.1);
-        background: rgba(247, 245, 242, 0.95);
-    }
-
-    .form-input::placeholder {
-        color: #81a594;
-    }
-
-    /* Grid layouts */
-    .grid {
-        display: grid;
-        gap: 1.5rem;
-    }
-
-    .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-    .grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
-    .grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
-
-    .product-card {
-        background: #fff;
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-        transition: transform 0.2s ease, box-shadow 0.3s ease;
-    }
-
-    .product-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    }
-
-    .product-image img {
-        width: 100%;
-        height: auto;
-        display: block;
-    }
-
-    .product-content {
-        padding: 1rem;
-    }
-
-    .product-content h3 {
-        font-size: 1.2rem;
-        margin-bottom: 0.5rem;
-        color: #2d3436;
-    }
-
-    .product-content p {
-        font-size: 0.95rem;
-        color: #636e72;
-        margin-bottom: 0.5rem;
-    }
-
-    .eco-badge {
-        background: #dfe6e0;
-        color: #2d5a3d;
-        font-size: 0.75rem;
-        font-weight: 600;
-        padding: 0.25rem 0.75rem;
-        border-radius: 999px;
-        display: inline-block;
-    }
-
-    .eco-badge::before {
-        content: '🌱';
-        font-size: 0.875rem;
-    }
-
-    footer {
-        padding: 2rem 0;
-        text-align: center;
-        color: #636e72;
-        font-size: 0.875rem;
-    }
-</style>
-
     </style>
 </head>
 <body>
@@ -769,10 +680,27 @@
         <div class="container">
             <nav>
                 <a href="/" class="logo">🌱 EcoFlow</a>
-                <ul class="nav-links">
+                
+                <!-- Hamburger Menu Button -->
+                <button class="hamburger" id="hamburgerMenu" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                
+                <!-- Overlay for mobile menu -->
+                <div class="overlay" id="mobileOverlay"></div>
+                
+                <!-- Navigation Links -->
+                <ul class="nav-links" id="navLinks">
                     <li><a href="products.html">Browse</a></li>
                     <li><a href="dashboard.html">Dashboard</a></li>
                     <li><a href="cart.html">Cart</a></li>
+                    <li>
+                        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                            <span class="theme-icon">🌙</span>
+                        </button>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -780,18 +708,16 @@
 
     <main>
         <div class="container fade-in">
-            <!-- Header Section -->
             <div class="card">
                 <div style="text-align: center; margin-bottom: 2rem;">
-                    <h1 style="color: #2d3436; font-size: 2.5rem; margin-bottom: 0.5rem;">Give Your Item a New Life 🌱</h1>
-                    <p style="color: #81a594; font-size: 1.1rem;">Help build a sustainable future by selling your pre-loved items</p>
+                    <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Give Your Item a New Life 🌱</h1>
+                    <p style="font-size: 1.1rem;">Help build a sustainable future by selling your pre-loved items</p>
                 </div>
             </div>
 
             <form id="addProductForm">
-                <!-- Basic Information -->
                 <div class="card">
-                    <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.5rem;">📝 Basic Information</h2>
+                    <h2 style="margin-bottom: 1.5rem; font-size: 1.5rem;">📝 Basic Information</h2>
                     
                     <div class="form-group">
                         <label for="title">Product Title *</label>
@@ -809,7 +735,7 @@
                                 <option value="home">🏠 Home & Garden</option>
                                 <option value="books">📚 Books & Media</option>
                                 <option value="gaming">🎮 Gaming</option>
-                                <option value="sports">🏃‍♂️ Sports & Fitness</option>
+                                <option value="sports">🏃‍♂ Sports & Fitness</option>
                                 <option value="art">🎨 Art & Crafts</option>
                                 <option value="baby">👶 Baby & Kids</option>
                                 <option value="automotive">🚗 Automotive</option>
@@ -831,9 +757,8 @@
                     </div>
                 </div>
 
-                <!-- Images -->
                 <div class="card">
-                    <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.5rem;">📸 Product Images</h2>
+                    <h2 style="margin-bottom: 1.5rem; font-size: 1.5rem;">📸 Product Images</h2>
                     
                     <div class="image-upload-area" onclick="document.getElementById('images').click()">
                         <input type="file" id="images" name="images" multiple accept="image/*">
@@ -842,14 +767,11 @@
                         <div class="upload-subtext">Upload up to 8 images (JPG, PNG, max 5MB each)</div>
                     </div>
 
-                    <div class="image-preview" id="imagePreview">
-                        <!-- Preview images will appear here -->
-                    </div>
+                    <div class="image-preview" id="imagePreview"></div>
                 </div>
 
-                <!-- Condition and Pricing -->
                 <div class="card">
-                    <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.5rem;">💰 Condition & Pricing</h2>
+                    <h2 style="margin-bottom: 1.5rem; font-size: 1.5rem;">💰 Condition & Pricing</h2>
                     
                     <div class="form-group">
                         <label>Item Condition *</label>
@@ -897,9 +819,9 @@
                         </div>
                     </div>
 
-                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(76, 111, 89, 0.05); border-radius: 12px;">
-                        <div style="font-size: 0.9rem; color: #4c6f59; margin-bottom: 0.5rem;">💡 Pricing Tips:</div>
-                        <ul style="list-style: none; padding: 0; font-size: 0.85rem; color: #81a594;">
+                    <div class="pricing-tips">
+                        <div class="tip-title">💡 Pricing Tips:</div>
+                        <ul>
                             <li>• Check similar items to price competitively</li>
                             <li>• Consider the item's age and condition</li>
                             <li>• Price slightly higher to allow negotiation room</li>
@@ -908,9 +830,8 @@
                     </div>
                 </div>
 
-                <!-- Location and Contact -->
                 <div class="card">
-                    <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.5rem;">📍 Location & Preferences</h2>
+                    <h2 style="margin-bottom: 1.5rem; font-size: 1.5rem;">📍 Location & Preferences</h2>
                     
                     <div class="two-column">
                         <div class="form-group">
@@ -953,15 +874,14 @@
                     </div>
                 </div>
 
-                <!-- Additional Features -->
                 <div class="card">
-                    <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.5rem;">🎯 Additional Features</h2>
+                    <h2 style="margin-bottom: 1.5rem; font-size: 1.5rem;">🎯 Additional Features</h2>
                     
                     <div class="form-group">
                         <label>Special Features (Optional)</label>
                         <div class="tag-grid">
                             <input type="checkbox" id="warranty" name="features[]" value="warranty" class="tag-item">
-                            <label for="warranty" class="tag-label">🛡️ Warranty Available</label>
+                            <label for="warranty" class="tag-label">🛡 Warranty Available</label>
                             
                             <input type="checkbox" id="accessories" name="features[]" value="accessories" class="tag-item">
                             <label for="accessories" class="tag-label">📦 Original Accessories</label>
@@ -984,7 +904,6 @@
                     </div>
                 </div>
 
-                <!-- Submit Button -->
                 <button type="submit" class="submit-btn">
                     🌱 List My Item for Sale
                 </button>
@@ -993,129 +912,192 @@
     </main>
 
     <script>
-        // Image upload and preview functionality
-        document.getElementById('images').addEventListener('change', function(e) {
-            const files = e.target.files;
-            const preview = document.getElementById('imagePreview');
+        // Dark mode functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.querySelector('.theme-icon');
+        const html = document.documentElement;
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        themeIcon.textContent = savedTheme === 'light' ? '🌙' : '☀';
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             
-            // Clear existing previews
-            preview.innerHTML = '';
-            
-            for (let i = 0; i < Math.min(files.length, 8); i++) {
-                const file = files[i];
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const previewItem = document.createElement('div');
-                        previewItem.className = 'preview-item';
-                        previewItem.innerHTML = `
-                            <img src="${e.target.result}" alt="Preview">
-                            <button type="button" class="remove-image" onclick="removeImage(this)">×</button>
-                        `;
-                        preview.appendChild(previewItem);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            }
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeIcon.textContent = newTheme === 'light' ? '🌙' : '☀';
         });
 
-        // Remove image function
-        function removeImage(button) {
-            button.parentElement.remove();
-        }
+        // Mobile hamburger menu functionality
+        const hamburger = document.getElementById('hamburgerMenu');
+        const navLinks = document.getElementById('navLinks');
+        const overlay = document.getElementById('mobileOverlay');
 
-        // Drag and drop functionality
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // Close mobile menu when clicking on a nav link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+        });
+
+        // Image upload preview functionality
+        const imagesInput = document.getElementById('images');
+        const imagePreview = document.getElementById('imagePreview');
+
+        imagesInput.addEventListener('change', function() {
+            imagePreview.innerHTML = '';
+            
+            if (this.files.length > 8) {
+                alert('You can only upload up to 8 images.');
+                this.value = '';
+                return;
+            }
+
+            Array.from(this.files).forEach(file => {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File size exceeds 5MB limit: ' + file.name);
+                    return;
+                }
+
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'remove-image';
+                    removeBtn.innerHTML = '×';
+                    removeBtn.addEventListener('click', function() {
+                        previewItem.remove();
+                    });
+                    
+                    previewItem.appendChild(img);
+                    previewItem.appendChild(removeBtn);
+                    imagePreview.appendChild(previewItem);
+                };
+                
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // Form submission handling
+        const addProductForm = document.getElementById('addProductForm');
+        
+        addProductForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic validation
+            const title = document.getElementById('title').value.trim();
+            const category = document.getElementById('category').value;
+            const description = document.getElementById('description').value.trim();
+            const condition = document.querySelector('input[name="condition"]:checked');
+            const price = document.getElementById('price').value;
+            const city = document.getElementById('city').value;
+            
+            if (!title || !category || !description || !condition || !price || !city) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            if (imagesInput.files.length === 0) {
+                alert('Please upload at least one image.');
+                return;
+            }
+
+            // Get selected delivery options
+            const deliveryOptions = Array.from(document.querySelectorAll('input[name="delivery[]"]:checked'))
+                .map(checkbox => checkbox.value);
+
+            // Get selected features
+            const features = Array.from(document.querySelectorAll('input[name="features[]"]:checked'))
+                .map(checkbox => checkbox.value);
+
+            // Create product data object
+            const productData = {
+                title,
+                category,
+                brand: document.getElementById('brand').value.trim() || null,
+                description,
+                condition: condition.value,
+                price: parseFloat(price),
+                original_price: document.getElementById('original_price').value ? parseFloat(document.getElementById('original_price').value) : null,
+                city,
+                area: document.getElementById('area').value.trim() || null,
+                delivery: deliveryOptions,
+                features,
+                additional_notes: document.getElementById('additional_notes').value.trim() || null,
+                images: Array.from(imagesInput.files).map(file => file.name)
+            };
+
+            // Simulate form submission
+            console.log('Product listing submitted:', productData);
+            alert('🎉 Your item has been successfully listed for sale!');
+
+            // Reset form for demo purposes
+            // addProductForm.reset();
+            // imagePreview.innerHTML = '';
+        });
+
+        // Add drag and drop functionality to image upload area
         const uploadArea = document.querySelector('.image-upload-area');
         
         uploadArea.addEventListener('dragover', function(e) {
             e.preventDefault();
-            this.style.borderColor = '#4c6f59';
-            this.style.background = 'rgba(76, 111, 89, 0.1)';
+            this.style.borderColor = 'var(--border-color-focus)';
+            this.style.background = 'var(--upload-hover)';
         });
-
+        
         uploadArea.addEventListener('dragleave', function(e) {
             e.preventDefault();
-            this.style.borderColor = 'rgba(76, 111, 89, 0.3)';
-            this.style.background = 'rgba(76, 111, 89, 0.02)';
+            this.style.borderColor = '';
+            this.style.background = '';
         });
-
+        
         uploadArea.addEventListener('drop', function(e) {
             e.preventDefault();
-            this.style.borderColor = 'rgba(76, 111, 89, 0.3)';
-            this.style.background = 'rgba(76, 111, 89, 0.02)';
+            this.style.borderColor = '';
+            this.style.background = '';
             
-            const files = e.dataTransfer.files;
-            const fileInput = document.getElementById('images');
-            fileInput.files = files;
-            fileInput.dispatchEvent(new Event('change'));
-        });
-
-        // Form submission
-        document.getElementById('addProductForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const submitBtn = document.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            
-            // Show loading state
-            submitBtn.disabled = true;
-            submitBtn.textContent = '🌱 Listing Your Item...';
-            
-            // Simulate form submission (replace with actual API call)
-            setTimeout(() => {
-                alert('🎉 Your item has been successfully listed for sale!');
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalText;
-                
-                // Optionally reset form
-                // this.reset();
-                // document.getElementById('imagePreview').innerHTML = '';
-            }, 2000);
-        });
-
-        // Price calculation and suggestions
-        document.getElementById('original_price').addEventListener('input', function() {
-            const originalPrice = parseFloat(this.value);
-            const sellingPriceInput = document.getElementById('price');
-            
-            if (originalPrice && !sellingPriceInput.value) {
-                // Suggest selling price based on condition
-                const conditionRadios = document.querySelectorAll('input[name="condition"]');
-                let multiplier = 0.7; // Default
-                
-                conditionRadios.forEach(radio => {
-                    if (radio.checked) {
-                        switch(radio.value) {
-                            case 'excellent': multiplier = 0.8; break;
-                            case 'very_good': multiplier = 0.7; break;
-                            case 'good': multiplier = 0.6; break;
-                            case 'fair': multiplier = 0.5; break;
-                        }
-                    }
+            if (e.dataTransfer.files.length) {
+                const dataTransfer = new DataTransfer();
+                Array.from(e.dataTransfer.files).forEach(file => {
+                    dataTransfer.items.add(file);
                 });
+                imagesInput.files = dataTransfer.files;
                 
-                const suggestedPrice = Math.round(originalPrice * multiplier);
-                sellingPriceInput.placeholder = `Suggested: ₹${suggestedPrice}`;
+                const event = new Event('change', { bubbles: true });
+                imagesInput.dispatchEvent(event);
             }
         });
 
-        // Condition change handler
-        document.querySelectorAll('input[name="condition"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                // Trigger price suggestion update
-                document.getElementById('original_price').dispatchEvent(new Event('input'));
-            });
+        // Handle window resize to close mobile menu
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                overlay.classList.remove('active');
+            }
         });
-
-        // Form validation enhancements
-        document.querySelectorAll('input[required], select[required], textarea[required]').forEach(field => {
-            field.addEventListener('blur', function() {
-                if (!this.value.trim()) {
-                    this.style.borderColor = '#e74c3c';
-                } else {
-                    this.style.borderColor = 'rgba(76, 111, 89, 0.1)';
-                }
-            });
-        });
-
-        // At least one delivery option must
+    </script>
+</body>
+</html>

@@ -11,12 +11,63 @@
             box-sizing: border-box;
         }
 
+        :root {
+            /* Light mode colors */
+            --bg-primary: #f5f3f0;
+            --bg-secondary: #e8e4df;
+            --bg-tertiary: #f0ede8;
+            --card-bg: rgba(247, 245, 242, 0.9);
+            --card-bg-solid: rgba(247, 245, 242, 0.95);
+            --text-primary: #2d3436;
+            --text-secondary: #636e72;
+            --text-accent: #4c6f59;
+            --accent-primary: #4c6f59;
+            --accent-secondary: #2d5a3d;
+            --input-bg: rgba(247, 245, 242, 0.8);
+            --input-focus: rgba(247, 245, 242, 0.95);
+            --border-color: rgba(76, 111, 89, 0.15);
+            --shadow-light: rgba(76, 111, 89, 0.08);
+            --floating-bg: rgba(76, 111, 89, 0.08);
+            --alert-error-bg: rgba(186, 85, 73, 0.1);
+            --alert-error-color: #ba5549;
+            --alert-error-border: rgba(186, 85, 73, 0.2);
+            --alert-success-bg: rgba(76, 111, 89, 0.1);
+            --alert-success-color: #2d5a3d;
+            --alert-success-border: rgba(76, 111, 89, 0.2);
+        }
+
+        [data-theme="dark"] {
+            /* Dark mode colors */
+            --bg-primary: #1a1f1c;
+            --bg-secondary: #232a26;
+            --bg-tertiary: #2a332e;
+            --card-bg: rgba(42, 51, 46, 0.9);
+            --card-bg-solid: rgba(42, 51, 46, 0.95);
+            --text-primary: #e8f1eb;
+            --text-secondary: #b8c5bc;
+            --text-accent: #8fae9a;
+            --accent-primary: #6b8f76;
+            --accent-secondary: #8fae9a;
+            --input-bg: rgba(42, 51, 46, 0.8);
+            --input-focus: rgba(42, 51, 46, 0.95);
+            --border-color: rgba(143, 174, 154, 0.2);
+            --shadow-light: rgba(0, 0, 0, 0.2);
+            --floating-bg: rgba(143, 174, 154, 0.1);
+            --alert-error-bg: rgba(186, 85, 73, 0.2);
+            --alert-error-color: #e78c83;
+            --alert-error-border: rgba(186, 85, 73, 0.3);
+            --alert-success-bg: rgba(107, 143, 118, 0.2);
+            --alert-success-color: #8fae9a;
+            --alert-success-border: rgba(107, 143, 118, 0.3);
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
-            color: #2d3436;
-            background: #f5f3f0;
+            color: var(--text-primary);
+            background: var(--bg-primary);
             overflow-x: hidden;
+            transition: color 0.3s ease, background-color 0.3s ease;
         }
 
         /* Earth-toned animated background */
@@ -27,9 +78,10 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: linear-gradient(135deg, #f5f3f0 0%, #e8e4df 25%, #f0ede8 50%, #f7f5f2 75%, #ede7e0 100%);
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 25%, var(--bg-tertiary) 50%, var(--bg-secondary) 75%, var(--bg-primary) 100%);
             background-size: 400% 400%;
             animation: gradientShift 25s ease infinite;
+            transition: background 0.3s ease;
         }
 
         @keyframes gradientShift {
@@ -47,9 +99,10 @@
 
         .floating-element {
             position: absolute;
-            background: rgba(76, 111, 89, 0.08);
+            background: var(--floating-bg);
             border-radius: 50%;
             animation: float 25s infinite linear;
+            transition: background-color 0.3s ease;
         }
 
         @keyframes float {
@@ -69,15 +122,16 @@
 
         /* Warm glass morphism header */
         header {
-            background: rgba(247, 245, 242, 0.95);
+            background: var(--card-bg-solid);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(76, 111, 89, 0.1);
+            border-bottom: 1px solid var(--border-color);
             padding: 1rem 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 32px rgba(76, 111, 89, 0.08);
+            box-shadow: 0 4px 32px var(--shadow-light);
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         nav {
@@ -89,12 +143,13 @@
         .logo {
             font-size: 1.75rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-decoration: none;
             letter-spacing: -0.02em;
+            transition: background 0.3s ease;
         }
 
         .nav-links {
@@ -102,11 +157,12 @@
             list-style: none;
             gap: 2rem;
             align-items: center;
+            transition: all 0.3s ease;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: #4c6f59;
+            color: var(--text-accent);
             font-weight: 500;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
@@ -120,16 +176,42 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
             transition: width 0.3s ease;
         }
 
         .nav-links a:hover {
-            color: #2d5a3d;
+            color: var(--accent-secondary);
         }
 
         .nav-links a:hover::after {
             width: 100%;
+        }
+
+        /* Mobile Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 21px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 10;
+        }
+
+        .hamburger:focus {
+            outline: none;
+        }
+
+        .hamburger .bar {
+            width: 30px;
+            height: 3px;
+            background: var(--text-primary);
+            border-radius: 10px;
+            transition: all 0.3s ease-in-out;
         }
 
         /* Earth-toned button styles */
@@ -166,7 +248,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             color: #ffffff;
             box-shadow: 0 4px 20px rgba(76, 111, 89, 0.25);
         }
@@ -177,16 +259,16 @@
         }
 
         .btn-secondary {
-            background: rgba(247, 245, 242, 0.9);
-            color: #4c6f59;
-            border: 1px solid rgba(76, 111, 89, 0.2);
+            background: var(--card-bg);
+            color: var(--text-accent);
+            border: 1px solid var(--border-color);
             backdrop-filter: blur(10px);
         }
 
         .btn-secondary:hover {
-            background: rgba(247, 245, 242, 1);
+            background: var(--card-bg-solid);
             transform: translateY(-1px);
-            box-shadow: 0 4px 20px rgba(76, 111, 89, 0.15);
+            box-shadow: 0 4px 20px var(--shadow-light);
         }
 
         /* Main content */
@@ -199,15 +281,20 @@
         }
 
         .card {
-            background: rgba(247, 245, 242, 0.9);
+            background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: 24px;
             padding: 2rem;
             margin: 1rem 0;
-            box-shadow: 0 8px 32px rgba(76, 111, 89, 0.08);
-            border: 1px solid rgba(76, 111, 89, 0.1);
+            box-shadow: 0 8px 32px var(--shadow-light);
+            border: 1px solid var(--border-color);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px var(--shadow-light);
         }
 
         /* Login specific styles */
@@ -225,16 +312,17 @@
         .login-title {
             font-size: 2.25rem;
             font-weight: 800;
-            color: #2d3436;
+            color: var(--text-primary);
             margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            transition: background 0.3s ease;
         }
 
         .login-subtitle {
-            color: #81a594;
+            color: var(--text-accent);
             font-size: 1rem;
         }
 
@@ -247,31 +335,32 @@
             display: block;
             margin-bottom: 0.75rem;
             font-weight: 600;
-            color: #4c6f59;
+            color: var(--text-accent);
             font-size: 0.95rem;
         }
 
         .form-input {
             width: 100%;
             padding: 1rem 1.25rem;
-            border: 2px solid rgba(76, 111, 89, 0.15);
+            border: 2px solid var(--border-color);
             border-radius: 16px;
             font-size: 1rem;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: rgba(247, 245, 242, 0.8);
+            background: var(--input-bg);
             backdrop-filter: blur(10px);
-            color: #2d3436;
+            color: var(--text-primary);
         }
 
         .form-input:focus {
             outline: none;
-            border-color: #4c6f59;
+            border-color: var(--accent-primary);
             box-shadow: 0 0 0 4px rgba(76, 111, 89, 0.1);
-            background: rgba(247, 245, 242, 0.95);
+            background: var(--input-focus);
         }
 
         .form-input::placeholder {
-            color: #81a594;
+            color: var(--text-accent);
+            opacity: 0.7;
         }
 
         .password-input-wrapper {
@@ -285,14 +374,14 @@
             transform: translateY(-50%);
             background: none;
             border: none;
-            color: #81a594;
+            color: var(--text-accent);
             cursor: pointer;
             font-size: 1.1rem;
             transition: color 0.3s ease;
         }
 
         .password-toggle:hover {
-            color: #4c6f59;
+            color: var(--accent-secondary);
         }
 
         /* Password Strength Meter */
@@ -304,10 +393,10 @@
             transition: all 0.3s ease;
         }
 
-        .password-strength.weak { color: #ba5549; }
+        .password-strength.weak { color: var(--alert-error-color); }
         .password-strength.fair { color: #f39c12; }
         .password-strength.good { color: #27ae60; }
-        .password-strength.strong { color: #2d5a3d; font-weight: 600; }
+        .password-strength.strong { color: var(--accent-secondary); font-weight: 600; }
 
         .form-options {
             display: flex;
@@ -326,18 +415,19 @@
         .checkbox-wrapper input[type="checkbox"] {
             width: 18px;
             height: 18px;
-            accent-color: #4c6f59;
+            accent-color: var(--accent-primary);
+            cursor: pointer;
         }
 
         .forgot-password {
-            color: #4c6f59;
+            color: var(--text-accent);
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s ease;
         }
 
         .forgot-password:hover {
-            color: #2d5a3d;
+            color: var(--accent-secondary);
             text-decoration: underline;
         }
 
@@ -353,7 +443,7 @@
             text-align: center;
             margin: 1.5rem 0;
             position: relative;
-            color: #81a594;
+            color: var(--text-accent);
             font-size: 0.9rem;
         }
 
@@ -364,12 +454,12 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: rgba(76, 111, 89, 0.2);
+            background: var(--border-color);
             z-index: -1;
         }
 
         .divider span {
-            background: rgba(247, 245, 242, 0.9);
+            background: var(--card-bg);
             padding: 0 1rem;
         }
 
@@ -380,10 +470,10 @@
 
         .social-btn {
             padding: 0.875rem;
-            border: 2px solid rgba(76, 111, 89, 0.15);
+            border: 2px solid var(--border-color);
             border-radius: 12px;
-            background: rgba(247, 245, 242, 0.8);
-            color: #2d3436;
+            background: var(--input-bg);
+            color: var(--text-primary);
             font-weight: 500;
             display: flex;
             align-items: center;
@@ -394,35 +484,25 @@
         }
 
         .social-btn:hover {
-            border-color: rgba(76, 111, 89, 0.3);
-            background: rgba(247, 245, 242, 1);
+            border-color: var(--accent-primary);
+            background: var(--input-focus);
             transform: translateY(-1px);
         }
 
         .register-link {
             text-align: center;
             margin-top: 2rem;
-            color: #81a594;
+            color: var(--text-accent);
         }
 
         .register-link a {
-            color: #4c6f59;
+            color: var(--text-accent);
             text-decoration: none;
             font-weight: 600;
         }
 
         .register-link a:hover {
             text-decoration: underline;
-        }
-
-        /* Animations */
-        .fade-in {
-            animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Alert styles */
@@ -436,15 +516,51 @@
         }
 
         .alert-error {
-            background: rgba(186, 85, 73, 0.1);
-            color: #ba5549;
-            border-color: rgba(186, 85, 73, 0.2);
+            background: var(--alert-error-bg);
+            color: var(--alert-error-color);
+            border-color: var(--alert-error-border);
         }
 
         .alert-success {
-            background: rgba(76, 111, 89, 0.1);
-            color: #2d5a3d;
-            border-color: rgba(76, 111, 89, 0.2);
+            background: var(--alert-success-bg);
+            color: var(--alert-success-color);
+            border-color: var(--alert-success-border);
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Dark mode toggle button */
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.5rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            margin-right: 1rem;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-primary);
+            transform: scale(1.05);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.95);
         }
 
         /* Responsive design */
@@ -464,8 +580,42 @@
             }
 
             .nav-links {
-                gap: 1rem;
-                flex-wrap: wrap;
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                flex-direction: column;
+                background: var(--card-bg-solid);
+                width: 70%;
+                height: calc(100vh - 70px);
+                padding: 2rem;
+                transition: 0.3s;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                z-index: 99;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .hamburger {
+                display: flex;
+                margin-right: 1rem;
+            }
+
+            .hamburger.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+
+            .hamburger.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+
+            .theme-toggle {
+                margin-right: 0;
             }
         }
     </style>
@@ -479,11 +629,23 @@
         <div class="container">
             <nav>
                 <a href="/" class="logo">🌱 EcoFlow</a>
-                <ul class="nav-links">
-                    <li><a href="/products">Browse</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/contact">Contact</a></li>
-                    <li><a href="/register" class="btn btn-secondary">Sign Up</a></li>
+                
+                <!-- Hamburger menu for mobile -->
+                <button class="hamburger" id="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+                
+                <!-- Theme toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <!-- Desktop nav links -->
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="products.html">Browse</a></li>
+                    <li><a href="register.html" class="btn btn-secondary">Sign Up</a></li>
                 </ul>
             </nav>
         </div>
@@ -544,7 +706,7 @@
                     </div>
 
                     <div class="register-link">
-                        Don't have an account? <a href="/register">Create one here</a>
+                        Don't have an account? <a href="register.html">Create one here</a>
                     </div>
                 </div>
             </div>
@@ -723,6 +885,54 @@
             }, 5000);
         }
 
+        // Hamburger menu functionality
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', function() {
+            this.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Dark mode functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.querySelector('.theme-icon');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to light mode
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', function() {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+            
+            // Add a subtle animation to the toggle button
+            this.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+        });
+
+        function updateThemeIcon(theme) {
+            themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+            themeToggle.setAttribute('aria-label', 
+                theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+            );
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             createFloatingElements();
@@ -746,6 +956,14 @@
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('registered') === 'true') {
                 showAlert('Registration successful! Please log in.', 'success');
+            }
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!navLinks.contains(event.target) && !hamburger.contains(event.target) && navLinks.classList.contains('active')) {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
             }
         });
     </script>

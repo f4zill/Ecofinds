@@ -10,46 +10,111 @@
             padding: 0;
             box-sizing: border-box;
         }
-
+        :root {
+            /* Light mode colors */
+            --bg-primary: #f5f3f0;
+            --bg-secondary: #e8e4df;
+            --bg-tertiary: #f0ede8;
+            --bg-quaternary: #f7f5f2;
+            --bg-quinary: #ede7e0;
+            --card-bg: rgba(247, 245, 242, 0.9);
+            --card-bg-solid: rgba(247, 245, 242, 0.95);
+            --text-primary: #2d3436;
+            --text-secondary: #636e72;
+            --text-accent: #4c6f59;
+            --accent-primary: #4c6f59;
+            --accent-secondary: #2d5a3d;
+            --input-bg: rgba(247, 245, 242, 0.8);
+            --input-focus: rgba(247, 245, 242, 0.95);
+            --border-color: rgba(76, 111, 89, 0.15);
+            --shadow-light: rgba(76, 111, 89, 0.08);
+            --shadow-medium: rgba(76, 111, 89, 0.12);
+            --floating-bg: rgba(76, 111, 89, 0.08);
+            --product-card-bg: #fff;
+            --activity-bg: rgba(255, 255, 255, 0.3);
+            --activity-hover: rgba(255, 255, 255, 0.5);
+            --impact-bg: rgba(76, 111, 89, 0.05);
+            --status-delivered-bg: rgba(76, 111, 89, 0.1);
+            --status-delivered-color: #2d5a3d;
+            --status-shipped-bg: rgba(0, 123, 255, 0.1);
+            --status-shipped-color: #0056b3;
+            --status-pending-bg: rgba(255, 193, 7, 0.1);
+            --status-pending-color: #856404;
+            --wishlist-bg: rgba(255, 255, 255, 0.5);
+            --wishlist-hover: rgba(255, 255, 255, 0.8);
+        }
+        [data-theme="dark"] {
+            /* Dark mode colors - maintaining earth tones */
+            --bg-primary: #1a1f1c;
+            --bg-secondary: #232a26;
+            --bg-tertiary: #2a332e;
+            --bg-quaternary: #1e2420;
+            --bg-quinary: #252b28;
+            --card-bg: rgba(42, 51, 46, 0.9);
+            --card-bg-solid: rgba(42, 51, 46, 0.95);
+            --text-primary: #e8f1eb;
+            --text-secondary: #b8c5bc;
+            --text-accent: #8fae9a;
+            --accent-primary: #6b8f76;
+            --accent-secondary: #8fae9a;
+            --input-bg: rgba(42, 51, 46, 0.8);
+            --input-focus: rgba(42, 51, 46, 0.95);
+            --border-color: rgba(143, 174, 154, 0.2);
+            --shadow-light: rgba(0, 0, 0, 0.2);
+            --shadow-medium: rgba(0, 0, 0, 0.3);
+            --floating-bg: rgba(143, 174, 154, 0.1);
+            --product-card-bg: rgba(42, 51, 46, 0.95);
+            --activity-bg: rgba(70, 85, 77, 0.3);
+            --activity-hover: rgba(70, 85, 77, 0.5);
+            --impact-bg: rgba(107, 143, 118, 0.1);
+            --status-delivered-bg: rgba(107, 143, 118, 0.2);
+            --status-delivered-color: #8fae9a;
+            --status-shipped-bg: rgba(30, 87, 153, 0.2);
+            --status-shipped-color: #64b5f6;
+            --status-pending-bg: rgba(255, 193, 7, 0.2);
+            --status-pending-color: #ffcc80;
+            --wishlist-bg: rgba(42, 51, 46, 0.5);
+            --wishlist-hover: rgba(42, 51, 46, 0.8);
+        }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
-            color: #2d3436;
-            background: #f5f3f0;
+            color: var(--text-primary);
+            background: var(--bg-primary);
             overflow-x: hidden;
+            transition: color 0.3s ease, background-color 0.3s ease;
         }
-
         /* Earth-toned animated background */
         .bg-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(135deg, #f5f3f0 0%, #e8e4df 25%, #f0ede8 50%, #f7f5f2 75%, #ede7e0 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 25s ease infinite;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+                background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 25%, var(--bg-tertiary) 50%, var(--bg-quaternary) 75%, var(--bg-quinary) 100%);
+                background-size: 400% 400%;
+                animation: gradientShift 25s ease infinite;
+                transition: background 0.3s ease, transform 0.1s ease-out; /* Added transform transition for parallax */
         }
-
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
-        .floating-elements {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
         .floating-element {
             position: absolute;
-            background: rgba(76, 111, 89, 0.08);
+            background: var(--floating-bg);
             border-radius: 50%;
             animation: float 25s infinite linear;
+            transition: background-color 0.3s ease, transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.4s ease; /* Added transform and opacity transition */
+            pointer-events: all; /* Make sure they can receive pointer events */
+        }
+
+        .floating-element:hover {
+            transform: scale(1.3); /* Scale up on hover */
+            opacity: 0.6; /* Slightly more opaque on hover */
+            z-index: 2; /* Bring to front on hover */
         }
 
         @keyframes float {
@@ -58,7 +123,21 @@
             90% { opacity: 1; }
             100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
         }
+        .bg-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-primary) 0%, transparent 70%);
+    transform: scale(0);
+    animation: bgRipple 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    pointer-events: none;
+}
 
+@keyframes bgRipple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -66,58 +145,54 @@
             position: relative;
             z-index: 1;
         }
-
         /* Warm glass morphism header */
         header {
-            background: rgba(247, 245, 242, 0.95);
+            background: var(--card-bg-solid);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(76, 111, 89, 0.1);
+            border-bottom: 1px solid var(--border-color);
             padding: 1rem 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 32px rgba(76, 111, 89, 0.08);
+            box-shadow: 0 4px 32px var(--shadow-light);
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
-
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
         .logo {
             font-size: 1.75rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-decoration: none;
             letter-spacing: -0.02em;
+            transition: background 0.3s ease;
         }
-
         .nav-links {
             display: flex;
             list-style: none;
             gap: 2rem;
             align-items: center;
+            flex-wrap: nowrap;
         }
-
         .nav-links a {
             text-decoration: none;
-            color: #4c6f59;
+            color: var(--text-accent);
             font-weight: 500;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             padding: 0.5rem 0;
         }
-
         .nav-links a.active {
-            color: #2d5a3d;
+            color: var(--accent-secondary);
             font-weight: 600;
         }
-
         .nav-links a::after {
             content: '';
             position: absolute;
@@ -125,19 +200,73 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
             transition: width 0.3s ease;
         }
-
         .nav-links a:hover {
-            color: #2d5a3d;
+            color: var(--accent-secondary);
         }
-
         .nav-links a:hover::after,
         .nav-links a.active::after {
             width: 100%;
         }
-
+        /* Hamburger Menu Styles */
+        .hamburger {
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 21px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 10;
+        }
+        .hamburger:focus {
+            outline: none;
+        }
+        .hamburger .bar {
+            width: 100%;
+            height: 3px;
+            border-radius: 10px;
+            background: var(--text-accent);
+            transition: all 0.3s ease-in-out;
+            position: relative;
+        }
+        /* Show hamburger on mobile */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            .nav-links {
+                position: fixed;
+                flex-direction: column;
+                background: var(--card-bg-solid);
+                top: 70px; /* Height of header */
+                left: -100%;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 27px var(--shadow-medium);
+                padding: 2rem 0;
+                gap: 1.5rem;
+                border-radius: 0 0 20px 20px;
+            }
+            .nav-links.active {
+                left: 0;
+            }
+            /* Animate hamburger to X */
+            .hamburger.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger.active .bar:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+            .hamburger.active .bar:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+        }
         /* Earth-toned button styles */
         .btn {
             padding: 0.75rem 1.75rem;
@@ -155,7 +284,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .btn::before {
             content: '';
             position: absolute;
@@ -166,63 +294,53 @@
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transition: left 0.5s;
         }
-
         .btn:hover::before {
             left: 100%;
         }
-
         .btn-primary {
-            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             color: #ffffff;
             box-shadow: 0 4px 20px rgba(76, 111, 89, 0.25);
         }
-
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 30px rgba(76, 111, 89, 0.35);
         }
-
         .btn-secondary {
-            background: rgba(247, 245, 242, 0.9);
-            color: #4c6f59;
-            border: 1px solid rgba(76, 111, 89, 0.2);
+            background: var(--card-bg);
+            color: var(--text-accent);
+            border: 1px solid var(--border-color);
             backdrop-filter: blur(10px);
         }
-
         .btn-secondary:hover {
-            background: rgba(247, 245, 242, 1);
+            background: var(--card-bg-solid);
             transform: translateY(-1px);
-            box-shadow: 0 4px 20px rgba(76, 111, 89, 0.15);
+            box-shadow: 0 4px 20px var(--shadow-light);
         }
-
         .btn-small {
             padding: 0.5rem 1rem;
             font-size: 0.875rem;
         }
-
         /* Main content */
         main {
             min-height: calc(100vh - 200px);
             padding: 2rem 0;
         }
-
         .card {
-            background: rgba(247, 245, 242, 0.9);
+            background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: 24px;
             padding: 2rem;
             margin: 1rem 0;
-            box-shadow: 0 8px 32px rgba(76, 111, 89, 0.08);
-            border: 1px solid rgba(76, 111, 89, 0.1);
+            box-shadow: 0 8px 32px var(--shadow-light);
+            border: 1px solid var(--border-color);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         .card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(76, 111, 89, 0.12);
+            box-shadow: 0 20px 40px var(--shadow-medium);
         }
-
         /* Dashboard specific styles */
         .dashboard-header {
             display: flex;
@@ -230,33 +348,29 @@
             align-items: center;
             margin-bottom: 2rem;
         }
-
         .dashboard-title {
             font-size: 2.5rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin: 0;
+            transition: background 0.3s ease;
         }
-
         .user-greeting {
             font-size: 1.125rem;
-            color: #81a594;
+            color: var(--text-accent);
             margin-bottom: 0.5rem;
         }
-
         /* Grid layouts */
         .grid {
             display: grid;
             gap: 1.5rem;
         }
-
         .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
         .grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
         .grid-4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-
         /* Stats section */
         .stats-grid {
             display: grid;
@@ -264,18 +378,16 @@
             gap: 1.5rem;
             margin: 2rem 0;
         }
-
         .stat-card {
             text-align: center;
             padding: 2rem;
-            background: rgba(247, 245, 242, 0.9);
+            background: var(--card-bg);
             border-radius: 20px;
-            border: 1px solid rgba(76, 111, 89, 0.1);
+            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
-
         .stat-card::before {
             content: '';
             position: absolute;
@@ -283,122 +395,105 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-
         .stat-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(76, 111, 89, 0.1);
+            box-shadow: 0 20px 40px var(--shadow-medium);
         }
-
         .stat-card:hover::before {
             opacity: 1;
         }
-
         .stat-number {
             font-size: 2.5rem;
             font-weight: 800;
-            color: #4c6f59;
+            color: var(--accent-primary);
             display: block;
         }
-
         .stat-label {
-            color: #81a594;
+            color: var(--text-accent);
             font-weight: 500;
             margin-top: 0.5rem;
         }
-
         .stat-icon {
             font-size: 2rem;
             margin-bottom: 1rem;
             opacity: 0.8;
         }
-
         /* Product management */
         .product-list {
-            background: rgba(247, 245, 242, 0.9);
+            background: var(--card-bg);
             border-radius: 20px;
             padding: 1.5rem;
             margin: 1rem 0;
         }
-
         .product-item {
             display: flex;
             align-items: center;
             padding: 1rem;
             border-radius: 12px;
             margin-bottom: 1rem;
-            background: rgba(255, 255, 255, 0.5);
+            background: var(--product-card-bg);
             transition: all 0.3s ease;
         }
-
         .product-item:hover {
-            background: rgba(255, 255, 255, 0.8);
+            background: var(--card-bg-solid);
             transform: translateX(4px);
         }
-
         .product-item:last-child {
             margin-bottom: 0;
         }
-
         .product-thumbnail {
             width: 60px;
             height: 60px;
             border-radius: 12px;
-            background: linear-gradient(135deg, #e8e4df, #f0ede8);
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
             margin-right: 1rem;
         }
-
         .product-details {
             flex: 1;
         }
-
         .product-name {
             font-weight: 600;
-            color: #2d3436;
+            color: var(--text-primary);
             margin-bottom: 0.25rem;
         }
-
         .product-meta {
             font-size: 0.875rem;
-            color: #81a594;
+            color: var(--text-accent);
             display: flex;
             gap: 1rem;
         }
-
         .product-actions {
             display: flex;
             gap: 0.5rem;
         }
-
         /* Activity feed */
         .activity-item {
             display: flex;
             align-items: flex-start;
             padding: 1rem;
-            border-left: 3px solid rgba(76, 111, 89, 0.2);
+            border-left: 3px solid var(--border-color);
             margin-bottom: 1rem;
-            background: rgba(255, 255, 255, 0.3);
+            background: var(--activity-bg);
             border-radius: 0 12px 12px 0;
             transition: all 0.3s ease;
         }
-
         .activity-item:hover {
-            border-left-color: #4c6f59;
-            background: rgba(255, 255, 255, 0.5);
+            border-left-color: var(--accent-primary);
+            background: var(--activity-hover);
         }
-
         .activity-icon {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             color: white;
             display: flex;
             align-items: center;
@@ -406,27 +501,23 @@
             margin-right: 1rem;
             font-size: 1.2rem;
         }
-
         .activity-content h4 {
-            color: #2d3436;
+            color: var(--text-primary);
             margin-bottom: 0.25rem;
             font-size: 0.95rem;
         }
-
         .activity-content p {
-            color: #81a594;
+            color: var(--text-accent);
             font-size: 0.875rem;
             margin-bottom: 0.25rem;
         }
-
         .activity-time {
-            color: #a8a8a8;
+            color: var(--text-secondary);
             font-size: 0.75rem;
         }
-
         /* Sustainability indicators */
         .eco-badge {
-            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             color: white;
             padding: 0.25rem 0.75rem;
             border-radius: 12px;
@@ -437,12 +528,10 @@
             gap: 0.25rem;
             margin-top: 0.75rem;
         }
-
         .eco-badge::before {
             content: '🌱';
             font-size: 0.875rem;
         }
-
         /* Status badges */
         .status-badge {
             padding: 0.25rem 0.75rem;
@@ -453,22 +542,18 @@
             align-items: center;
             gap: 0.25rem;
         }
-
         .status-delivered {
-            background: rgba(76, 111, 89, 0.1);
-            color: #2d5a3d;
+            background: var(--status-delivered-bg);
+            color: var(--status-delivered-color);
         }
-
         .status-shipped {
-            background: rgba(0, 123, 255, 0.1);
-            color: #0056b3;
+            background: var(--status-shipped-bg);
+            color: var(--status-shipped-color);
         }
-
         .status-pending {
-            background: rgba(255, 193, 7, 0.1);
-            color: #856404;
+            background: var(--status-pending-bg);
+            color: var(--status-pending-color);
         }
-
         /* Wishlist styles */
         .wishlist-item {
             display: flex;
@@ -476,16 +561,14 @@
             padding: 1rem;
             border-radius: 12px;
             margin-bottom: 1rem;
-            background: rgba(255, 255, 255, 0.5);
+            background: var(--wishlist-bg);
             transition: all 0.3s ease;
             position: relative;
         }
-
         .wishlist-item:hover {
-            background: rgba(255, 255, 255, 0.8);
+            background: var(--wishlist-hover);
             transform: translateX(4px);
         }
-
         .wishlist-item::before {
             content: '❤️';
             position: absolute;
@@ -493,17 +576,14 @@
             right: 0.5rem;
             font-size: 0.875rem;
         }
-
         /* Animations */
         .fade-in {
             animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         /* Loading states */
         .loading {
             display: inline-block;
@@ -511,125 +591,171 @@
             height: 20px;
             border: 2px solid rgba(76, 111, 89, 0.3);
             border-radius: 50%;
-            border-top-color: #4c6f59;
+            border-top-color: var(--accent-primary);
             animation: spin 1s ease-in-out infinite;
         }
-
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-
         /* Progress bar */
         .progress-bar {
             width: 100%;
             height: 8px;
-            background: rgba(76, 111, 89, 0.1);
+            background: var(--border-color);
             border-radius: 4px;
             margin: 1rem 0;
             overflow: hidden;
         }
-
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
             border-radius: 4px;
             transition: width 2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         /* Environmental impact cards */
         .impact-card {
             text-align: center;
             padding: 1.5rem;
-            background: rgba(76, 111, 89, 0.05);
+            background: var(--impact-bg);
             border-radius: 12px;
             transition: all 0.3s ease;
-            border: 1px solid rgba(76, 111, 89, 0.1);
+            border: 1px solid var(--border-color);
         }
-
         .impact-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(76, 111, 89, 0.08);
+            box-shadow: 0 8px 20px var(--shadow-light);
         }
-
         .impact-number {
             font-size: 2rem;
             font-weight: 800;
-            color: #4c6f59;
+            color: var(--accent-primary);
         }
-
         .impact-label {
             font-size: 0.875rem;
-            color: #81a594;
+            color: var(--text-accent);
             margin: 0.5rem 0;
         }
-
         .impact-change {
             font-size: 0.75rem;
-            color: #4c6f59;
+            color: var(--accent-primary);
             font-weight: 600;
         }
-
         /* Responsive design */
         @media (max-width: 768px) {
             .nav-links {
                 gap: 1rem;
                 flex-wrap: wrap;
             }
-            
             .container {
                 padding: 0 16px;
             }
-            
             .card {
                 padding: 1.5rem;
                 margin: 0.5rem 0;
                 border-radius: 20px;
             }
-
             .dashboard-header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 1rem;
             }
-
             .dashboard-title {
                 font-size: 2rem;
             }
-
             .stats-grid {
                 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
                 gap: 1rem;
             }
-
             .stat-card {
                 padding: 1.5rem;
             }
-
             .stat-number {
                 font-size: 2rem;
             }
-
             .product-item,
             .wishlist-item {
                 flex-direction: column;
                 text-align: center;
                 gap: 1rem;
             }
-
             .product-meta {
                 justify-content: center;
             }
+            /* Ensure buttons don't overflow on tiny screens */
+            .btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.875rem;
+            }
+            .btn-small {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+            }
+            /* Adjust grid for very small screens */
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            /* Adjust activity feed */
+            .activity-item {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 1rem;
+            }
+            .activity-icon {
+                margin: 0 auto 1rem;
+            }
+            .activity-content {
+                text-align: center;
+            }
+            /* Adjust impact cards */
+            .impact-card {
+                padding: 1rem;
+            }
+            .impact-number {
+                font-size: 1.5rem;
+            }
+            .impact-label {
+                font-size: 0.75rem;
+            }
         }
-
         /* Footer */
         footer {
-            background: rgba(247, 245, 242, 0.95);
+            background: var(--card-bg-solid);
             backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(76, 111, 89, 0.1);
+            border-top: 1px solid var(--border-color);
             padding: 2rem 0;
             text-align: center;
-            color: #81a594;
+            color: var(--text-accent);
             margin-top: 4rem;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        /* Dark mode toggle button */
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.5rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            position: relative;
+            overflow: hidden;
+            margin-right: 1rem;
+        }
+        .theme-toggle:hover {
+            border-color: var(--accent-primary);
+            transform: scale(1.05);
+        }
+        .theme-toggle:active {
+            transform: scale(0.95);
+        }
+        .theme-icon {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
 </head>
@@ -639,64 +765,71 @@
             <!-- Floating elements will be added by JavaScript -->
         </div>
     </div>
-    
     <header>
         <div class="container">
             <nav>
                 <a href="/" class="logo">🌱 EcoFlow</a>
-                <ul class="nav-links">
+                <!-- Hamburger Button -->
+                <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+                <!-- Navigation Links -->
+                <ul class="nav-links" id="navLinks">
                     <li><a href="products.html">Browse</a></li>
                     <li><a href="add_product.html">Sell</a></li>
                     <li><a href="dashboard.html" class="active">Dashboard</a></li>
                     <li><a href="cart.html">Cart (2)</a></li>
-                    <li><a href="#" class="btn btn-secondary">Profile</a></li>
+                    <li>
+                        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                            <span class="theme-icon">🌙</span>
+                        </button>
+                    </li>
                     <li><a href="login.html" class="btn btn-primary">Logout</a></li>
                 </ul>
             </nav>
         </div>
     </header>
-
     <main>
         <div class="container fade-in">
             <!-- Dashboard Header -->
             <div class="dashboard-header">
                 <div>
-                    <div class="user-greeting">Welcome back, Sarah! 👋</div>
+                    <div class="user-greeting">Welcome back, {{ username }}! 👋</div>
                     <h1 class="dashboard-title">Your Eco Journey</h1>
                 </div>
                 <div>
                     <a href="products.html" class="btn btn-primary">Continue Shopping</a>
                 </div>
             </div>
-
             <!-- User Stats -->
             <section class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon">🛒</div>
-                    <span class="stat-number">18</span>
+                    <span class="stat-number">0</span>
                     <div class="stat-label">Items Purchased</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">💰</div>
-                    <span class="stat-number">₹24,750</span>
+                    <span class="stat-number">₹0</span>
                     <div class="stat-label">Money Saved vs. New</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">🌱</div>
-                    <span class="stat-number">45 kg</span>
+                    <span class="stat-number">0 kg</span>
                     <div class="stat-label">CO2 Emissions Saved</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">♻️</div>
-                    <span class="stat-number">12</span>
+                    <span class="stat-number">0</span>
                     <div class="stat-label">Items Given New Life</div>
                 </div>
             </section>
-
             <div class="grid grid-2">
                 <!-- Recent Purchases -->
                 <div class="card">
-                    <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <h2 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
                         📦 Recent Purchases
                         <span class="eco-badge">Last 30 days</span>
                     </h2>
@@ -716,7 +849,6 @@
                                 <button class="btn btn-small btn-primary">Buy Again</button>
                             </div>
                         </div>
-                        
                         <div class="product-item">
                             <div class="product-thumbnail">👕</div>
                             <div class="product-details">
@@ -731,7 +863,6 @@
                                 <button class="btn btn-small btn-secondary">Track</button>
                             </div>
                         </div>
-                        
                         <div class="product-item">
                             <div class="product-thumbnail">📚</div>
                             <div class="product-details">
@@ -752,14 +883,12 @@
                         <a href="purchases.html" class="btn btn-secondary">View All Purchases</a>
                     </div>
                 </div>
-
                 <!-- Wishlist & Saved Items -->
                 <div class="card">
-                    <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <h2 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
                         ❤️ Wishlist & Saved Items
-                        <span style="background: rgba(255, 193, 7, 0.1); color: #856404; padding: 0.25rem 0.5rem; border-radius: 8px; font-size: 0.75rem;">8 items</span>
+                        <span style="background: var(--status-pending-bg); color: var(--status-pending-color); padding: 0.25rem 0.5rem; border-radius: 8px; font-size: 0.75rem;">8 items</span>
                     </h2>
-                    
                     <div class="product-list">
                         <div class="wishlist-item">
                             <div class="product-thumbnail">💻</div>
@@ -767,7 +896,7 @@
                                 <div class="product-name">MacBook Air M1 - Like New</div>
                                 <div class="product-meta">
                                     <span>₹68,999</span>
-                                    <span style="color: #4c6f59;">Price dropped ₹5,000!</span>
+                                    <span style="color: var(--accent-primary);">Price dropped ₹5,000!</span>
                                 </div>
                             </div>
                             <div class="product-actions">
@@ -775,28 +904,26 @@
                                 <button class="btn btn-small btn-secondary">Remove</button>
                             </div>
                         </div>
-                        
                         <div class="wishlist-item">
                             <div class="product-thumbnail">🎮</div>
                             <div class="product-details">
                                 <div class="product-name">PlayStation 5 Console</div>
                                 <div class="product-meta">
                                     <span>₹42,000</span>
-                                    <span style="color: #81a594;">Watching for better price</span>
+                                    <span style="color: var(--text-accent);">Watching for better price</span>
                                 </div>
                             </div>
                             <div class="product-actions">
                                 <button class="btn btn-small btn-secondary">Notify Me</button>
                             </div>
                         </div>
-                        
                         <div class="wishlist-item">
                             <div class="product-thumbnail">🎸</div>
                             <div class="product-details">
                                 <div class="product-name">Acoustic Guitar - Yamaha</div>
                                 <div class="product-meta">
                                     <span>₹8,500</span>
-                                    <span style="color: #81a594;">Similar items available</span>
+                                    <span style="color: var(--text-accent);">Similar items available</span>
                                 </div>
                             </div>
                             <div class="product-actions">
@@ -809,10 +936,9 @@
                     </div>
                 </div>
             </div>
-
             <!-- Recent Activity -->
             <div class="card">
-                <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.5rem;">📈 Recent Activity</h2>
+                <h2 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.5rem;">📈 Recent Activity</h2>
                 <div class="grid grid-2">
                     <div>
                         <div class="activity-item">
@@ -823,7 +949,6 @@
                                 <div class="activity-time">3 days ago</div>
                             </div>
                         </div>
-                        
                         <div class="activity-item">
                             <div class="activity-icon">❤️</div>
                             <div class="activity-content">
@@ -832,7 +957,6 @@
                                 <div class="activity-time">5 days ago</div>
                             </div>
                         </div>
-                        
                         <div class="activity-item">
                             <div class="activity-icon">💬</div>
                             <div class="activity-content">
@@ -842,7 +966,6 @@
                             </div>
                         </div>
                     </div>
-                    
                     <div>
                         <div class="activity-item">
                             <div class="activity-icon">🔍</div>
@@ -852,7 +975,6 @@
                                 <div class="activity-time">1 week ago</div>
                             </div>
                         </div>
-                        
                         <div class="activity-item">
                             <div class="activity-icon">⭐</div>
                             <div class="activity-content">
@@ -861,7 +983,6 @@
                                 <div class="activity-time">2 weeks ago</div>
                             </div>
                         </div>
-                        
                         <div class="activity-item">
                             <div class="activity-icon">🎯</div>
                             <div class="activity-content">
@@ -873,72 +994,66 @@
                     </div>
                 </div>
             </div>
-
             <!-- Environmental Impact -->
             <div class="card">
-                <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.5rem;">🌍 Your Environmental Impact</h2>
+                <h2 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.5rem;">🌍 Your Environmental Impact</h2>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
                     <div class="impact-card">
-                        <div class="impact-number">18</div>
+                        <div class="impact-number">0</div>
                         <div class="impact-label">Items Saved from Waste</div>
-                        <div class="impact-change">+3 this month</div>
+                        <div class="impact-change">+0 this month</div>
                     </div>
                     <div class="impact-card">
-                        <div class="impact-number">2,300L</div>
+                        <div class="impact-number">0L</div>
                         <div class="impact-label">Water Conserved</div>
-                        <div class="impact-change">+450L this month</div>
+                        <div class="impact-change">+0L this month</div>
                     </div>
                     <div class="impact-card">
-                        <div class="impact-number">15</div>
+                        <div class="impact-number">0</div>
                         <div class="impact-label">Trees Equivalent Saved</div>
-                        <div class="impact-change">+2 this month</div>
+                        <div class="impact-change">+0 this month</div>
                     </div>
                     <div class="impact-card">
-                        <div class="impact-number">89%</div>
+                        <div class="impact-number">0%</div>
                         <div class="impact-label">Sustainability Score</div>
-                        <div class="impact-change">+5% this month</div>
+                        <div class="impact-change">+0% this month</div>
                     </div>
                 </div>
-                
                 <!-- Progress towards goals -->
-                <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(76, 111, 89, 0.05); border-radius: 12px;">
-                    <h3 style="color: #2d3436; margin-bottom: 1rem; font-size: 1.25rem;">🎯 Monthly Goals Progress</h3>
-                    
+                <div style="margin-top: 2rem; padding: 1.5rem; background: var(--impact-bg); border-radius: 12px;">
+                    <h3 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.25rem;">🎯 Monthly Goals Progress</h3>
                     <div style="margin-bottom: 1.5rem;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                            <span style="color: #4c6f59; font-weight: 600;">Purchase 5 Pre-owned Items</span>
-                            <span style="color: #81a594; font-size: 0.875rem;">3/5 completed</span>
+                            <span style="color: var(--accent-primary); font-weight: 600;">Purchase 5 Pre-owned Items</span>
+                            <span style="color: var(--text-accent); font-size: 0.875rem;">0/5 completed</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: 60%"></div>
+                            <div class="progress-fill" style="width: 0%"></div>
                         </div>
                     </div>
-                    
                     <div style="margin-bottom: 1.5rem;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                            <span style="color: #4c6f59; font-weight: 600;">Save ₹10,000 vs New Prices</span>
-                            <span style="color: #81a594; font-size: 0.875rem;">₹8,249/₹10,000</span>
+                            <span style="color: var(--accent-primary); font-weight: 600;">Save ₹10,000 vs New Prices</span>
+                            <span style="color: var(--text-accent); font-size: 0.875rem;">₹0/₹10,000</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: 82%"></div>
+                            <div class="progress-fill" style="width: 0%"></div>
                         </div>
                     </div>
-                    
                     <div style="margin-bottom: 0;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                            <span style="color: #4c6f59; font-weight: 600;">Reduce Carbon Footprint by 50kg</span>
-                            <span style="color: #81a594; font-size: 0.875rem;">45kg/50kg saved</span>
+                            <span style="color: var(--accent-primary); font-weight: 600;">Reduce Carbon Footprint by 50kg</span>
+                            <span style="color: var(--text-accent); font-size: 0.875rem;">0kg/50kg saved</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: 90%"></div>
+                            <div class="progress-fill" style="width: 0%"></div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- Quick Actions -->
             <div class="card">
-                <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.5rem;">⚡ Quick Actions</h2>
+                <h2 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.5rem;">⚡ Quick Actions</h2>
                 <div class="grid grid-4">
                     <button class="btn btn-primary" onclick="window.location.href='/products'">
                         🔍 Browse Products
@@ -954,36 +1069,54 @@
                     </button>
                 </div>
             </div>
-
+            <!-- CRUD Operations Management -->
+            <div class="card">
+                <h2 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.5rem;">🛠️ Manage Your Items (CRUD)</h2>
+                <div class="grid grid-4">
+                    <button class="btn btn-primary" onclick="window.location.href='/add_product'">
+                        ➕ Create (Add New)
+                    </button>
+                    <button class="btn btn-secondary" onclick="window.location.href='/my_products'">
+                        📖 Read (View My Items)
+                    </button>
+                    <button class="btn btn-secondary" onclick="alert('Navigate to your item list, then select an item to update.')">
+                        ✏️ Update (Edit Item)
+                    </button>
+                    <button class="btn btn-secondary" onclick="alert('Navigate to your item list, then select an item to delete.')">
+                        🗑️ Delete (Remove Item)
+                    </button>
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-secondary); font-size: 0.875rem; text-align: center;">
+                    Manage all your listed products from one place.
+                </p>
+            </div>
             <!-- Recommendations -->
             <div class="card">
-                <h2 style="color: #2d3436; margin-bottom: 1.5rem; font-size: 1.5rem;">✨ Recommended for You</h2>
+                <h2 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.5rem;">✨ Recommended for You</h2>
                 <div class="grid grid-3">
                     <div class="product-item" style="flex-direction: column; text-align: center; padding: 1.5rem;">
                         <div class="product-thumbnail" style="margin: 0 auto 1rem;">📷</div>
                         <div class="product-name">Canon EOS Camera</div>
                         <div class="product-meta" style="justify-content: center; margin: 0.5rem 0;">
-                            <span style="font-weight: 600; color: #4c6f59;">₹18,999</span>
+                            <span style="font-weight: 600; color: var(--accent-primary);">₹18,999</span>
                             <span class="eco-badge">85% condition</span>
                         </div>
                         <button class="btn btn-small btn-primary" style="margin-top: 0.5rem;">View Details</button>
                     </div>
-                    
                     <div class="product-item" style="flex-direction: column; text-align: center; padding: 1.5rem;">
                         <div class="product-thumbnail" style="margin: 0 auto 1rem;">🎧</div>
                         <div class="product-name">Sony WH-1000XM4</div>
                         <div class="product-meta" style="justify-content: center; margin: 0.5rem 0;">
-                            <span style="font-weight: 600; color: #4c6f59;">₹12,499</span>
+                            <span style="font-weight: 600; color: var(--accent-primary);">₹12,499</span>
                             <span class="eco-badge">90% condition</span>
                         </div>
                         <button class="btn btn-small btn-primary" style="margin-top: 0.5rem;">View Details</button>
                     </div>
-                    
                     <div class="product-item" style="flex-direction: column; text-align: center; padding: 1.5rem;">
                         <div class="product-thumbnail" style="margin: 0 auto 1rem;">⌚</div>
                         <div class="product-name">Apple Watch Series 7</div>
                         <div class="product-meta" style="justify-content: center; margin: 0.5rem 0;">
-                            <span style="font-weight: 600; color: #4c6f59;">₹22,999</span>
+                            <span style="font-weight: 600; color: var(--accent-primary);">₹22,999</span>
                             <span class="eco-badge">95% condition</span>
                         </div>
                         <button class="btn btn-small btn-primary" style="margin-top: 0.5rem;">View Details</button>
@@ -992,211 +1125,265 @@
             </div>
         </div>
     </main>
-
     <footer>
         <div class="container">
             <p>&copy; 2024 EcoFlow. Making sustainable choices accessible to everyone. 🌱</p>
             <p style="margin-top: 0.5rem; font-size: 0.875rem;">
-                Together, we've saved <strong>2.3M kg CO₂</strong> and <strong>₹45.2Cr</strong> this year!
+                Together, we've saved <strong>0 kg CO₂</strong> and <strong>₹0</strong> this year!
             </p>
         </div>
     </footer>
-
     <script>
-        // Create floating background elements
-        function createFloatingElements() {
-            const container = document.getElementById('floatingElements');
-            const numElements = 15;
-            
-            for (let i = 0; i < numElements; i++) {
-                const element = document.createElement('div');
-                element.className = 'floating-element';
-                
-                // Random size between 20px and 80px
-                const size = Math.random() * 60 + 20;
-                element.style.width = size + 'px';
-                element.style.height = size + 'px';
-                
-                // Random horizontal position
-                element.style.left = Math.random() * 100 + '%';
-                
-                // Random animation delay
-                element.style.animationDelay = Math.random() * 25 + 's';
-                
-                // Random opacity
-                element.style.opacity = Math.random() * 0.1 + 0.02;
-                
-                container.appendChild(element);
-            }
-        }
+    // Dark mode functionality (Unchanged)
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.querySelector('.theme-icon');
+    const html = document.documentElement;
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
 
-        // Animate numbers counting up
-        function animateNumbers() {
-            const numbers = document.querySelectorAll('.stat-number');
-            
-            numbers.forEach(number => {
-                const target = number.textContent;
-                let current = 0;
-                const increment = parseInt(target.replace(/[₹,kg\s]/g, '')) / 50;
-                
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= parseInt(target.replace(/[₹,kg\s]/g, ''))) {
-                        number.textContent = target;
-                        clearInterval(timer);
+    themeToggle.addEventListener('click', function() {
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme);
+        this.style.transform = 'scale(0.9)';
+        setTimeout(() => { this.style.transform = 'scale(1)'; }, 150);
+    });
+
+    function updateThemeIcon(theme) {
+        themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+        themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+
+    // Create floating background elements (Unchanged)
+    function createFloatingElements() {
+        const container = document.getElementById('floatingElements');
+        const numElements = 15;
+        for (let i = 0; i < numElements; i++) {
+            const element = document.createElement('div');
+            element.className = 'floating-element';
+            const size = Math.random() * 60 + 20;
+            element.style.width = size + 'px';
+            element.style.height = size + 'px';
+            element.style.left = Math.random() * 100 + '%';
+            element.style.animationDelay = Math.random() * 25 + 's';
+            element.style.opacity = Math.random() * 0.1 + 0.02;
+            container.appendChild(element);
+        }
+    }
+
+    // Animate numbers counting up (Unchanged)
+    function animateNumbers() {
+        const numbers = document.querySelectorAll('.stat-number');
+        numbers.forEach(number => {
+            const target = number.textContent;
+            let current = 0;
+            const increment = parseInt(target.replace(/[₹,kg\s]/g, '')) / 50;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= parseInt(target.replace(/[₹,kg\s]/g, ''))) {
+                    number.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    if (target.includes('₹')) {
+                        number.textContent = '₹' + Math.floor(current).toLocaleString();
+                    } else if (target.includes('kg')) {
+                        number.textContent = Math.floor(current) + ' kg';
                     } else {
-                        if (target.includes('₹')) {
-                            number.textContent = '₹' + Math.floor(current).toLocaleString();
-                        } else if (target.includes('kg')) {
-                            number.textContent = Math.floor(current) + ' kg';
-                        } else {
-                            number.textContent = Math.floor(current);
-                        }
+                        number.textContent = Math.floor(current);
                     }
-                }, 50);
-            });
-        }
+                }
+            }, 50);
+        });
+    }
 
-        // Progress bar animation
-        function animateProgressBars() {
-            const progressBars = document.querySelectorAll('.progress-fill');
-            
-            progressBars.forEach((bar, index) => {
-                setTimeout(() => {
-                    const width = bar.style.width;
-                    bar.style.width = '0%';
-                    setTimeout(() => {
-                        bar.style.width = width;
-                    }, 100);
-                }, index * 200);
-            });
-        }
-
-        // Add click animations to buttons
-        function addButtonAnimations() {
-            const buttons = document.querySelectorAll('.btn');
-            
-            buttons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    const ripple = document.createElement('span');
-                    const rect = this.getBoundingClientRect();
-                    const size = Math.max(rect.width, rect.height);
-                    const x = e.clientX - rect.left - size / 2;
-                    const y = e.clientY - rect.top - size / 2;
-                    
-                    ripple.style.cssText = `
-                        position: absolute;
-                        border-radius: 50%;
-                        background: rgba(255, 255, 255, 0.6);
-                        transform: scale(0);
-                        animation: ripple 0.6s linear;
-                        left: ${x}px;
-                        top: ${y}px;
-                        width: ${size}px;
-                        height: ${size}px;
-                    `;
-                    
-                    this.appendChild(ripple);
-                    
-                    setTimeout(() => {
-                        ripple.remove();
-                    }, 600);
-                });
-            });
-        }
-
-        // Add hover effects to cards
-        function addCardHoverEffects() {
-            const cards = document.querySelectorAll('.card, .stat-card, .impact-card');
-            
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-4px) scale(1.02)';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0) scale(1)';
-                });
-            });
-        }
-
-        // Mobile menu toggle (if needed)
-        function setupMobileMenu() {
-            // Add mobile menu functionality if needed
-        }
-
-        // Update time stamps dynamically
-        function updateTimeStamps() {
-            const timeElements = document.querySelectorAll('.activity-time');
-            // This would typically update with real-time data
-            // For demo purposes, keeping static
-        }
-
-        // Initialize all animations and interactions
-        function init() {
-            createFloatingElements();
-            
-            // Delay animations for better UX
+    // Progress bar animation (Unchanged)
+    function animateProgressBars() {
+        const progressBars = document.querySelectorAll('.progress-fill');
+        progressBars.forEach((bar, index) => {
             setTimeout(() => {
-                animateNumbers();
-                animateProgressBars();
-            }, 500);
-            
-            addButtonAnimations();
-            addCardHoverEffects();
-            setupMobileMenu();
-            updateTimeStamps();
-        }
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => { bar.style.width = width; }, 100);
+            }, index * 200);
+        });
+    }
 
-        // Add CSS for ripple effect
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-            
-            .btn {
-                position: relative;
-                overflow: hidden;
-            }
-            
-            /* Additional smooth animations */
-            .product-item, .wishlist-item, .activity-item {
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            }
-            
-            /* Scroll animations */
-            @keyframes slideInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-            
-            .fade-in > * {
-                animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            }
-            
-            .fade-in > *:nth-child(1) { animation-delay: 0.1s; }
-            .fade-in > *:nth-child(2) { animation-delay: 0.2s; }
-            .fade-in > *:nth-child(3) { animation-delay: 0.3s; }
-            .fade-in > *:nth-child(4) { animation-delay: 0.4s; }
-        `;
-        document.head.appendChild(style);
+    // Add click animations to buttons (Unchanged)
+    function addButtonAnimations() {
+        const buttons = document.querySelectorAll('.btn');
+        buttons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.6);
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    left: ${x}px;
+                    top: ${y}px;
+                    width: ${size}px;
+                    height: ${size}px;
+                `;
+                this.appendChild(ripple);
+                setTimeout(() => { ripple.remove(); }, 600);
+            });
+        });
+    }
 
-        // Initialize when DOM is loaded
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
-        } else {
-            init();
+    // Add hover effects to cards (Unchanged)
+    function addCardHoverEffects() {
+        const cards = document.querySelectorAll('.card, .stat-card, .impact-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-4px) scale(1.02)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    }
+
+    // Mobile menu toggle (Unchanged)
+    function setupMobileMenu() {
+        const hamburger = document.getElementById('hamburgerBtn');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+        const navLinksItems = navLinks.querySelectorAll('a');
+        navLinksItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+            });
+        });
+    }
+
+    // Update time stamps dynamically (Unchanged)
+    function updateTimeStamps() {}
+
+    // =========== NEW INTERACTIVE FEATURES ===========
+
+    // Function to add parallax effect to the background
+    function addBackgroundParallax() {
+        const bgContainer = document.querySelector('.bg-container');
+        let ticking = false;
+
+        document.addEventListener('mousemove', (e) => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    // Calculate movement based on mouse position
+                    // The multiplier (0.5) controls the intensity of the parallax
+                    const x = (window.innerWidth / 2 - e.clientX) / 50;
+                    const y = (window.innerHeight / 2 - e.clientY) / 50;
+
+                    bgContainer.style.transform = `translate(${x}px, ${y}px)`;
+
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // Reset the background position when the mouse leaves the window
+        document.addEventListener('mouseleave', () => {
+            bgContainer.style.transform = 'translate(0px, 0px)';
+        });
+    }
+
+    // Function to add a ripple effect on background click
+    function addBackgroundRippleEffect() {
+        const bgContainer = document.querySelector('.bg-container');
+
+        bgContainer.addEventListener('click', (e) => {
+            // Create a new ripple element
+            const ripple = document.createElement('div');
+            ripple.className = 'bg-ripple';
+
+            // Position the ripple at the click coordinates
+            ripple.style.left = `${e.clientX}px`;
+            ripple.style.top = `${e.clientY}px`;
+
+            // Randomize size for variety
+            const size = Math.random() * 200 + 100;
+            ripple.style.width = `${size}px`;
+            ripple.style.height = `${size}px`;
+
+            // Append to the background container
+            bgContainer.appendChild(ripple);
+
+            // Remove the ripple element after the animation completes
+            setTimeout(() => {
+                ripple.remove();
+            }, 1000);
+        });
+    }
+
+    // Initialize all animations and interactions
+    function init() {
+        createFloatingElements();
+        setTimeout(() => {
+            animateNumbers();
+            animateProgressBars();
+        }, 500);
+        addButtonAnimations();
+        addCardHoverEffects();
+        setupMobileMenu();
+        updateTimeStamps();
+
+        // Initialize the new interactive features
+        addBackgroundParallax();
+        addBackgroundRippleEffect();
+    }
+
+    // Add CSS for ripple effect (Unchanged)
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
         }
-    </script>
+        .btn {
+            position: relative;
+            overflow: hidden;
+        }
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .fade-in > * {
+            animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        .fade-in > *:nth-child(1) { animation-delay: 0.1s; }
+        .fade-in > *:nth-child(2) { animation-delay: 0.2s; }
+        .fade-in > *:nth-child(3) { animation-delay: 0.3s; }
+        .fade-in > *:nth-child(4) { animation-delay: 0.4s; }
+    `;
+    document.head.appendChild(style);
+
+    // Initialize when DOM is loaded
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+</script>
 </body>
 </html>

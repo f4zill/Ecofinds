@@ -4,6 +4,7 @@ import MySQLdb.cursors
 import re
 import os
 from werkzeug.utils import secure_filename
+from functools import wraps  # Added for login_required decorator
 
 app = Flask(__name__)
 
@@ -31,6 +32,19 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # ========================
+# DECORATORS
+# ========================
+
+# A simple decorator to check if user is logged in
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'loggedin' not in session:  # We're using 'loggedin' as the main flag
+            return redirect(url_for('login'))  # Redirect to login if not logged in
+        return f(*args, **kwargs)
+    return decorated_function
+
+# ========================
 # ROUTES
 # ========================
 
@@ -45,7 +59,7 @@ def home():
 
     # Base query
     query = """
-        SELECT p.id, p.title, p.description, p.price, p.category, p.image_url, u.username as seller_name
+        SELECT p.id, p.title, p.description, p.price, p.category, p.image_url, p.location, u.username as seller_name
         FROM products p
         JOIN users u ON p.user_id = u.id
         WHERE p.is_active = 1
@@ -117,7 +131,7 @@ def login():
         if account:
             session['loggedin'] = True
             session['id'] = account['id']
-            session['username'] = account['username']
+            session['username'] = account['username']  # Store username in session
             session['email'] = account['email']
             return redirect(url_for('home'))
         else:
@@ -130,15 +144,16 @@ def login():
 def logout():
     session.pop('loggedin', None)
     session.pop('id', None)
-    session.pop('username', None)
+    session.pop('username', None)  # Clear username from session
     session.pop('email', None)
     return redirect(url_for('login'))
 
 # --- User Dashboard (Profile) ---
 @app.route('/dashboard', methods=['GET', 'POST'])
+@login_required  # Apply the login_required decorator
 def dashboard():
-    if 'loggedin' not in session:
-        return redirect(url_for('login'))
+    # Get the username from the session for the template
+    user_name = session.get('username', 'Guest')  # 'Guest' is a fallback
 
     msg = ''
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -155,7 +170,7 @@ def dashboard():
         else:
             cursor.execute('UPDATE users SET username = %s, email = %s WHERE id = %s', (username, email, session['id']))
             mysql.connection.commit()
-            session['username'] = username
+            session['username'] = username  # Update session username if changed
             session['email'] = email
             msg = 'Profile updated successfully!'
             flash(msg, 'success')
@@ -164,33 +179,25 @@ def dashboard():
     user = cursor.fetchone()
     cursor.close()
 
-    return render_template('dashboard.html', user=user, msg=msg)
+    # Pass username to template (along with user object for backward compatibility)
+    return render_template('dashboard.html', user=user, msg=msg, username=user_name)
 
 # --- Add New Product ---
 @app.route('/add_product', methods=['GET', 'POST'])
+@login_required  # Protect this route
 def add_product():
-    if 'loggedin' not in session:
-        return redirect(url_for('login'))
-
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['description']
         category = request.form['category']
         price = request.form['price']
         image_url = request.form.get('image_url', '/static/placeholder.jpg')  # Default placeholder
-
-        # In MVP, we use a text field for image URL. In future, handle file upload.
-        # if 'image' in request.files:
-        #     file = request.files['image']
-        #     if file and allowed_file(file.filename):
-        #         filename = secure_filename(file.filename)
-        #         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        #         image_url = f'/static/uploads/{filename}'
+        location = request.form.get('location', '').strip() or None
 
         cursor = mysql.connection.cursor()
         cursor.execute(
-            'INSERT INTO products (user_id, title, description, category, price, image_url, is_active) VALUES (%s, %s, %s, %s, %s, %s, %s)',
-            (session['id'], title, description, category, price, image_url, 1)
+            'INSERT INTO products (user_id, title, description, category, price, image_url, location, is_active) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)',
+            (session['id'], title, description, category, price, image_url, location, 1)
         )
         mysql.connection.commit()
         cursor.close()
@@ -201,10 +208,8 @@ def add_product():
 
 # --- My Listings (View, Edit, Delete) ---
 @app.route('/my_listings')
+@login_required  # Protect this route
 def my_listings():
-    if 'loggedin' not in session:
-        return redirect(url_for('login'))
-
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute('SELECT * FROM products WHERE user_id = %s AND is_active = 1', (session['id'],))
     products = cursor.fetchall()
@@ -214,10 +219,8 @@ def my_listings():
 
 # --- Edit Product ---
 @app.route('/edit_product/<int:id>', methods=['GET', 'POST'])
+@login_required  # Protect this route
 def edit_product(id):
-    if 'loggedin' not in session:
-        return redirect(url_for('login'))
-
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute('SELECT * FROM products WHERE id = %s AND user_id = %s', (id, session['id']))
     product = cursor.fetchone()
@@ -232,10 +235,11 @@ def edit_product(id):
         category = request.form['category']
         price = request.form['price']
         image_url = request.form.get('image_url', product['image_url'])
+        location = request.form.get('location', '').strip() or None
 
         cursor.execute(
-            'UPDATE products SET title = %s, description = %s, category = %s, price = %s, image_url = %s WHERE id = %s AND user_id = %s',
-            (title, description, category, price, image_url, id, session['id'])
+            'UPDATE products SET title = %s, description = %s, category = %s, price = %s, image_url = %s, location = %s WHERE id = %s AND user_id = %s',
+            (title, description, category, price, image_url, location, id, session['id'])
         )
         mysql.connection.commit()
         flash('Product updated successfully!', 'success')
@@ -246,10 +250,8 @@ def edit_product(id):
 
 # --- Delete Product ---
 @app.route('/delete_product/<int:id>', methods=['POST'])
+@login_required  # Protect this route
 def delete_product(id):
-    if 'loggedin' not in session:
-        return redirect(url_for('login'))
-
     cursor = mysql.connection.cursor()
     cursor.execute('UPDATE products SET is_active = 0 WHERE id = %s AND user_id = %s', (id, session['id']))
     mysql.connection.commit()
@@ -278,10 +280,8 @@ def product_detail(id):
 
 # --- Add to Cart ---
 @app.route('/add_to_cart/<int:product_id>', methods=['POST'])
+@login_required  # Protect this route
 def add_to_cart(product_id):
-    if 'loggedin' not in session:
-        return jsonify({'success': False, 'message': 'Please login to add items to cart.'})
-
     if 'cart' not in session:
         session['cart'] = []
 
@@ -308,10 +308,8 @@ def add_to_cart(product_id):
 
 # --- View Cart ---
 @app.route('/cart')
+@login_required  # Protect this route
 def view_cart():
-    if 'loggedin' not in session:
-        return redirect(url_for('login'))
-
     cart = session.get('cart', [])
     total = sum(item['price'] for item in cart)
 
@@ -319,18 +317,16 @@ def view_cart():
 
 # --- Clear Cart (for MVP) ---
 @app.route('/clear_cart', methods=['POST'])
+@login_required  # Protect this route
 def clear_cart():
-    if 'loggedin' in session:
-        session.pop('cart', None)
-        flash('Cart cleared.', 'info')
+    session.pop('cart', None)
+    flash('Cart cleared.', 'info')
     return redirect(url_for('view_cart'))
 
 # --- Simulate Purchase (MVP) ---
 @app.route('/checkout', methods=['POST'])
+@login_required  # Protect this route
 def checkout():
-    if 'loggedin' not in session:
-        return redirect(url_for('login'))
-
     cart = session.get('cart', [])
     if not cart:
         flash('Your cart is empty.', 'warning')
@@ -356,10 +352,8 @@ def checkout():
 
 # --- Previous Purchases ---
 @app.route('/previous_purchases')
+@login_required  # Protect this route
 def previous_purchases():
-    if 'loggedin' not in session:
-        return redirect(url_for('login'))
-
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute('''
         SELECT p.title, p.description, p.price, p.image_url, pur.purchase_date

@@ -8,6 +8,66 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            /* Light mode colors */
+            --bg-primary: #f5f3f0;
+            --bg-secondary: #e8e4df;
+            --bg-tertiary: #f0ede8;
+            --bg-quaternary: #f7f5f2;
+            --bg-quinary: #ede7e0;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --card-bg-solid: rgba(255, 255, 255, 0.9);
+            --header-bg: rgba(247, 245, 242, 0.95);
+            --text-primary: #2d3436;
+            --text-secondary: #636e72;
+            --text-accent: #4c6f59;
+            --accent-primary: #4c6f59;
+            --accent-secondary: #2d5a3d;
+            --input-bg: rgba(247, 245, 242, 0.8);
+            --input-focus: rgba(247, 245, 242, 0.95);
+            --border-color: rgba(76, 111, 89, 0.1);
+            --border-color-focus: #4c6f59;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.12);
+            --floating-bg: rgba(76, 111, 89, 0.08);
+            --upload-bg: rgba(76, 111, 89, 0.02);
+            --upload-hover: rgba(76, 111, 89, 0.05);
+            --condition-bg: rgba(247, 245, 242, 0.7);
+            --condition-selected: rgba(76, 111, 89, 0.1);
+            --tag-bg: rgba(247, 245, 242, 0.9);
+            --tips-bg: rgba(76, 111, 89, 0.05);
+        }
+
+        [data-theme="dark"] {
+            /* Dark mode colors */
+            --bg-primary: #1a1f1c;
+            --bg-secondary: #232a26;
+            --bg-tertiary: #2a332e;
+            --bg-quaternary: #1e2420;
+            --bg-quinary: #252b28;
+            --card-bg: rgba(42, 51, 46, 0.8);
+            --card-bg-solid: rgba(42, 51, 46, 0.9);
+            --header-bg: rgba(42, 51, 46, 0.95);
+            --text-primary: #e8f1eb;
+            --text-secondary: #b8c5bc;
+            --text-accent: #8fae9a;
+            --accent-primary: #6b8f76;
+            --accent-secondary: #8fae9a;
+            --input-bg: rgba(42, 51, 46, 0.7);
+            --input-focus: rgba(42, 51, 46, 0.9);
+            --border-color: rgba(143, 174, 154, 0.2);
+            --border-color-focus: #6b8f76;
+            --shadow-light: rgba(0, 0, 0, 0.2);
+            --shadow-medium: rgba(0, 0, 0, 0.3);
+            --floating-bg: rgba(143, 174, 154, 0.08);
+            --upload-bg: rgba(143, 174, 154, 0.05);
+            --upload-hover: rgba(143, 174, 154, 0.1);
+            --condition-bg: rgba(42, 51, 46, 0.5);
+            --condition-selected: rgba(107, 143, 118, 0.2);
+            --tag-bg: rgba(42, 51, 46, 0.5);
+            --tips-bg: rgba(107, 143, 118, 0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -17,9 +77,11 @@
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
-            color: #2d3436;
-            background: #f5f3f0;
+            color: var(--text-primary);
+            background: var(--bg-primary);
             overflow-x: hidden;
+            transition: color 0.3s ease, background-color 0.3s ease;
+            -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape on iOS */
         }
 
         /* Earth-toned animated background */
@@ -30,9 +92,10 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: linear-gradient(135deg, #f5f3f0 0%, #e8e4df 25%, #f0ede8 50%, #f7f5f2 75%, #ede7e0 100%);
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 25%, var(--bg-tertiary) 50%, var(--bg-quaternary) 75%, var(--bg-quinary) 100%);
             background-size: 400% 400%;
             animation: gradientShift 25s ease infinite;
+            transition: background 0.3s ease;
         }
 
         @keyframes gradientShift {
@@ -50,9 +113,10 @@
 
         .floating-element {
             position: absolute;
-            background: rgba(76, 111, 89, 0.08);
+            background: var(--floating-bg);
             border-radius: 50%;
             animation: float 25s infinite linear;
+            transition: background-color 0.3s ease;
         }
 
         @keyframes float {
@@ -72,32 +136,36 @@
 
         /* Warm glass morphism header */
         header {
-            background: rgba(247, 245, 242, 0.95);
+            background: var(--header-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(76, 111, 89, 0.1);
+            border-bottom: 1px solid var(--border-color);
             padding: 1rem 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 32px rgba(76, 111, 89, 0.08);
+            box-shadow: 0 4px 32px var(--shadow-light);
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .logo {
             font-size: 1.75rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-decoration: none;
             letter-spacing: -0.02em;
+            transition: opacity 0.3s ease;
         }
 
         .nav-links {
@@ -105,11 +173,13 @@
             list-style: none;
             gap: 2rem;
             align-items: center;
+            margin: 0;
+            padding: 0;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: #4c6f59;
+            color: var(--text-accent);
             font-weight: 500;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
@@ -123,16 +193,40 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
             transition: width 0.3s ease;
         }
 
         .nav-links a:hover {
-            color: #2d5a3d;
+            color: var(--accent-secondary);
         }
 
         .nav-links a:hover::after {
             width: 100%;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+            border: none;
+            background: transparent;
+            z-index: 101;
+            transition: all 0.3s ease;
+            width: 35px;
+            height: 30px;
+            justify-content: space-around;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background-color: var(--text-primary);
+            transition: 0.3s;
+            border-radius: 2px;
+            position: relative;
         }
 
         /* Earth-toned button styles */
@@ -169,7 +263,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             color: #ffffff;
             box-shadow: 0 4px 20px rgba(76, 111, 89, 0.25);
         }
@@ -180,16 +274,16 @@
         }
 
         .btn-secondary {
-            background: rgba(247, 245, 242, 0.9);
-            color: #4c6f59;
-            border: 1px solid rgba(76, 111, 89, 0.2);
+            background: var(--tag-bg);
+            color: var(--text-accent);
+            border: 1px solid var(--border-color);
             backdrop-filter: blur(10px);
         }
 
         .btn-secondary:hover {
-            background: rgba(247, 245, 242, 1);
+            background: var(--card-bg-solid);
             transform: translateY(-1px);
-            box-shadow: 0 4px 20px rgba(76, 111, 89, 0.15);
+            box-shadow: 0 4px 20px var(--shadow-light);
         }
 
         /* Main content */
@@ -199,20 +293,20 @@
         }
 
         .card {
-            background: rgba(247, 245, 242, 0.9);
+            background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: 24px;
             padding: 2rem;
             margin: 1rem 0;
-            box-shadow: 0 8px 32px rgba(76, 111, 89, 0.08);
-            border: 1px solid rgba(76, 111, 89, 0.1);
+            box-shadow: 0 8px 32px var(--shadow-light);
+            border: 1px solid var(--border-color);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(76, 111, 89, 0.12);
+            box-shadow: 0 20px 40px var(--shadow-medium);
         }
 
         /* Form styles with earth tones */
@@ -224,31 +318,31 @@
             display: block;
             margin-bottom: 0.75rem;
             font-weight: 600;
-            color: #4c6f59;
+            color: var(--text-accent);
             font-size: 0.95rem;
         }
 
         .form-input {
             width: 100%;
             padding: 1rem 1.25rem;
-            border: 2px solid rgba(76, 111, 89, 0.15);
+            border: 2px solid var(--border-color);
             border-radius: 16px;
             font-size: 1rem;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: rgba(247, 245, 242, 0.8);
+            background: var(--input-bg);
             backdrop-filter: blur(10px);
-            color: #2d3436;
+            color: var(--text-primary);
         }
 
         .form-input:focus {
             outline: none;
-            border-color: #4c6f59;
+            border-color: var(--border-color-focus);
             box-shadow: 0 0 0 4px rgba(76, 111, 89, 0.1);
-            background: rgba(247, 245, 242, 0.95);
+            background: var(--input-focus);
         }
 
         .form-input::placeholder {
-            color: #81a594;
+            color: var(--text-secondary);
         }
 
         /* Grid layouts */
@@ -263,11 +357,11 @@
 
         /* Sustainable product cards */
         .product-card {
-            background: rgba(247, 245, 242, 0.95);
+            background: var(--card-bg-solid);
             border-radius: 20px;
             overflow: hidden;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(76, 111, 89, 0.1);
+            border: 1px solid var(--border-color);
             backdrop-filter: blur(20px);
             position: relative;
         }
@@ -279,14 +373,14 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
         .product-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(76, 111, 89, 0.15);
+            box-shadow: 0 20px 40px var(--shadow-medium);
         }
 
         .product-card:hover::before {
@@ -297,11 +391,11 @@
             width: 100%;
             height: 220px;
             object-fit: cover;
-            background: linear-gradient(135deg, #e8e4df, #f0ede8);
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #81a594;
+            color: var(--text-secondary);
             font-size: 3rem;
         }
 
@@ -313,14 +407,14 @@
             font-size: 1.125rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
-            color: #2d3436;
+            color: var(--text-primary);
             line-height: 1.4;
         }
 
         .product-price {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #4c6f59;
+            color: var(--text-accent);
             margin-bottom: 0.75rem;
         }
 
@@ -330,9 +424,9 @@
             border-radius: 20px;
             font-size: 0.875rem;
             font-weight: 500;
-            background: rgba(76, 111, 89, 0.1);
-            color: #2d5a3d;
-            border: 1px solid rgba(76, 111, 89, 0.2);
+            background: var(--condition-selected);
+            color: var(--accent-secondary);
+            border: 1px solid var(--border-color);
         }
 
         /* Sustainable alert messages */
@@ -346,8 +440,8 @@
 
         .alert-success {
             background: rgba(76, 111, 89, 0.1);
-            color: #2d5a3d;
-            border-color: rgba(76, 111, 89, 0.2);
+            color: var(--accent-secondary);
+            border-color: var(--border-color);
         }
 
         .alert-error {
@@ -358,13 +452,14 @@
 
         /* Eco-friendly footer */
         footer {
-            background: rgba(247, 245, 242, 0.95);
+            background: var(--header-bg);
             backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(76, 111, 89, 0.1);
+            border-top: 1px solid var(--border-color);
             padding: 2rem 0;
             text-align: center;
-            color: #81a594;
+            color: var(--text-secondary);
             margin-top: 4rem;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
         }
 
         /* Animations */
@@ -385,15 +480,15 @@
             border-radius: 24px;
             margin: 2rem 0;
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(76, 111, 89, 0.1);
+            border: 1px solid var(--border-color);
         }
 
         .hero h1 {
             font-size: 3rem;
             font-weight: 800;
-            color: #2d3436;
+            color: var(--text-primary);
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -401,7 +496,7 @@
 
         .hero p {
             font-size: 1.25rem;
-            color: #81a594;
+            color: var(--text-secondary);
             margin-bottom: 2rem;
             max-width: 600px;
             margin-left: auto;
@@ -413,12 +508,12 @@
             display: inline-block;
             padding: 0.5rem 1rem;
             margin: 0.25rem;
-            background: rgba(76, 111, 89, 0.1);
-            color: #2d5a3d;
+            background: var(--condition-selected);
+            color: var(--accent-secondary);
             border-radius: 20px;
             font-size: 0.875rem;
             font-weight: 500;
-            border: 1px solid rgba(76, 111, 89, 0.2);
+            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
             cursor: pointer;
         }
@@ -439,112 +534,28 @@
         .stat-card {
             text-align: center;
             padding: 2rem;
-            background: rgba(247, 245, 242, 0.9);
+            background: var(--card-bg);
             border-radius: 20px;
-            border: 1px solid rgba(76, 111, 89, 0.1);
+            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
         }
 
         .stat-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(76, 111, 89, 0.1);
+            box-shadow: 0 20px 40px var(--shadow-medium);
         }
 
         .stat-number {
             font-size: 2.5rem;
             font-weight: 800;
-            color: #4c6f59;
+            color: var(--text-accent);
             display: block;
         }
 
         .stat-label {
-            color: #81a594;
+            color: var(--text-secondary);
             font-weight: 500;
             margin-top: 0.5rem;
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .nav-links {
-                gap: 1rem;
-                flex-wrap: wrap;
-            }
-            
-            .container {
-                padding: 0 16px;
-            }
-            
-            .card {
-                padding: 1.5rem;
-                margin: 0.5rem 0;
-                border-radius: 20px;
-            }
-
-            .btn {
-                padding: 0.6rem 1.25rem;
-                font-size: 0.9rem;
-                border-radius: 12px;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-                gap: 1rem;
-            }
-
-            .stat-card {
-                padding: 1.5rem;
-            }
-
-            .stat-number {
-                font-size: 2rem;
-            }
-        }
-
-        /* Loading states */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(76, 111, 89, 0.3);
-            border-radius: 50%;
-            border-top-color: #4c6f59;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Sustainability indicators */
-        .eco-badge {
-            background: linear-gradient(135deg, #4c6f59, #2d5a3d);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            margin-top: 0.75rem;
-        }
-
-        .eco-badge::before {
-            content: '🌱';
-            font-size: 0.875rem;
         }
 
         /* === CART SPECIFIC STYLES === */
@@ -553,12 +564,14 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .cart-empty {
             text-align: center;
             padding: 4rem 2rem;
-            color: #81a594;
+            color: var(--text-secondary);
             font-size: 1.25rem;
         }
 
@@ -567,16 +580,16 @@
             grid-template-columns: 80px 1fr auto;
             gap: 1.5rem;
             padding: 1.5rem;
-            background: rgba(247, 245, 242, 0.7);
+            background: var(--condition-bg);
             border-radius: 16px;
             margin-bottom: 1rem;
             align-items: center;
-            border: 1px solid rgba(76, 111, 89, 0.1);
+            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
         }
 
         .cart-item:hover {
-            background: rgba(247, 245, 242, 0.9);
+            background: var(--card-bg);
             transform: translateY(-2px);
         }
 
@@ -585,11 +598,11 @@
             height: 80px;
             border-radius: 12px;
             object-fit: cover;
-            background: linear-gradient(135deg, #e8e4df, #f0ede8);
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #81a594;
+            color: var(--text-secondary);
             font-size: 2rem;
         }
 
@@ -597,12 +610,12 @@
             font-size: 1.125rem;
             font-weight: 600;
             margin-bottom: 0.25rem;
-            color: #2d3436;
+            color: var(--text-primary);
         }
 
         .cart-item-price {
             font-weight: 700;
-            color: #4c6f59;
+            color: var(--text-accent);
             font-size: 1.125rem;
         }
 
@@ -615,11 +628,11 @@
         .quantity-btn {
             width: 32px;
             height: 32px;
-            border: 1px solid rgba(76, 111, 89, 0.2);
-            background: rgba(247, 245, 242, 0.8);
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
             border-radius: 8px;
             font-weight: 600;
-            color: #4c6f59;
+            color: var(--text-accent);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -628,7 +641,7 @@
         }
 
         .quantity-btn:hover {
-            background: rgba(76, 111, 89, 0.05);
+            background: var(--condition-selected);
         }
 
         .quantity-input {
@@ -637,7 +650,8 @@
             font-weight: 600;
             background: transparent;
             border: none;
-            color: #2d3436;
+            color: var(--text-primary);
+            font-size: 1rem;
         }
 
         .cart-item-remove {
@@ -656,12 +670,12 @@
         }
 
         .cart-summary {
-            background: rgba(247, 245, 242, 0.9);
+            background: var(--card-bg);
             backdrop-filter: blur(20px);
             border-radius: 24px;
             padding: 2rem;
             margin-top: 2rem;
-            border: 1px solid rgba(76, 111, 89, 0.1);
+            border: 1px solid var(--border-color);
         }
 
         .cart-summary-row {
@@ -674,8 +688,8 @@
         .cart-summary-total {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #4c6f59;
-            border-top: 2px solid rgba(76, 111, 89, 0.2);
+            color: var(--text-accent);
+            border-top: 2px solid var(--border-color);
             padding-top: 1rem;
             margin-top: 1rem;
         }
@@ -691,6 +705,239 @@
         .floating-element:nth-child(3) { width: 150px; height: 150px; left: 80%; animation-delay: -10s; }
         .floating-element:nth-child(4) { width: 250px; height: 250px; left: 30%; animation-delay: -15s; }
         .floating-element:nth-child(5) { width: 180px; height: 180px; left: 70%; animation-delay: -20s; }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.5rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            color: var(--text-accent);
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-primary);
+            transform: scale(1.05);
+        }
+
+        /* Loading states */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(76, 111, 89, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent-primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Sustainability indicators */
+        .eco-badge {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            margin-top: 0.75rem;
+        }
+
+        .eco-badge::before {
+            content: '🌱';
+            font-size: 0.875rem;
+        }
+
+        /* Responsive design - Mobile First */
+        @media (max-width: 768px) {
+            /* Global adjustments */
+            .container {
+                padding: 0 16px;
+            }
+            
+            body {
+                font-size: 16px; /* Prevent zooming on iOS form elements */
+            }
+            
+            /* Header and Navigation */
+            .hamburger {
+                display: flex;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: var(--header-bg);
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding: 5rem 1rem 2rem;
+                transition: transform 0.3s ease;
+                transform: translateX(100%);
+                z-index: 1000;
+                overflow-y: auto;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-links.active {
+                transform: translateX(0);
+            }
+            
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+                margin: 1rem 0;
+            }
+            
+            .nav-links a {
+                display: block;
+                width: 100%;
+                padding: 0.8rem 0;
+                border-bottom: 1px solid var(--border-color);
+                font-size: 1.1rem;
+            }
+            
+            /* Overlay */
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+            
+            .overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            /* Hamburger animation */
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+            
+            /* Logo adjustment */
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            /* Buttons */
+            .btn {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.95rem;
+                border-radius: 12px;
+            }
+            
+            /* Cards */
+            .card {
+                padding: 1.5rem;
+                margin: 0.75rem 0;
+                border-radius: 20px;
+            }
+            
+            /* Cart Header */
+            .cart-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+            
+            /* Cart Items */
+            .cart-item {
+                grid-template-columns: 70px 1fr auto;
+                padding: 1.25rem;
+                gap: 1rem;
+            }
+            
+            .cart-item-image {
+                width: 70px;
+                height: 70px;
+                font-size: 1.75rem;
+            }
+            
+            /* Cart Summary */
+            .cart-summary {
+                padding: 1.5rem;
+            }
+            
+            .cart-summary-row {
+                font-size: 1rem;
+            }
+            
+            .cart-summary-total {
+                font-size: 1.25rem;
+            }
+            
+            /* Checkout button */
+            .checkout-section .btn {
+                width: 100%;
+                padding: 1rem;
+                font-size: 1.1rem;
+            }
+            
+            /* Theme toggle in mobile menu */
+            .theme-toggle {
+                margin-top: 2rem;
+            }
+            
+            /* Footer */
+            footer {
+                padding: 1.5rem 0;
+                font-size: 0.95rem;
+            }
+        }
+
+        /* Tablet adjustments */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .cart-item {
+                grid-template-columns: 75px 1fr auto;
+            }
+            
+            .cart-item-image {
+                width: 75px;
+                height: 75px;
+            }
+            
+            .btn {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.95rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -704,17 +951,33 @@
         <div class="floating-element"></div>
     </div>
 
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="mobileOverlay"></div>
+
     <!-- Header -->
     <header>
         <div class="container">
             <nav>
                 <a href="/" class="logo">EcoCart</a>
-                <ul class="nav-links">
+                
+                <!-- Hamburger Menu Button -->
+                <button class="hamburger" id="hamburgerMenu" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                
+                <ul class="nav-links" id="navLinks">
                     <li><a href="/">Home</a></li>
                     <li><a href="products.html">Products</a></li>
                     <li><a href="purchases.html">My Orders</a></li>
                     <li><a href="dashboard.html">My Account</a></li>
                     <li><a href="login.html">Logout</a></li>
+                    <li>
+                        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                            <span class="theme-icon">🌙</span>
+                        </button>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -723,7 +986,7 @@
     <!-- Main Content -->
     <main class="container">
         <div class="cart-header">
-            <h1 class="fade-in" style="font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, #4c6f59, #2d5a3d); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Your Cart</h1>
+            <h1 class="fade-in" style="font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Your Cart</h1>
             <a href="products.html" class="btn btn-secondary">Continue Shopping</a>
         </div>
 
@@ -732,13 +995,13 @@
             <!-- Uncomment this section if cart is empty -->
             <!--
             <div class="cart-empty">
-                <p>Your cart is empty. <a href="/products" style="color: #4c6f59; text-decoration: underline;">Start shopping now!</a></p>
+                <p>Your cart is empty. <a href="/products" style="color: var(--text-accent); text-decoration: underline;">Start shopping now!</a></p>
             </div>
             -->
 
             <!-- Cart Item 1 -->
             <div class="cart-item fade-in">
-                <div class="cart-item-image">♻️</div>
+                <div class="cart-item-image">♻</div>
                 <div class="cart-item-info">
                     <h3>Organic Cotton Tote Bag</h3>
                     <div class="cart-item-price">$24.99</div>
@@ -793,7 +1056,7 @@
 
         <!-- Cart Summary -->
         <div class="cart-summary fade-in">
-            <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: #2d3436;">Order Summary</h2>
+            <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--text-primary);">Order Summary</h2>
             <div class="cart-summary-row">
                 <span>Subtotal (4 items)</span>
                 <span>$72.48</span>
@@ -812,7 +1075,7 @@
             </div>
 
             <div class="checkout-section">
-                <button class="btn btn-primary" style="margin-top: 1.5rem; font-size: 1.1rem; padding: 1rem 2rem;">
+                <button class="btn btn-primary" style="margin-top: 1.5rem; font-size: 1.1rem; padding: 1rem 2rem; width: 100%;">
                     Proceed to Checkout
                 </button>
             </div>
@@ -828,6 +1091,69 @@
     </footer>
 
     <script>
+        // Dark mode functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.querySelector('.theme-icon');
+        const html = document.documentElement;
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        themeIcon.textContent = savedTheme === 'light' ? '🌙' : '☀';
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeIcon.textContent = newTheme === 'light' ? '🌙' : '☀';
+        });
+
+        // Mobile hamburger menu functionality
+        const hamburger = document.getElementById('hamburgerMenu');
+        const navLinks = document.getElementById('navLinks');
+        const overlay = document.getElementById('mobileOverlay');
+
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            overlay.classList.toggle('active');
+            // Prevent body scrolling when menu is open
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+        }
+
+        hamburger.addEventListener('click', toggleMenu);
+        
+        overlay.addEventListener('click', toggleMenu);
+
+        // Close mobile menu when clicking on a nav link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        });
+
+        // Handle window resize to close mobile menu
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Handle keyboard accessibility
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+
+        // Cart functionality
         function updateQuantity(button, delta) {
             const input = button.parentElement.querySelector('.quantity-input');
             let value = parseInt(input.value);
@@ -841,12 +1167,40 @@
         function removeItem(button) {
             const item = button.closest('.cart-item');
             item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
             setTimeout(() => {
                 item.remove();
                 // Here you would send deletion to server
                 console.log("Item removed");
             }, 300);
         }
+
+        // Initialize floating elements with random positions and sizes for more natural look
+      document.addEventListener('DOMContentLoaded', function() {
+    const floatingElements = document.querySelectorAll('.floating-element');
+    floatingElements.forEach((el, index) => {
+        // Randomize positions and sizes slightly
+        const size = 100 + Math.random() * 200;
+        el.style.width = `${size}px`;
+        el.style.height = `${size}px`;
+        el.style.left = `${Math.random() * 100}%`;
+        el.style.animationDuration = `${20 + Math.random() * 15}s`;
+        el.style.animationDelay = `-${Math.random() * 20}s`;
+    });
+    
+    // Add touch support for mobile devices
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+        document.body.classList.add('touch-device');
+    }
+});
+
+        // Fix for iOS Safari
+        // Prevent overscrolling on mobile
+        document.addEventListener('touchmove', function(e) {
+            if (navLinks.classList.contains('active')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
     </script>
 </body>
 </html>

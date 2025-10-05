@@ -1,22 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - EcoFlow</title>
+    <title>Browse Products - EcoFlow</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         :root {
             /* Light mode colors */
             --bg-primary: #f5f3f0;
             --bg-secondary: #e8e4df;
             --bg-tertiary: #f0ede8;
-            --bg-quaternary: #f7f5f2;
-            --bg-quinary: #ede7e0;
             --card-bg: rgba(247, 245, 242, 0.9);
             --card-bg-solid: rgba(247, 245, 242, 0.95);
             --text-primary: #2d3436;
@@ -31,25 +30,15 @@
             --shadow-medium: rgba(76, 111, 89, 0.12);
             --floating-bg: rgba(76, 111, 89, 0.08);
             --product-card-bg: #fff;
-            --activity-bg: rgba(255, 255, 255, 0.3);
-            --activity-hover: rgba(255, 255, 255, 0.5);
-            --impact-bg: rgba(76, 111, 89, 0.05);
-            --status-delivered-bg: rgba(76, 111, 89, 0.1);
-            --status-delivered-color: #2d5a3d;
-            --status-shipped-bg: rgba(0, 123, 255, 0.1);
-            --status-shipped-color: #0056b3;
-            --status-pending-bg: rgba(255, 193, 7, 0.1);
-            --status-pending-color: #856404;
-            --wishlist-bg: rgba(255, 255, 255, 0.5);
-            --wishlist-hover: rgba(255, 255, 255, 0.8);
+            --wishlist-icon: #81a594;
+            --wishlist-icon-active: #e74c3c;
         }
+
         [data-theme="dark"] {
-            /* Dark mode colors - maintaining earth tones */
+            /* Dark mode colors */
             --bg-primary: #1a1f1c;
             --bg-secondary: #232a26;
             --bg-tertiary: #2a332e;
-            --bg-quaternary: #1e2420;
-            --bg-quinary: #252b28;
             --card-bg: rgba(42, 51, 46, 0.9);
             --card-bg-solid: rgba(42, 51, 46, 0.95);
             --text-primary: #e8f1eb;
@@ -64,18 +53,10 @@
             --shadow-medium: rgba(0, 0, 0, 0.3);
             --floating-bg: rgba(143, 174, 154, 0.1);
             --product-card-bg: rgba(42, 51, 46, 0.95);
-            --activity-bg: rgba(70, 85, 77, 0.3);
-            --activity-hover: rgba(70, 85, 77, 0.5);
-            --impact-bg: rgba(107, 143, 118, 0.1);
-            --status-delivered-bg: rgba(107, 143, 118, 0.2);
-            --status-delivered-color: #8fae9a;
-            --status-shipped-bg: rgba(30, 87, 153, 0.2);
-            --status-shipped-color: #64b5f6;
-            --status-pending-bg: rgba(255, 193, 7, 0.2);
-            --status-pending-color: #ffcc80;
-            --wishlist-bg: rgba(42, 51, 46, 0.5);
-            --wishlist-hover: rgba(42, 51, 46, 0.8);
+            --wishlist-icon: #b8c5bc;
+            --wishlist-icon-active: #e74c3c;
         }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
@@ -84,6 +65,7 @@
             overflow-x: hidden;
             transition: color 0.3s ease, background-color 0.3s ease;
         }
+
         /* Earth-toned animated background */
         .bg-container {
             position: fixed;
@@ -92,22 +74,25 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 25%, var(--bg-tertiary) 50%, var(--bg-quaternary) 75%, var(--bg-quinary) 100%);
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 25%, var(--bg-tertiary) 50%, var(--bg-secondary) 75%, var(--bg-primary) 100%);
             background-size: 400% 400%;
             animation: gradientShift 25s ease infinite;
             transition: background 0.3s ease;
         }
+
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
+
         .floating-elements {
             position: absolute;
             width: 100%;
             height: 100%;
             overflow: hidden;
         }
+
         .floating-element {
             position: absolute;
             background: var(--floating-bg);
@@ -115,12 +100,14 @@
             animation: float 25s infinite linear;
             transition: background-color 0.3s ease;
         }
+
         @keyframes float {
             0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 1; }
             100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
         }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -128,7 +115,8 @@
             position: relative;
             z-index: 1;
         }
-        /* Warm glass morphism header */
+
+        /* Header */
         header {
             background: var(--card-bg-solid);
             backdrop-filter: blur(20px);
@@ -141,11 +129,13 @@
             box-shadow: 0 4px 32px var(--shadow-light);
             transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
+
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .logo {
             font-size: 1.75rem;
             font-weight: 800;
@@ -157,13 +147,14 @@
             letter-spacing: -0.02em;
             transition: background 0.3s ease;
         }
+
         .nav-links {
             display: flex;
             list-style: none;
             gap: 2rem;
             align-items: center;
-            flex-wrap: nowrap;
         }
+
         .nav-links a {
             text-decoration: none;
             color: var(--text-accent);
@@ -172,10 +163,7 @@
             position: relative;
             padding: 0.5rem 0;
         }
-        .nav-links a.active {
-            color: var(--accent-secondary);
-            font-weight: 600;
-        }
+
         .nav-links a::after {
             content: '';
             position: absolute;
@@ -186,71 +174,93 @@
             background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
             transition: width 0.3s ease;
         }
+
         .nav-links a:hover {
             color: var(--accent-secondary);
         }
-        .nav-links a:hover::after,
-        .nav-links a.active::after {
+
+        .nav-links a:hover::after {
             width: 100%;
         }
-        /* Hamburger Menu Styles */
-        .hamburger {
-            display: none; /* Hidden by default */
+
+        /* Hamburger Menu */
+        .hamburger-toggle {
+            display: none;
             flex-direction: column;
             justify-content: space-around;
-            width: 30px;
-            height: 21px;
+            width: 40px;
+            height: 40px;
             background: transparent;
             border: none;
             cursor: pointer;
             padding: 0;
-            z-index: 10;
+            z-index: 150;
+            border-radius: 5px;
         }
-        .hamburger:focus {
+
+        .hamburger-toggle:focus {
             outline: none;
         }
-        .hamburger .bar {
-            width: 100%;
+
+        .hamburger-icon {
+            display: block;
             height: 3px;
+            width: 100%;
+            background-color: var(--text-accent);
             border-radius: 10px;
-            background: var(--text-accent);
-            transition: all 0.3s ease-in-out;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
         }
-        /* Show hamburger on mobile */
+
         @media (max-width: 768px) {
-            .hamburger {
+            .hamburger-toggle {
                 display: flex;
             }
-            .nav-links {
-                position: fixed;
-                flex-direction: column;
-                background: var(--card-bg-solid);
-                top: 70px; /* Height of header */
-                left: -100%;
+
+            .nav-links-wrapper {
+                display: none;
                 width: 100%;
-                text-align: center;
-                transition: 0.3s;
-                box-shadow: 0 10px 27px var(--shadow-medium);
-                padding: 2rem 0;
-                gap: 1.5rem;
-                border-radius: 0 0 20px 20px;
-            }
-            .nav-links.active {
+                background: var(--card-bg-solid);
+                position: absolute;
+                top: 100%;
                 left: 0;
+                box-shadow: 0 8px 20px var(--shadow-medium);
+                padding: 1rem;
+                border-radius: 0 0 16px 16px;
             }
-            /* Animate hamburger to X */
-            .hamburger.active .bar:nth-child(2) {
-                opacity: 0;
+
+            .nav-links-wrapper.active {
+                display: block;
             }
-            .hamburger.active .bar:nth-child(1) {
-                transform: translateY(9px) rotate(45deg);
+
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
             }
-            .hamburger.active .bar:nth-child(3) {
-                transform: translateY(-9px) rotate(-45deg);
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links a {
+                padding: 0.75rem 1rem;
+                border-radius: 12px;
+                background: var(--card-bg);
+                transition: background 0.3s ease;
+            }
+
+            .nav-links a:hover {
+                background: var(--card-bg-solid);
+            }
+
+            .theme-toggle {
+                width: 100%;
+                margin: 0.5rem 0;
             }
         }
-        /* Earth-toned button styles */
+
+        /* Button styles */
         .btn {
             padding: 0.75rem 1.75rem;
             border: none;
@@ -267,6 +277,7 @@
             position: relative;
             overflow: hidden;
         }
+
         .btn::before {
             content: '';
             position: absolute;
@@ -277,442 +288,36 @@
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transition: left 0.5s;
         }
+
         .btn:hover::before {
             left: 100%;
         }
+
         .btn-primary {
             background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             color: #ffffff;
             box-shadow: 0 4px 20px rgba(76, 111, 89, 0.25);
         }
+
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 30px rgba(76, 111, 89, 0.35);
         }
+
         .btn-secondary {
             background: var(--card-bg);
             color: var(--text-accent);
             border: 1px solid var(--border-color);
             backdrop-filter: blur(10px);
         }
+
         .btn-secondary:hover {
             background: var(--card-bg-solid);
             transform: translateY(-1px);
             box-shadow: 0 4px 20px var(--shadow-light);
         }
-        .btn-small {
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
-        }
-        /* Main content */
-        main {
-            min-height: calc(100vh - 200px);
-            padding: 2rem 0;
-        }
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 2rem;
-            margin: 1rem 0;
-            box-shadow: 0 8px 32px var(--shadow-light);
-            border: 1px solid var(--border-color);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px var(--shadow-medium);
-        }
-        /* Dashboard specific styles */
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-        .dashboard-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin: 0;
-            transition: background 0.3s ease;
-        }
-        .user-greeting {
-            font-size: 1.125rem;
-            color: var(--text-accent);
-            margin-bottom: 0.5rem;
-        }
-        /* Grid layouts */
-        .grid {
-            display: grid;
-            gap: 1.5rem;
-        }
-        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
-        .grid-4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-        /* Stats section */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-        .stat-card {
-            text-align: center;
-            padding: 2rem;
-            background: var(--card-bg);
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px var(--shadow-medium);
-        }
-        .stat-card:hover::before {
-            opacity: 1;
-        }
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--accent-primary);
-            display: block;
-        }
-        .stat-label {
-            color: var(--text-accent);
-            font-weight: 500;
-            margin-top: 0.5rem;
-        }
-        .stat-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            opacity: 0.8;
-        }
-        /* Product management */
-        .product-list {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 1.5rem;
-            margin: 1rem 0;
-        }
-        .product-item {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            background: var(--product-card-bg);
-            transition: all 0.3s ease;
-        }
-        .product-item:hover {
-            background: var(--card-bg-solid);
-            transform: translateX(4px);
-        }
-        .product-item:last-child {
-            margin-bottom: 0;
-        }
-        .product-thumbnail {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-right: 1rem;
-        }
-        .product-details {
-            flex: 1;
-        }
-        .product-name {
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.25rem;
-        }
-        .product-meta {
-            font-size: 0.875rem;
-            color: var(--text-accent);
-            display: flex;
-            gap: 1rem;
-        }
-        .product-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-        /* Activity feed */
-        .activity-item {
-            display: flex;
-            align-items: flex-start;
-            padding: 1rem;
-            border-left: 3px solid var(--border-color);
-            margin-bottom: 1rem;
-            background: var(--activity-bg);
-            border-radius: 0 12px 12px 0;
-            transition: all 0.3s ease;
-        }
-        .activity-item:hover {
-            border-left-color: var(--accent-primary);
-            background: var(--activity-hover);
-        }
-        .activity-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1rem;
-            font-size: 1.2rem;
-        }
-        .activity-content h4 {
-            color: var(--text-primary);
-            margin-bottom: 0.25rem;
-            font-size: 0.95rem;
-        }
-        .activity-content p {
-            color: var(--text-accent);
-            font-size: 0.875rem;
-            margin-bottom: 0.25rem;
-        }
-        .activity-time {
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-        }
-        /* Sustainability indicators */
-        .eco-badge {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            margin-top: 0.75rem;
-        }
-        .eco-badge::before {
-            content: '🌱';
-            font-size: 0.875rem;
-        }
-        /* Status badges */
-        .status-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-        .status-delivered {
-            background: var(--status-delivered-bg);
-            color: var(--status-delivered-color);
-        }
-        .status-shipped {
-            background: var(--status-shipped-bg);
-            color: var(--status-shipped-color);
-        }
-        .status-pending {
-            background: var(--status-pending-bg);
-            color: var(--status-pending-color);
-        }
-        /* Wishlist styles */
-        .wishlist-item {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            background: var(--wishlist-bg);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        .wishlist-item:hover {
-            background: var(--wishlist-hover);
-            transform: translateX(4px);
-        }
-        .wishlist-item::before {
-            content: '❤️';
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            font-size: 0.875rem;
-        }
-        /* Animations */
-        .fade-in {
-            animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        /* Loading states */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(76, 111, 89, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--accent-primary);
-            animation: spin 1s ease-in-out infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        /* Progress bar */
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: var(--border-color);
-            border-radius: 4px;
-            margin: 1rem 0;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            border-radius: 4px;
-            transition: width 2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        /* Environmental impact cards */
-        .impact-card {
-            text-align: center;
-            padding: 1.5rem;
-            background: var(--impact-bg);
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            border: 1px solid var(--border-color);
-        }
-        .impact-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px var(--shadow-light);
-        }
-        .impact-number {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--accent-primary);
-        }
-        .impact-label {
-            font-size: 0.875rem;
-            color: var(--text-accent);
-            margin: 0.5rem 0;
-        }
-        .impact-change {
-            font-size: 0.75rem;
-            color: var(--accent-primary);
-            font-weight: 600;
-        }
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .nav-links {
-                gap: 1rem;
-                flex-wrap: wrap;
-            }
-            .container {
-                padding: 0 16px;
-            }
-            .card {
-                padding: 1.5rem;
-                margin: 0.5rem 0;
-                border-radius: 20px;
-            }
-            .dashboard-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-            .dashboard-title {
-                font-size: 2rem;
-            }
-            .stats-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-                gap: 1rem;
-            }
-            .stat-card {
-                padding: 1.5rem;
-            }
-            .stat-number {
-                font-size: 2rem;
-            }
-            .product-item,
-            .wishlist-item {
-                flex-direction: column;
-                text-align: center;
-                gap: 1rem;
-            }
-            .product-meta {
-                justify-content: center;
-            }
-            /* Ensure buttons don't overflow on tiny screens */
-            .btn {
-                padding: 0.6rem 1.2rem;
-                font-size: 0.875rem;
-            }
-            .btn-small {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.75rem;
-            }
-            /* Adjust grid for very small screens */
-            .grid-2, .grid-3, .grid-4 {
-                grid-template-columns: 1fr;
-            }
-            /* Adjust activity feed */
-            .activity-item {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
-                padding: 1rem;
-            }
-            .activity-icon {
-                margin: 0 auto 1rem;
-            }
-            .activity-content {
-                text-align: center;
-            }
-            /* Adjust impact cards */
-            .impact-card {
-                padding: 1rem;
-            }
-            .impact-number {
-                font-size: 1.5rem;
-            }
-            .impact-label {
-                font-size: 0.75rem;
-            }
-        }
-        /* Footer */
-        footer {
-            background: var(--card-bg-solid);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border-color);
-            padding: 2rem 0;
-            text-align: center;
-            color: var(--text-accent);
-            margin-top: 4rem;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-        }
-        /* Dark mode toggle button */
+
+        /* Dark Mode Toggle */
         .theme-toggle {
             background: none;
             border: 2px solid var(--border-color);
@@ -730,401 +335,667 @@
             overflow: hidden;
             margin-right: 1rem;
         }
+
         .theme-toggle:hover {
             border-color: var(--accent-primary);
             transform: scale(1.05);
         }
+
         .theme-toggle:active {
             transform: scale(0.95);
         }
+
         .theme-icon {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Main content */
+        main {
+            min-height: calc(100vh - 200px);
+            padding: 2rem 0;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2rem;
+            margin: 1rem 0;
+            box-shadow: 0 8px 32px var(--shadow-light);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px var(--shadow-medium);
+        }
+
+        /* Search and Filter Section */
+        .search-section {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--input-bg);
+            backdrop-filter: blur(10px);
+            color: var(--text-primary);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 4px rgba(76, 111, 89, 0.1);
+            background: var(--input-focus);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .filter-select {
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 4px rgba(76, 111, 89, 0.1);
+        }
+
+        /* Category badges */
+        .category-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin: 0.25rem;
+            background: rgba(76, 111, 89, 0.1);
+            color: var(--accent-secondary);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .category-badge:hover {
+            background: rgba(76, 111, 89, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .category-badge.active {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+        }
+
+        /* Product grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        /* Product cards */
+        .product-card {
+            background: var(--product-card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
+            position: relative;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px var(--shadow-medium);
+            text-decoration: none;
+        }
+
+        .product-card:hover::before {
+            opacity: 1;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--text-secondary);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .product-original-price {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            text-decoration: line-through;
+            margin-left: 0.5rem;
+        }
+
+        .product-condition {
+            display: inline-block;
+            padding: 0.375rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            background: rgba(76, 111, 89, 0.1);
+            color: var(--accent-secondary);
+            border: 1px solid var(--border-color);
+            margin-bottom: 0.75rem;
+        }
+
+        .product-seller {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-location {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Eco badges */
+        .eco-badge {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            position: absolute;
+            top: 12px;
+            left: 12px;
+        }
+
+        .eco-badge::before {
+            content: '🌱';
+            font-size: 0.875rem;
+        }
+
+        /* Wishlist button */
+        .wishlist-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--card-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            color: var(--wishlist-icon);
+            font-size: 1.2rem;
+        }
+
+        .wishlist-btn:hover {
+            background: var(--card-bg-solid);
+            transform: scale(1.1);
+        }
+
+        .wishlist-btn.active {
+            color: var(--wishlist-icon-active);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 3rem 0;
+        }
+
+        .pagination a {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-accent);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            background: var(--card-bg);
+        }
+
+        .pagination a:hover,
+        .pagination a.active {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--card-bg-solid);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+            margin-top: 4rem;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+                flex-wrap: wrap;
+            }
+            
+            .container {
+                padding: 0 16px;
+            }
+            
+            .card {
+                padding: 1.5rem;
+                margin: 0.5rem 0;
+                border-radius: 20px;
+            }
+
+            .search-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-input {
+                min-width: auto;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+
+            .product-image {
+                height: 180px;
+                font-size: 3rem;
+            }
+
+            .product-info {
+                padding: 1rem;
+            }
+
+            .product-title {
+                font-size: 1rem;
+            }
+
+            .product-price {
+                font-size: 1.25rem;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Animation for hamburger icon */
+        .hamburger-toggle.active .hamburger-icon:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .hamburger-toggle.active .hamburger-icon:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-toggle.active .hamburger-icon:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
         }
     </style>
 </head>
 <body>
     <div class="bg-container">
-        <div class="floating-elements" id="floatingElements">
-            <!-- Floating elements will be added by JavaScript -->
-        </div>
+        <div class="floating-elements" id="floatingElements"></div>
     </div>
+    
     <header>
         <div class="container">
             <nav>
-                <a href="/" class="logo">🌱 EcoField</a>
-                <!-- Hamburger Button -->
-                <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
+                <a href="/" class="logo">🌱 EcoFlow</a>
+                <!-- Hamburger Menu Button -->
+                <button class="hamburger-toggle" id="hamburgerToggle" aria-label="Toggle navigation menu">
+                    <span class="hamburger-icon"></span>
+                    <span class="hamburger-icon"></span>
+                    <span class="hamburger-icon"></span>
                 </button>
-                <!-- Navigation Links -->
-                <ul class="nav-links" id="navLinks">
-                    <li><a href="products.html">Browse</a></li>
-                    <li><a href="add_product.html">Sell</a></li>
-                    <li><a href="dashboard.html" class="active">Dashboard</a></li>
-                    <li><a href="cart.html">Cart (2)</a></li>
-                    <li>
-                        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-                            <span class="theme-icon">🌙</span>
-                        </button>
-                    </li>
-                    <li><a href="login.html" class="btn btn-primary">Logout</a></li>
-                </ul>
+                <!-- Navigation Links Wrapper -->
+                <div class="nav-links-wrapper" id="navLinksWrapper">
+                    <ul class="nav-links">
+                        <li><a href="add_product.html">Sell</a></li>
+                        <li><a href="dashboard.html">My Account</a></li>
+                        <li><a href="cart.html">Cart <span style="background: var(--accent-primary); color: white; border-radius: 50%; padding: 0.2rem 0.5rem; font-size: 0.8rem; margin-left: 0.25rem;">2</span></a></li>
+                        <li>
+                            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                                <span class="theme-icon">🌙</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
             </nav>
         </div>
     </header>
+
     <main>
         <div class="container fade-in">
-            <!-- Dashboard Header -->
-            <div class="dashboard-header">
-                <div>
-                    <div class="user-greeting">Welcome back, {{ username }}! 👋</div>
-                    <h1 class="dashboard-title">Your Eco Journey</h1>
-                </div>
-                <div>
-                    <a href="products.html" class="btn btn-primary">Continue Shopping</a>
-                </div>
-            </div>
-            <!-- User Stats -->
-            <section class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">🛒</div>
-                    <span class="stat-number">0</span>
-                    <div class="stat-label">Items Purchased</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">💰</div>
-                    <span class="stat-number">₹0</span>
-                    <div class="stat-label">Money Saved vs. New</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">🌱</div>
-                    <span class="stat-number">0 kg</span>
-                    <div class="stat-label">CO2 Emissions Saved</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">♻️</div>
-                    <span class="stat-number">0</span>
-                    <div class="stat-label">Items Given New Life</div>
-                </div>
-            </section>
-            <div class="grid grid-2">
-                <!-- Recent Purchases -->
-                <div class="card">
-                    <h2 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                        📦 Recent Purchases
-                        <span class="eco-badge">Last 30 days</span>
-                    </h2>
-                    <div class="product-list">
-                        <div class="product-item">
-                            <div class="product-thumbnail">📱</div>
-                            <div class="product-details">
-                                <div class="product-name">iPhone 12 - Excellent Condition</div>
-                                <div class="product-meta">
-                                    <span>₹35,999</span>
-                                    <span class="status-badge status-delivered">Delivered</span>
-                                    <span>3 days ago</span>
-                                </div>
-                            </div>
-                            <div class="product-actions">
-                                <button class="btn btn-small btn-secondary">Rate</button>
-                                <button class="btn btn-small btn-primary">Buy Again</button>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="product-thumbnail">👕</div>
-                            <div class="product-details">
-                                <div class="product-name">Vintage Leather Jacket</div>
-                                <div class="product-meta">
-                                    <span>₹2,499</span>
-                                    <span class="status-badge status-shipped">Shipped</span>
-                                    <span>1 week ago</span>
-                                </div>
-                            </div>
-                            <div class="product-actions">
-                                <button class="btn btn-small btn-secondary">Track</button>
-                            </div>
-                        </div>
-                        <div class="product-item">
-                            <div class="product-thumbnail">📚</div>
-                            <div class="product-details">
-                                <div class="product-name">Programming Books Set</div>
-                                <div class="product-meta">
-                                    <span>₹1,299</span>
-                                    <span class="status-badge status-delivered">Delivered</span>
-                                    <span>2 weeks ago</span>
-                                </div>
-                            </div>
-                            <div class="product-actions">
-                                <button class="btn btn-small btn-secondary">Rate</button>
-                                <button class="btn btn-small btn-primary">Review</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="text-align: center; margin-top: 1rem;">
-                        <a href="purchases.html" class="btn btn-secondary">View All Purchases</a>
-                    </div>
-                </div>
-                <!-- Wishlist & Saved Items -->
-                <div class="card">
-                    <h2 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                        ❤️ Wishlist & Saved Items
-                        <span style="background: var(--status-pending-bg); color: var(--status-pending-color); padding: 0.25rem 0.5rem; border-radius: 8px; font-size: 0.75rem;">8 items</span>
-                    </h2>
-                    <div class="product-list">
-                        <div class="wishlist-item">
-                            <div class="product-thumbnail">💻</div>
-                            <div class="product-details">
-                                <div class="product-name">MacBook Air M1 - Like New</div>
-                                <div class="product-meta">
-                                    <span>₹68,999</span>
-                                    <span style="color: var(--accent-primary);">Price dropped ₹5,000!</span>
-                                </div>
-                            </div>
-                            <div class="product-actions">
-                                <button class="btn btn-small btn-primary">Buy Now</button>
-                                <button class="btn btn-small btn-secondary">Remove</button>
-                            </div>
-                        </div>
-                        <div class="wishlist-item">
-                            <div class="product-thumbnail">🎮</div>
-                            <div class="product-details">
-                                <div class="product-name">PlayStation 5 Console</div>
-                                <div class="product-meta">
-                                    <span>₹42,000</span>
-                                    <span style="color: var(--text-accent);">Watching for better price</span>
-                                </div>
-                            </div>
-                            <div class="product-actions">
-                                <button class="btn btn-small btn-secondary">Notify Me</button>
-                            </div>
-                        </div>
-                        <div class="wishlist-item">
-                            <div class="product-thumbnail">🎸</div>
-                            <div class="product-details">
-                                <div class="product-name">Acoustic Guitar - Yamaha</div>
-                                <div class="product-meta">
-                                    <span>₹8,500</span>
-                                    <span style="color: var(--text-accent);">Similar items available</span>
-                                </div>
-                            </div>
-                            <div class="product-actions">
-                                <button class="btn btn-small btn-primary">View Similar</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="text-align: center; margin-top: 1rem;">
-                        <a href="dashboard.html" class="btn btn-secondary">View Full Wishlist</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Recent Activity -->
+            <!-- Search and Filters -->
             <div class="card">
-                <h2 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.5rem;">📈 Recent Activity</h2>
-                <div class="grid grid-2">
-                    <div>
-                        <div class="activity-item">
-                            <div class="activity-icon">🛒</div>
-                            <div class="activity-content">
-                                <h4>Purchase Completed</h4>
-                                <p>You bought "iPhone 12" from Alex M. - Great condition as described!</p>
-                                <div class="activity-time">3 days ago</div>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-icon">❤️</div>
-                            <div class="activity-content">
-                                <h4>Added to Wishlist</h4>
-                                <p>Saved "MacBook Air M1" to your wishlist for later</p>
-                                <div class="activity-time">5 days ago</div>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-icon">💬</div>
-                            <div class="activity-content">
-                                <h4>Message Received</h4>
-                                <p>Seller responded about the guitar condition</p>
-                                <div class="activity-time">1 week ago</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="activity-item">
-                            <div class="activity-icon">🔍</div>
-                            <div class="activity-content">
-                                <h4>Search Saved</h4>
-                                <p>Created alert for "Gaming laptops under ₹50,000"</p>
-                                <div class="activity-time">1 week ago</div>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-icon">⭐</div>
-                            <div class="activity-content">
-                                <h4>Review Left</h4>
-                                <p>Gave 5-star review for "Programming Books Set"</p>
-                                <div class="activity-time">2 weeks ago</div>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-icon">🎯</div>
-                            <div class="activity-content">
-                                <h4>Price Alert</h4>
-                                <p>MacBook price dropped! Check your wishlist</p>
-                                <div class="activity-time">Yesterday</div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="search-section">
+                    <input type="text" class="search-input" placeholder="Search for sustainable products..." id="searchInput">
+                    <select class="filter-select" id="sortBy">
+                        <option value="">Sort By</option>
+                        <option value="price_low">Price: Low to High</option>
+                        <option value="price_high">Price: High to Low</option>
+                        <option value="newest">Newest First</option>
+                        <option value="condition">Best Condition</option>
+                        <option value="eco_score">Eco Score</option>
+                    </select>
+                    <select class="filter-select" id="condition">
+                        <option value="">All Conditions</option>
+                        <option value="excellent">Excellent</option>
+                        <option value="very_good">Very Good</option>
+                        <option value="good">Good</option>
+                        <option value="fair">Fair</option>
+                    </select>
+                    <select class="filter-select" id="location">
+                        <option value="">All Locations</option>
+                        <option value="mumbai">Mumbai</option>
+                        <option value="delhi">Delhi</option>
+                        <option value="bangalore">Bangalore</option>
+                        <option value="chennai">Chennai</option>
+                    </select>
+                </div>
+
+                <!-- Categories -->
+                <div style="margin-top: 1rem;">
+                    <a href="#" class="category-badge active">All</a>
+                    <a href="#" class="category-badge">📱 Electronics</a>
+                    <a href="#" class="category-badge">👕 Fashion</a>
+                    <a href="#" class="category-badge">🏠 Home & Garden</a>
+                    <a href="#" class="category-badge">📚 Books</a>
+                    <a href="#" class="category-badge">🎮 Gaming</a>
+                    <a href="#" class="category-badge">🎨 Art & Crafts</a>
+                    <a href="#" class="category-badge">🏃‍♂ Sports</a>
                 </div>
             </div>
-            <!-- Environmental Impact -->
-            <div class="card">
-                <h2 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.5rem;">🌍 Your Environmental Impact</h2>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                    <div class="impact-card">
-                        <div class="impact-number">0</div>
-                        <div class="impact-label">Items Saved from Waste</div>
-                        <div class="impact-change">+0 this month</div>
-                    </div>
-                    <div class="impact-card">
-                        <div class="impact-number">0L</div>
-                        <div class="impact-label">Water Conserved</div>
-                        <div class="impact-change">+0L this month</div>
-                    </div>
-                    <div class="impact-card">
-                        <div class="impact-number">0</div>
-                        <div class="impact-label">Trees Equivalent Saved</div>
-                        <div class="impact-change">+0 this month</div>
-                    </div>
-                    <div class="impact-card">
-                        <div class="impact-number">0%</div>
-                        <div class="impact-label">Sustainability Score</div>
-                        <div class="impact-change">+0% this month</div>
-                    </div>
+
+            <!-- Results Summary -->
+            <div style="margin: 1rem 0; color: var(--text-secondary); font-size: 0.95rem;">
+                Showing <span id="productCount">24</span> sustainable products • Saving the planet, one purchase at a time 🌍
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="productsGrid">
+                <!-- Page 1 Products -->
+                <div class="product-page" data-page="1">
+                    <!-- Product 1 -->
+                    <a href="/product/1" class="product-card">
+                        <div class="eco-badge">Eco-Friendly</div>
+                        <button class="wishlist-btn">❤</button>
+                        <div class="product-image">📱</div>
+                        <div class="product-info">
+                            <h3 class="product-title">iPhone 12 - Like New Condition</h3>
+                            <div class="product-seller">👤 by @techseller</div>
+                            <div class="product-price">₹35,999 <span class="product-original-price">₹59,900</span></div>
+                            <span class="product-condition">Excellent Condition</span>
+                            <div class="product-location">📍 Mumbai, Maharashtra</div>
+                        </div>
+                    </a>
+
+                    <!-- Product 2 -->
+                    <a href="/product/2" class="product-card">
+                        <div class="eco-badge">Sustainable Fashion</div>
+                        <button class="wishlist-btn active">❤</button>
+                        <div class="product-image">👕</div>
+                        <div class="product-info">
+                            <h3 class="product-title">Vintage Leather Jacket - Premium Quality</h3>
+                            <div class="product-seller">👤 by @vintage_lover</div>
+                            <div class="product-price">₹2,499 <span class="product-original-price">₹8,999</span></div>
+                            <span class="product-condition">Good Condition</span>
+                            <div class="product-location">📍 Delhi, India</div>
+                        </div>
+                    </a>
+
+                    <!-- Product 3 -->
+                    <a href="/product/3" class="product-card">
+                        <div class="eco-badge">Knowledge Sharing</div>
+                        <button class="wishlist-btn">❤</button>
+                        <div class="product-image">📚</div>
+                        <div class="product-info">
+                            <h3 class="product-title">Programming Books Collection (5 Books)</h3>
+                            <div class="product-seller">👤 by @coder_student</div>
+                            <div class="product-price">₹1,299 <span class="product-original-price">₹4,500</span></div>
+                            <span class="product-condition">Very Good</span>
+                            <div class="product-location">📍 Bangalore, Karnataka</div>
+                        </div>
+                    </a>
+
+                    <!-- Product 4 -->
+                    <a href="/product/4" class="product-card">
+                        <div class="eco-badge">Gaming Reuse</div>
+                        <button class="wishlist-btn">❤</button>
+                        <div class="product-image">🎮</div>
+                        <div class="product-info">
+                            <h3 class="product-title">PlayStation 5 with Extra Controller</h3>
+                            <div class="product-seller">👤 by @gaming_pro</div>
+                            <div class="product-price">₹42,000 <span class="product-original-price">₹54,990</span></div>
+                            <span class="product-condition">Excellent</span>
+                            <div class="product-location">📍 Chennai, Tamil Nadu</div>
+                        </div>
+                    </a>
+
+                    <!-- Product 5 -->
+                    <a href="/product/5" class="product-card">
+                        <div class="eco-badge">Home Refresh</div>
+                        <button class="wishlist-btn">❤</button>
+                        <div class="product-image">🪑</div>
+                        <div class="product-info">
+                            <h3 class="product-title">Wooden Study Table - Solid Wood</h3>
+                            <div class="product-seller">👤 by @furniture_hub</div>
+                            <div class="product-price">₹3,500 <span class="product-original-price">₹12,000</span></div>
+                            <span class="product-condition">Good</span>
+                            <div class="product-location">📍 Pune, Maharashtra</div>
+                        </div>
+                    </a>
+
+                    <!-- Product 6 -->
+                    <a href="/product/6" class="product-card">
+                        <div class="eco-badge">Tech Reuse</div>
+                        <button class="wishlist-btn">❤</button>
+                        <div class="product-image">💻</div>
+                        <div class="product-info">
+                            <h3 class="product-title">MacBook Air M1 - 8GB RAM</h3>
+                            <div class="product-seller">👤 by @apple_reseller</div>
+                            <div class="product-price">₹65,000 <span class="product-original-price">₹92,900</span></div>
+                            <span class="product-condition">Excellent</span>
+                            <div class="product-location">📍 Hyderabad, Telangana</div>
+                        </div>
+                    </a>
                 </div>
-                <!-- Progress towards goals -->
-                <div style="margin-top: 2rem; padding: 1.5rem; background: var(--impact-bg); border-radius: 12px;">
-                    <h3 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.25rem;">🎯 Monthly Goals Progress</h3>
-                    <div style="margin-bottom: 1.5rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                            <span style="color: var(--accent-primary); font-weight: 600;">Purchase 5 Pre-owned Items</span>
-                            <span style="color: var(--text-accent); font-size: 0.875rem;">0/5 completed</span>
+
+                <!-- Page 2 Products -->
+                <div class="product-page" data-page="2" style="display: none;">
+                    <!-- Product 7 -->
+                    <a href="/product/7" class="product-card">
+                        <div class="eco-badge">Eco-Friendly</div>
+                        <button class="wishlist-btn">❤</button>
+                        <div class="product-image">👟</div>
+                        <div class="product-info">
+                            <h3 class="product-title">Nike Running Shoes - Size 9</h3>
+                            <div class="product-seller">👤 by @runner_guy</div>
+                            <div class="product-price">₹1,800 <span class="product-original-price">₹8,000</span></div>
+                            <span class="product-condition">Good Condition</span>
+                            <div class="product-location">📍 Kolkata, West Bengal</div>
                         </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%"></div>
+                    </a>
+
+                    <!-- Product 8 -->
+                    <a href="/product/8" class="product-card">
+                        <div class="eco-badge">Sustainable Fashion</div>
+                        <button class="wishlist-btn">❤</button>
+                        <div class="product-image">👗</div>
+                        <div class="product-info">
+                            <h3 class="product-title">Designer Handbag - Authentic</h3>
+                            <div class="product-seller">👤 by @fashionista</div>
+                            <div class="product-price">₹4,500 <span class="product-original-price">₹25,000</span></div>
+                            <span class="product-condition">Very Good</span>
+                            <div class="product-location">📍 Jaipur, Rajasthan</div>
                         </div>
-                    </div>
-                    <div style="margin-bottom: 1.5rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                            <span style="color: var(--accent-primary); font-weight: 600;">Save ₹10,000 vs New Prices</span>
-                            <span style="color: var(--text-accent); font-size: 0.875rem;">₹0/₹10,000</span>
+                    </a>
+
+                    <!-- Product 9 -->
+                    <a href="/product/9" class="product-card">
+                        <div class="eco-badge">Knowledge Sharing</div>
+                        <button class="wishlist-btn active">❤</button>
+                        <div class="product-image">📖</div>
+                        <div class="product-info">
+                            <h3 class="product-title">Complete Harry Potter Set (7 Books)</h3>
+                            <div class="product-seller">👤 by @bookworm</div>
+                            <div class="product-price">₹2,200 <span class="product-original-price">₹7,000</span></div>
+                            <span class="product-condition">Excellent</span>
+                            <div class="product-location">📍 Ahmedabad, Gujarat</div>
                         </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%"></div>
+                    </a>
+
+                    <!-- Product 10 -->
+                    <a href="/product/10" class="product-card">
+                        <div class="eco-badge">Gaming Reuse</div>
+                        <button class="wishlist-btn">❤</button>
+                        <div class="product-image">🕹</div>
+                        <div class="product-info">
+                            <h3 class="product-title">Xbox Series X - With Games</h3>
+                            <div class="product-seller">👤 by @xbox_fan</div>
+                            <div class="product-price">₹38,000 <span class="product-original-price">₹49,990</span></div>
+                            <span class="product-condition">Excellent</span>
+                            <div class="product-location">📍 Lucknow, Uttar Pradesh</div>
                         </div>
-                    </div>
-                    <div style="margin-bottom: 0;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                            <span style="color: var(--accent-primary); font-weight: 600;">Reduce Carbon Footprint by 50kg</span>
-                            <span style="color: var(--text-accent); font-size: 0.875rem;">0kg/50kg saved</span>
+                    </a>
+
+                    <!-- Product 11 -->
+                    <a href="/product/11" class="product-card">
+                        <div class="eco-badge">Home Refresh</div>
+                        <button class="wishlist-btn">❤</button>
+                        <div class="product-image">🛋</div>
+                        <div class="product-info">
+                            <h3 class="product-title">Modern Sofa - 3 Seater</h3>
+                            <div class="product-seller">👤 by @home_decor</div>
+                            <div class="product-price">₹8,000 <span class="product-original-price">₹35,000</span></div>
+                            <span class="product-condition">Fair Condition</span>
+                            <div class="product-location">📍 Chandigarh</div>
                         </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%"></div>
+                    </a>
+
+                    <!-- Product 12 -->
+                    <a href="/product/12" class="product-card">
+                        <div class="eco-badge">Tech Reuse</div>
+                        <button class="wishlist-btn">❤</button>
+                        <div class="product-image">🎧</div>
+                        <div class="product-info">
+                            <h3 class="product-title">Bose QuietComfort Headphones</h3>
+                            <div class="product-seller">👤 by @audiophile</div>
+                            <div class="product-price">₹12,500 <span class="product-original-price">₹29,900</span></div>
+                            <span class="product-condition">Very Good</span>
+                            <div class="product-location">📍 Coimbatore, Tamil Nadu</div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
-            <!-- Quick Actions -->
-            <div class="card">
-                <h2 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.5rem;">⚡ Quick Actions</h2>
-                <div class="grid grid-4">
-                    <button class="btn btn-primary" onclick="window.location.href='/products'">
-                        🔍 Browse Products
-                    </button>
-                    <button class="btn btn-secondary" onclick="window.location.href='/add_product'">
-                        📱 List an Item
-                    </button>
-                    <button class="btn btn-secondary" onclick="window.location.href='/wishlist'">
-                        ❤️ View Wishlist
-                    </button>
-                    <button class="btn btn-secondary" onclick="window.location.href='/messages'">
-                        💬 Messages
-                    </button>
-                </div>
-            </div>
-            <!-- CRUD Operations Management -->
-            <div class="card">
-                <h2 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.5rem;">🛠️ Manage Your Items (CRUD)</h2>
-                <div class="grid grid-4">
-                    <button class="btn btn-primary" onclick="window.location.href='/add_product'">
-                        ➕ Create (Add New)
-                    </button>
-                    <button class="btn btn-secondary" onclick="window.location.href='/my_products'">
-                        📖 Read (View My Items)
-                    </button>
-                    <button class="btn btn-secondary" onclick="alert('Navigate to your item list, then select an item to update.')">
-                        ✏️ Update (Edit Item)
-                    </button>
-                    <button class="btn btn-secondary" onclick="alert('Navigate to your item list, then select an item to delete.')">
-                        🗑️ Delete (Remove Item)
-                    </button>
-                </div>
-                <p style="margin-top: 1rem; color: var(--text-secondary); font-size: 0.875rem; text-align: center;">
-                    Manage all your listed products from one place.
-                </p>
-            </div>
-            <!-- Recommendations -->
-            <div class="card">
-                <h2 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.5rem;">✨ Recommended for You</h2>
-                <div class="grid grid-3">
-                    <div class="product-item" style="flex-direction: column; text-align: center; padding: 1.5rem;">
-                        <div class="product-thumbnail" style="margin: 0 auto 1rem;">📷</div>
-                        <div class="product-name">Canon EOS Camera</div>
-                        <div class="product-meta" style="justify-content: center; margin: 0.5rem 0;">
-                            <span style="font-weight: 600; color: var(--accent-primary);">₹18,999</span>
-                            <span class="eco-badge">85% condition</span>
-                        </div>
-                        <button class="btn btn-small btn-primary" style="margin-top: 0.5rem;">View Details</button>
-                    </div>
-                    <div class="product-item" style="flex-direction: column; text-align: center; padding: 1.5rem;">
-                        <div class="product-thumbnail" style="margin: 0 auto 1rem;">🎧</div>
-                        <div class="product-name">Sony WH-1000XM4</div>
-                        <div class="product-meta" style="justify-content: center; margin: 0.5rem 0;">
-                            <span style="font-weight: 600; color: var(--accent-primary);">₹12,499</span>
-                            <span class="eco-badge">90% condition</span>
-                        </div>
-                        <button class="btn btn-small btn-primary" style="margin-top: 0.5rem;">View Details</button>
-                    </div>
-                    <div class="product-item" style="flex-direction: column; text-align: center; padding: 1.5rem;">
-                        <div class="product-thumbnail" style="margin: 0 auto 1rem;">⌚</div>
-                        <div class="product-name">Apple Watch Series 7</div>
-                        <div class="product-meta" style="justify-content: center; margin: 0.5rem 0;">
-                            <span style="font-weight: 600; color: var(--accent-primary);">₹22,999</span>
-                            <span class="eco-badge">95% condition</span>
-                        </div>
-                        <button class="btn btn-small btn-primary" style="margin-top: 0.5rem;">View Details</button>
-                    </div>
-                </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination">
+                <a href="#" data-page="1" class="active">1</a>
+                <a href="#" data-page="2">2</a>
+                <a href="#" data-page="3">3</a>
+                <a href="#" data-page="4">4</a>
+                <a href="#" data-page="5">5</a>
             </div>
         </div>
     </main>
+
     <footer>
         <div class="container">
-            <p>&copy; 2024 EcoFlow. Making sustainable choices accessible to everyone. 🌱</p>
-            <p style="margin-top: 0.5rem; font-size: 0.875rem;">
-                Together, we've saved <strong>0 kg CO₂</strong> and <strong>₹0</strong> this year!
-            </p>
+            <p>&copy; 2024 EcoFlow. Building a sustainable future through circular commerce. 🌍♻</p>
         </div>
     </footer>
+
     <script>
         // Dark mode functionality
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.querySelector('.theme-icon');
         const html = document.documentElement;
+
         // Check for saved theme preference or default to light mode
         const savedTheme = localStorage.getItem('theme') || 'light';
         html.setAttribute('data-theme', savedTheme);
         updateThemeIcon(savedTheme);
+
         themeToggle.addEventListener('click', function() {
             const currentTheme = html.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -1137,188 +1008,158 @@
                 this.style.transform = 'scale(1)';
             }, 150);
         });
+
         function updateThemeIcon(theme) {
-            themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
-            themeToggle.setAttribute('aria-label',
+            themeIcon.textContent = theme === 'dark' ? '☀' : '🌙';
+            themeToggle.setAttribute('aria-label', 
                 theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
             );
         }
-        // Create floating background elements
+
+        // Create floating elements
         function createFloatingElements() {
             const container = document.getElementById('floatingElements');
-            const numElements = 15;
-            for (let i = 0; i < numElements; i++) {
+            const colors = [
+                'rgba(76, 111, 89, 0.08)', 
+                'rgba(45, 90, 61, 0.06)', 
+                'rgba(129, 165, 148, 0.05)'
+            ];
+            
+            for (let i = 0; i < 15; i++) {
                 const element = document.createElement('div');
                 element.className = 'floating-element';
-                // Random size between 20px and 80px
-                const size = Math.random() * 60 + 20;
-                element.style.width = size + 'px';
-                element.style.height = size + 'px';
-                // Random horizontal position
                 element.style.left = Math.random() * 100 + '%';
-                // Random animation delay
+                element.style.width = (Math.random() * 50 + 15) + 'px';
+                element.style.height = element.style.width;
+                element.style.background = colors[Math.floor(Math.random() * colors.length)];
                 element.style.animationDelay = Math.random() * 25 + 's';
-                // Random opacity
-                element.style.opacity = Math.random() * 0.1 + 0.02;
+                element.style.animationDuration = (Math.random() * 10 + 20) + 's';
                 container.appendChild(element);
             }
         }
-        // Animate numbers counting up
-        function animateNumbers() {
-            const numbers = document.querySelectorAll('.stat-number');
-            numbers.forEach(number => {
-                const target = number.textContent;
-                let current = 0;
-                const increment = parseInt(target.replace(/[₹,kg\s]/g, '')) / 50;
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= parseInt(target.replace(/[₹,kg\s]/g, ''))) {
-                        number.textContent = target;
-                        clearInterval(timer);
-                    } else {
-                        if (target.includes('₹')) {
-                            number.textContent = '₹' + Math.floor(current).toLocaleString();
-                        } else if (target.includes('kg')) {
-                            number.textContent = Math.floor(current) + ' kg';
+
+        // Category badge interactivity
+        document.querySelectorAll('.category-badge').forEach(badge => {
+            badge.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.category-badge').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Wishlist functionality
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.wishlist-btn')) {
+                const btn = e.target.closest('.wishlist-btn');
+                e.preventDefault();
+                e.stopPropagation();
+                btn.classList.toggle('active');
+            }
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function() {
+            console.log('Searching for:', this.value);
+            // Implement search filtering here
+        });
+
+        // Filter change handlers
+        document.getElementById('sortBy').addEventListener('change', function() {
+            console.log('Sorting by:', this.value);
+            // Implement sorting here
+        });
+
+        document.getElementById('condition').addEventListener('change', function() {
+            console.log('Filtering by condition:', this.value);
+            // Implement condition filtering here
+        });
+
+        document.getElementById('location').addEventListener('change', function() {
+            console.log('Filtering by location:', this.value);
+            // Implement location filtering here
+        });
+
+        // Pagination functionality
+        function setupPagination() {
+            const pagination = document.getElementById('pagination');
+            const productPages = document.querySelectorAll('.product-page');
+            const productCount = document.getElementById('productCount');
+
+            pagination.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    const page = e.target.getAttribute('data-page');
+                    
+                    // Update active class
+                    pagination.querySelectorAll('a').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    e.target.classList.add('active');
+
+                    // Show/hide product pages
+                    productPages.forEach(p => {
+                        if (p.getAttribute('data-page') === page) {
+                            p.style.display = 'contents'; // Use contents to maintain grid layout
                         } else {
-                            number.textContent = Math.floor(current);
+                            p.style.display = 'none';
                         }
-                    }
-                }, 50);
+                    });
+
+                    // Update product count (6 products per page for demo)
+                    const productsPerPage = 6;
+                    const totalPages = 5; // Total pages available
+                    const totalProducts = productsPerPage * totalPages;
+                    productCount.textContent = totalProducts;
+                }
             });
         }
-        // Progress bar animation
-        function animateProgressBars() {
-            const progressBars = document.querySelectorAll('.progress-fill');
-            progressBars.forEach((bar, index) => {
-                setTimeout(() => {
-                    const width = bar.style.width;
-                    bar.style.width = '0%';
-                    setTimeout(() => {
-                        bar.style.width = width;
-                    }, 100);
-                }, index * 200);
-            });
-        }
-        // Add click animations to buttons
-        function addButtonAnimations() {
-            const buttons = document.querySelectorAll('.btn');
-            buttons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    const ripple = document.createElement('span');
-                    const rect = this.getBoundingClientRect();
-                    const size = Math.max(rect.width, rect.height);
-                    const x = e.clientX - rect.left - size / 2;
-                    const y = e.clientY - rect.top - size / 2;
-                    ripple.style.cssText = `
-                        position: absolute;
-                        border-radius: 50%;
-                        background: rgba(255, 255, 255, 0.6);
-                        transform: scale(0);
-                        animation: ripple 0.6s linear;
-                        left: ${x}px;
-                        top: ${y}px;
-                        width: ${size}px;
-                        height: ${size}px;
-                    `;
-                    this.appendChild(ripple);
-                    setTimeout(() => {
-                        ripple.remove();
-                    }, 600);
-                });
-            });
-        }
-        // Add hover effects to cards
-        function addCardHoverEffects() {
-            const cards = document.querySelectorAll('.card, .stat-card, .impact-card');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-4px) scale(1.02)';
-                });
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0) scale(1)';
-                });
-            });
-        }
-        // Mobile menu toggle (Hamburger Menu)
+
+        // Mobile Hamburger Menu Toggle
         function setupMobileMenu() {
-            const hamburger = document.getElementById('hamburgerBtn');
-            const navLinks = document.getElementById('navLinks');
-            hamburger.addEventListener('click', function() {
-                navLinks.classList.toggle('active');
-                hamburger.classList.toggle('active');
+            const hamburgerToggle = document.getElementById('hamburgerToggle');
+            const navLinksWrapper = document.getElementById('navLinksWrapper');
+
+            // Set initial aria-expanded state
+            hamburgerToggle.setAttribute('aria-expanded', 'false');
+
+            // Toggle mobile menu
+            hamburgerToggle.addEventListener('click', function() {
+                navLinksWrapper.classList.toggle('active');
+                hamburgerToggle.classList.toggle('active');
+
+                // Update aria-label for accessibility
+                const isExpanded = navLinksWrapper.classList.contains('active');
+                hamburgerToggle.setAttribute('aria-expanded', isExpanded);
             });
-            // Close menu if a link is clicked (optional)
-            const navLinksItems = navLinks.querySelectorAll('a');
-            navLinksItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    navLinks.classList.remove('active');
-                    hamburger.classList.remove('active');
+
+            // Close the mobile menu if a link is clicked
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinksWrapper.classList.remove('active');
+                    hamburgerToggle.classList.remove('active');
+                    hamburgerToggle.setAttribute('aria-expanded', 'false');
                 });
             });
+
+            // Close the menu if clicked outside
+            document.addEventListener('click', function(event) {
+                const isClickInsideNav = navLinksWrapper.contains(event.target);
+                const isClickOnHamburger = hamburgerToggle.contains(event.target);
+
+                if (!isClickInsideNav && !isClickOnHamburger && navLinksWrapper.classList.contains('active')) {
+                    navLinksWrapper.classList.remove('active');
+                    hamburgerToggle.classList.remove('active');
+                    hamburgerToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
         }
-        // Update time stamps dynamically
-        function updateTimeStamps() {
-            const timeElements = document.querySelectorAll('.activity-time');
-            // This would typically update with real-time data
-            // For demo purposes, keeping static
-        }
-        // Initialize all animations and interactions
-        function init() {
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
             createFloatingElements();
-            // Delay animations for better UX
-            setTimeout(() => {
-                animateNumbers();
-                animateProgressBars();
-            }, 500);
-            addButtonAnimations();
-            addCardHoverEffects();
-            setupMobileMenu(); // Initialize the hamburger menu
-            updateTimeStamps();
-        }
-        // Add CSS for ripple effect
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-            .btn {
-                position: relative;
-                overflow: hidden;
-            }
-            /* Additional smooth animations */
-            .product-item, .wishlist-item, .activity-item {
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            }
-            /* Scroll animations */
-            @keyframes slideInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-            .fade-in > * {
-                animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            }
-            .fade-in > *:nth-child(1) { animation-delay: 0.1s; }
-            .fade-in > *:nth-child(2) { animation-delay: 0.2s; }
-            .fade-in > *:nth-child(3) { animation-delay: 0.3s; }
-            .fade-in > *:nth-child(4) { animation-delay: 0.4s; }
-        `;
-        document.head.appendChild(style);
-        // Initialize when DOM is loaded
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
-        } else {
-            init();
-        }
+            setupPagination();
+            setupMobileMenu();
+        });
     </script>
 </body>
 </html>

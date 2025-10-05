@@ -12,10 +12,10 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key_here_change_in_production'
 
 # MySQL Configuration
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'saqib'  # Change as per your setup
-app.config['MYSQL_PASSWORD'] = 'cse@123'  # Change as per your setup
-app.config['MYSQL_DB'] = 'ecofind'
+app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'db')
+app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'root')
+app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD', 'rootpassword')
+app.config['MYSQL_DB'] = os.getenv('MYSQL_DB', 'ecofind')
 
 # Initialize MySQL
 mysql = MySQL(app)
